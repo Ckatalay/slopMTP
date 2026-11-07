@@ -87,32 +87,3 @@ struct GlassGroup<Content: View>: View {
         }
     }
 }
-
-/// A soft, slowly shifting backdrop so the glass has something to refract.
-struct AmbientBackground: View {
-    var colors: [Color] = [.indigo, .purple, .teal]
-
-    var body: some View {
-        ZStack {
-            Color(nsColor: .windowBackgroundColor)
-            GeometryReader { proxy in
-                let size = proxy.size
-                ZStack {
-                    Circle().fill(colors[0].opacity(0.35))
-                        .frame(width: size.width * 0.7)
-                        .offset(x: -size.width * 0.3, y: -size.height * 0.35)
-                    Circle().fill(colors[1].opacity(0.25))
-                        .frame(width: size.width * 0.6)
-                        .offset(x: size.width * 0.35, y: -size.height * 0.1)
-                    Circle().fill(colors[2].opacity(0.2))
-                        .frame(width: size.width * 0.8)
-                        .offset(x: 0, y: size.height * 0.5)
-                }
-                .frame(width: size.width, height: size.height)
-                .blur(radius: 120)
-            }
-        }
-        .ignoresSafeArea()
-        .accessibilityHidden(true)
-    }
-}

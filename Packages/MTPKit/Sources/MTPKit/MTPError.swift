@@ -19,33 +19,38 @@ public enum MTPError: Error, LocalizedError, Equatable, Sendable {
     public var errorDescription: String? {
         switch self {
         case .deviceNotFound:
-            return "The MTP device could not be found. Is it still connected?"
+            return L("The MTP device could not be found. Is it still connected?", comment: "Error")
         case .interfaceBusy(let owner?):
-            return "The device's MTP interface is in use by “\(owner)”. Quit it and try again."
+            return L("The device's MTP interface is in use by “\(owner)”. Quit it and try again.", comment: "Error. The placeholder is the name of the app or process using the device.")
         case .interfaceBusy(nil):
-            return "The device's MTP interface is in use by another process. Quit Image Capture, Photos, Android File Transfer or OpenMTP and try again."
+            return L("The device's MTP interface is in use by another process. Quit Image Capture, Photos, Android File Transfer or OpenMTP and try again.", comment: "Error. App names are not translated.")
         case .usb(let message):
-            return "USB error: \(message)"
+            return L("USB error: \(message)", comment: "Error. The placeholder is a technical message.")
         case .timeout:
-            return "The device did not respond in time."
+            return L("The device did not respond in time.", comment: "Error")
         case .disconnected:
-            return "The device was disconnected."
+            return L("The device was disconnected.", comment: "Error")
         case .malformedData(let message):
-            return "The device sent malformed data: \(message)"
+            return L("The device sent malformed data: \(message)", comment: "Error. The placeholder is a technical message.")
         case .unexpectedContainer(let message):
-            return "Protocol error: \(message)"
+            return L("Protocol error: \(message)", comment: "Error. The placeholder is a technical message.")
         case .transactionMismatch(let expected, let received):
-            return "Protocol error: expected transaction \(expected), got \(received)."
+            return L("Protocol error: expected transaction \(expected), got \(received).", comment: "Error with two transaction numbers")
         case .response(let code, let operation):
-            return "\(operation) failed: \(code)."
+            return L("\(operation.description) failed: \(code.localizedDescription).", comment: "Error. The first placeholder is an MTP operation name such as SendObject (not translated), the second the device's reason.")
         case .sessionNotOpen:
-            return "No MTP session is open."
+            return L("No MTP session is open.", comment: "Error")
         case .operationNotSupported(let operation):
-            return "The device does not support \(operation)."
+            return L("The device does not support \(operation.description).", comment: "Error. The placeholder is an MTP operation name such as SendObject (not translated).")
         case .cancelled:
-            return "The operation was cancelled."
+            return L("The operation was cancelled.", comment: "Error")
         case .localFile(let message):
             return message
         }
     }
+}
+
+/// Localized text from MTPKit's own string catalog.
+func L(_ value: String.LocalizationValue, comment: StaticString) -> String {
+    String(localized: value, bundle: .module, comment: comment)
 }

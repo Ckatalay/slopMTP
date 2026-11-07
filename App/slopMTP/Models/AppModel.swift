@@ -50,7 +50,7 @@ final class AppModel {
             self.connection = connection
             await connection.loadStorages()
         } catch {
-            alert = AlertItem(title: "Couldn't connect to \(device.displayName)", message: error.localizedDescription)
+            alert = AlertItem(title: String(localized: "Couldn't connect to \(device.displayName)", comment: "Alert title. The placeholder is the device name."), message: error.localizedDescription)
         }
     }
 

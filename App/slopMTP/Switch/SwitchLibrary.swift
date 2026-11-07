@@ -31,7 +31,11 @@ struct DBILayout: Equatable {
     enum InstallTarget: String, CaseIterable, Identifiable {
         case sdCard, nand
         var id: String { rawValue }
-        var label: String { self == .sdCard ? "SD Card" : "System Memory" }
+        var label: String {
+            self == .sdCard
+                ? String(localized: "SD Card", comment: "Install location on the console")
+                : String(localized: "System Memory", comment: "Install location on the console (internal storage)")
+        }
     }
 
     func storage(for target: InstallTarget) -> MTPStorage? {

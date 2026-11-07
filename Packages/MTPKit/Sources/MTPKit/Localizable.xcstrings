@@ -1,0 +1,3748 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%@ failed: %@.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "فشل %1$@: %2$@."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%1$@ fehlgeschlagen: %2$@."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ failed: %2$@."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Error en %1$@: %2$@."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Échec de %1$@ : %2$@."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%@ विफल: %@।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%1$@ non riuscito: %2$@."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%1$@ に失敗しました：%2$@。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%1$@ 실패: %2$@."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%@ mislukt: %@."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%@ – niepowodzenie: %@."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%@ falhou: %@."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ошибка %@: %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%@ başarısız oldu: %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Помилка %@: %@."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%1$@ 失败：%2$@。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "%1$@ 失敗：%2$@。"
+          }
+        }
+      }
+    },
+    "Access denied": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "تم رفض الوصول"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Zugriff verweigert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Acceso denegado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Accès refusé"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "एक्सेस अस्वीकृत"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Accesso negato"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "アクセスが拒否されました"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "접근 거부됨"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Toegang geweigerd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Odmowa dostępu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Acesso negado"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Доступ запрещен"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Erişim reddedildi"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Доступ заборонено"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "拒绝访问"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "拒絕存取"
+          }
+        }
+      }
+    },
+    "Device busy": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الجهاز مشغول"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Gerät belegt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Dispositivo ocupado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Appareil occupé"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "डिवाइस व्यस्त है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Dispositivo occupato"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "デバイスがビジー状態です"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "기기 사용 중"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Apparaat bezet"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Urządzenie zajęte"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Dispositivo ocupado"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Устройство занято"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Aygıt meşgul"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Пристрій зайнятий"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "设备忙"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "裝置忙碌中"
+          }
+        }
+      }
+    },
+    "Device property not supported": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "خاصية الجهاز غير مدعومة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Geräteeigenschaft nicht unterstützt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Propiedad del dispositivo no compatible"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Propriété d’appareil non prise en charge"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "डिवाइस प्रॉपर्टी समर्थित नहीं है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Proprietà del dispositivo non supportata"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "デバイスプロパティがサポートされていません"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "지원되지 않는 기기 속성"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Apparaateigenschap niet ondersteund"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nieobsługiwana właściwość urządzenia"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Propriedade do dispositivo não suportada"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Свойство устройства не поддерживается"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Aygıt özelliği desteklenmiyor"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Властивість пристрою не підтримується"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "不支持该设备属性"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "不支援此裝置屬性"
+          }
+        }
+      }
+    },
+    "General error": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "خطأ عام"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Allgemeiner Fehler"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Error general"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Erreur générale"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "सामान्य त्रुटि"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Errore generico"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "一般エラー"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "일반 오류"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Algemene fout"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Błąd ogólny"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Erro geral"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Общая ошибка"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Genel hata"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Загальна помилка"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "一般错误"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "一般錯誤"
+          }
+        }
+      }
+    },
+    "Incomplete transfer": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "نقل غير مكتمل"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Unvollständige Übertragung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Transferencia incompleta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Transfert incomplet"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "अधूरा ट्रांसफ़र"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Trasferimento incompleto"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "転送が完了していません"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "불완전한 전송"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Onvolledige overdracht"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Niepełne przesyłanie"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Transferência incompleta"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Передача не завершена"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Eksik aktarım"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Передавання не завершено"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "传输不完整"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "傳輸不完整"
+          }
+        }
+      }
+    },
+    "Invalid object format": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "تنسيق كائن غير صالح"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ungültiges Objektformat"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Formato de objeto no válido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Format d’objet non valide"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "अमान्य ऑब्जेक्ट फ़ॉर्मेट"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Formato oggetto non valido"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無効なオブジェクトフォーマット"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "유효하지 않은 객체 포맷"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ongeldige objectindeling"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nieprawidłowy format obiektu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Formato de objeto inválido"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Недопустимый формат объекта"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Geçersiz nesne biçimi"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Неприпустимий формат об’єкта"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "无效的对象格式"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無效的物件格式"
+          }
+        }
+      }
+    },
+    "Invalid object handle": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "مُعرّف كائن غير صالح"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ungültiges Objekt-Handle"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Identificador de objeto no válido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Identifiant d’objet non valide"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "अमान्य ऑब्जेक्ट हैंडल"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Handle oggetto non valido"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無効なオブジェクトハンドル"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "유효하지 않은 객체 핸들"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ongeldige objecthandle"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nieprawidłowy uchwyt obiektu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Identificador de objeto inválido"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Недопустимый дескриптор объекта"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Geçersiz nesne tanıtıcısı"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Неприпустимий дескриптор об’єкта"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "无效的对象句柄"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無效的物件控制碼"
+          }
+        }
+      }
+    },
+    "Invalid object property code": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "رمز خاصية كائن غير صالح"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ungültiger Objekteigenschaftscode"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Código de propiedad de objeto no válido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Code de propriété d’objet non valide"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "अमान्य ऑब्जेक्ट प्रॉपर्टी कोड"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Codice proprietà oggetto non valido"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無効なオブジェクトプロパティコード"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "유효하지 않은 객체 속성 코드"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ongeldige code voor objecteigenschap"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nieprawidłowy kod właściwości obiektu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Código de propriedade de objeto inválido"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Недопустимый код свойства объекта"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Geçersiz nesne özelliği kodu"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Неприпустимий код властивості об’єкта"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "无效的对象属性代码"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無效的物件屬性代碼"
+          }
+        }
+      }
+    },
+    "Invalid object property format": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "تنسيق خاصية كائن غير صالح"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ungültiges Objekteigenschaftsformat"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Formato de propiedad de objeto no válido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Format de propriété d’objet non valide"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "अमान्य ऑब्जेक्ट प्रॉपर्टी फ़ॉर्मेट"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Formato proprietà oggetto non valido"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無効なオブジェクトプロパティフォーマット"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "유효하지 않은 객체 속성 포맷"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ongeldige indeling voor objecteigenschap"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nieprawidłowy format właściwości obiektu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Formato de propriedade de objeto inválido"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Недопустимый формат свойства объекта"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Geçersiz nesne özelliği biçimi"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Неприпустимий формат властивості об’єкта"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "无效的对象属性格式"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無效的物件屬性格式"
+          }
+        }
+      }
+    },
+    "Invalid parameter": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "معامل غير صالح"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ungültiger Parameter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Parámetro no válido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Paramètre non valide"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "अमान्य पैरामीटर"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Parametro non valido"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無効なパラメータ"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "유효하지 않은 매개변수"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ongeldige parameter"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nieprawidłowy parametr"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Parâmetro inválido"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Недопустимый параметр"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Geçersiz parametre"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Неприпустимий параметр"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "无效的参数"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無效的參數"
+          }
+        }
+      }
+    },
+    "Invalid parent object": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "كائن أصل غير صالح"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ungültiges übergeordnetes Objekt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Objeto padre no válido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Objet parent non valide"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "अमान्य पैरेंट ऑब्जेक्ट"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Oggetto padre non valido"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無効な親オブジェクト"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "유효하지 않은 상위 객체"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ongeldig bovenliggend object"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nieprawidłowy obiekt nadrzędny"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Objeto pai inválido"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Недопустимый родительский объект"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Geçersiz üst nesne"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Неприпустимий батьківський об’єкт"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "无效的父对象"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無效的父物件"
+          }
+        }
+      }
+    },
+    "Invalid storage ID": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "معرّف تخزين غير صالح"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ungültige Speicher-ID"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ID de almacenamiento no válido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ID de stockage non valide"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "अमान्य स्टोरेज ID"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ID memoria non valido"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無効なストレージ ID"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "유효하지 않은 저장 공간 ID"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ongeldige opslag-ID"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nieprawidłowe ID magazynu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ID de armazenamento inválido"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Недопустимый ID хранилища"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Geçersiz depolama kimliği"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Неприпустимий ID сховища"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "无效的储存空间 ID"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無效的儲存空間 ID"
+          }
+        }
+      }
+    },
+    "Invalid transaction ID": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "معرّف معاملة غير صالح"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ungültige Transaktions-ID"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ID de transacción no válido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ID de transaction non valide"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "अमान्य ट्रांज़ैक्शन ID"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ID transazione non valido"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無効なトランザクション ID"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "유효하지 않은 트랜잭션 ID"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ongeldige transactie-ID"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nieprawidłowe ID transakcji"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ID de transação inválido"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Недопустимый ID транзакции"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Geçersiz işlem kimliği"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Неприпустимий ID транзакції"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "无效的事务 ID"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "無效的交易 ID"
+          }
+        }
+      }
+    },
+    "No MTP session is open.": {
+      "comment": "Error",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "لا توجد جلسة MTP مفتوحة."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Es ist keine MTP-Sitzung geöffnet."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "No hay ninguna sesión MTP abierta."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Aucune session MTP n’est ouverte."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "कोई MTP सेशन खुला नहीं है।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nessuna sessione MTP aperta."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "MTP セッションが開いていません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "열린 MTP 세션이 없습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Er is geen MTP-sessie geopend."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Brak otwartej sesji MTP."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nenhuma sessão MTP está aberta."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Нет открытого сеанса MTP."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Açık MTP oturumu yok."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Немає відкритого сеансу MTP."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "没有已打开的 MTP 会话。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "沒有已開啟的 MTP 工作階段。"
+          }
+        }
+      }
+    },
+    "No thumbnail present": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "لا توجد صورة مصغرة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Keine Miniatur vorhanden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "No hay miniatura"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Aucune vignette"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "कोई थंबनेल मौजूद नहीं"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nessuna miniatura presente"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "サムネールがありません"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "썸네일 없음"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Geen miniatuur aanwezig"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Brak miniaturki"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nenhuma miniatura presente"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Миниатюра отсутствует"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Küçük resim yok"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Мініатюра відсутня"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "没有缩略图"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "沒有縮圖"
+          }
+        }
+      }
+    },
+    "OK": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "حسنًا"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "OK"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "OK"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "OK"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ठीक है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "OK"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "OK"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "확인"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "OK"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "OK"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "OK"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "OK"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Tamam"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "OK"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "成功"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "成功"
+          }
+        }
+      }
+    },
+    "Object too large": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الكائن كبير جدًا"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Objekt zu groß"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Objeto demasiado grande"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Objet trop volumineux"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ऑब्जेक्ट बहुत बड़ा है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Oggetto troppo grande"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "オブジェクトが大きすぎます"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "객체가 너무 큼"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Object te groot"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Obiekt jest za duży"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Objeto grande demais"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Объект слишком большой"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nesne çok büyük"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Об’єкт завеликий"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "对象过大"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "物件過大"
+          }
+        }
+      }
+    },
+    "Object write-protected": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الكائن محمي ضد الكتابة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Objekt schreibgeschützt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Objeto protegido contra escritura"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Objet protégé en écriture"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ऑब्जेक्ट राइट-प्रोटेक्टेड है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Oggetto protetto da scrittura"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "オブジェクトが書き込み禁止です"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "객체가 쓰기 금지됨"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Object is schrijfbeveiligd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Obiekt chroniony przed zapisem"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Objeto protegido contra gravação"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Объект защищен от записи"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nesne yazmaya karşı korumalı"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Об’єкт захищено від запису"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "对象受写保护"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "物件受寫入保護"
+          }
+        }
+      }
+    },
+    "Operation not supported": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "العملية غير مدعومة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Operation nicht unterstützt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Operación no compatible"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Opération non prise en charge"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ऑपरेशन समर्थित नहीं है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Operazione non supportata"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "操作がサポートされていません"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "지원되지 않는 작업"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Bewerking niet ondersteund"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nieobsługiwana operacja"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Operação não suportada"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Операция не поддерживается"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "İşlem desteklenmiyor"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Операція не підтримується"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "不支持该操作"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "不支援此操作"
+          }
+        }
+      }
+    },
+    "Parameter not supported": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "المعامل غير مدعوم"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Parameter nicht unterstützt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Parámetro no compatible"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Paramètre non pris en charge"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "पैरामीटर समर्थित नहीं है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Parametro non supportato"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "パラメータがサポートされていません"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "지원되지 않는 매개변수"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Parameter niet ondersteund"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nieobsługiwany parametr"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Parâmetro não suportado"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Параметр не поддерживается"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Parametre desteklenmiyor"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Параметр не підтримується"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "不支持该参数"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "不支援此參數"
+          }
+        }
+      }
+    },
+    "Protocol error: %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "خطأ في البروتوكول: %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Protokollfehler: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Error de protocolo: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Erreur de protocole : %@"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "प्रोटोकॉल त्रुटि: %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Errore di protocollo: %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "プロトコルエラー：%@"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "프로토콜 오류: %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Protocolfout: %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Błąd protokołu: %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Erro de protocolo: %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ошибка протокола: %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Protokol hatası: %@"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Помилка протоколу: %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "协议错误：%@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "通訊協定錯誤：%@"
+          }
+        }
+      }
+    },
+    "Protocol error: expected transaction %u, got %u.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "خطأ في البروتوكول: كان متوقعًا المعاملة %1$u، لكن تم استلام %2$u."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Protokollfehler: Transaktion %1$u erwartet, %2$u erhalten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Protocol error: expected transaction %1$u, got %2$u."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Error de protocolo: se esperaba la transacción %1$u y se recibió la %2$u."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Erreur de protocole : transaction %1$u attendue, %2$u reçue."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "प्रोटोकॉल त्रुटि: ट्रांज़ैक्शन %u अपेक्षित था, %u मिला।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Errore di protocollo: prevista la transazione %1$u, ricevuta la %2$u."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "プロトコルエラー：トランザクション %u が必要でしたが、%u を受信しました。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "프로토콜 오류: 트랜잭션 %u을(를) 예상했으나 %u을(를) 받았습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Protocolfout: transactie %u verwacht, %u ontvangen."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Błąd protokołu: oczekiwano transakcji %u, otrzymano %u."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Erro de protocolo: transação %u esperada, %u recebida."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ошибка протокола: ожидалась транзакция %u, получена %u."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Protokol hatası: %u numaralı işlem bekleniyordu, %u alındı."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Помилка протоколу: очікувалася транзакція %u, отримано %u."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "协议错误：预期事务 %u，实际为 %u。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "通訊協定錯誤：預期交易 %u，實際為 %u。"
+          }
+        }
+      }
+    },
+    "Session already open": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الجلسة مفتوحة بالفعل"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Sitzung bereits geöffnet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "La sesión ya está abierta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Session déjà ouverte"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "सेशन पहले से खुला है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Sessione già aperta"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "セッションはすでに開いています"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "세션이 이미 열려 있음"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Sessie al geopend"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Sesja jest już otwarta"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Sessão já aberta"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Сеанс уже открыт"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Oturum zaten açık"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Сеанс уже відкрито"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "会话已打开"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "工作階段已開啟"
+          }
+        }
+      }
+    },
+    "Session not open": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "الجلسة غير مفتوحة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Sitzung nicht geöffnet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "La sesión no está abierta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Session non ouverte"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "सेशन खुला नहीं है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Sessione non aperta"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "セッションが開いていません"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "세션이 열려 있지 않음"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Sessie niet geopend"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Sesja nie jest otwarta"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Sessão não aberta"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Сеанс не открыт"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Oturum açık değil"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Сеанс не відкрито"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "会话未打开"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "工作階段未開啟"
+          }
+        }
+      }
+    },
+    "Storage full": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "التخزين ممتلئ"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Speicher voll"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Almacenamiento lleno"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Stockage plein"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "स्टोरेज भर गया है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Memoria piena"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ストレージがいっぱいです"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "저장 공간이 가득 참"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Opslag vol"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Magazyn jest pełny"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Armazenamento cheio"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Хранилище заполнено"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Depolama alanı dolu"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Сховище заповнене"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "储存空间已满"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "儲存空間已滿"
+          }
+        }
+      }
+    },
+    "Storage is read-only": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "التخزين للقراءة فقط"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Speicher ist schreibgeschützt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "El almacenamiento es de solo lectura"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Le stockage est en lecture seule"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "स्टोरेज केवल-पठन है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "La memoria è di sola lettura"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ストレージは読み出し専用です"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "저장 공간이 읽기 전용임"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Opslag is alleen-lezen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Magazyn jest tylko do odczytu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Armazenamento somente leitura"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Хранилище доступно только для чтения"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Depolama alanı salt okunur"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Сховище доступне лише для читання"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "储存空间为只读"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "儲存空間為唯讀"
+          }
+        }
+      }
+    },
+    "The MTP device could not be found. Is it still connected?": {
+      "comment": "Error",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "تعذّر العثور على جهاز MTP. هل لا يزال متصلًا؟"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Das MTP-Gerät wurde nicht gefunden. Ist es noch verbunden?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "No se ha encontrado el dispositivo MTP. ¿Sigue conectado?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "L’appareil MTP est introuvable. Est-il toujours connecté ?"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "MTP डिवाइस नहीं मिला। क्या यह अभी भी कनेक्ट है?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Impossibile trovare il dispositivo MTP. È ancora collegato?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "MTP デバイスが見つかりませんでした。まだ接続されていますか？"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "MTP 기기를 찾을 수 없습니다. 아직 연결되어 있습니까?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Kan het MTP-apparaat niet vinden. Is het nog verbonden?"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nie można znaleźć urządzenia MTP. Czy nadal jest podłączone?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Não foi possível encontrar o dispositivo MTP. Ele ainda está conectado?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Не удалось найти MTP-устройство. Оно все еще подключено?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "MTP aygıtı bulunamadı. Hâlâ bağlı mı?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Не вдалося знайти MTP-пристрій. Він досі під’єднаний?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "找不到 MTP 设备。它是否仍处于连接状态？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "找不到 MTP 裝置。它是否仍保持連接？"
+          }
+        }
+      }
+    },
+    "The device did not respond in time.": {
+      "comment": "Error",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "لم يستجب الجهاز في الوقت المحدد."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Das Gerät hat nicht rechtzeitig geantwortet."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "El dispositivo no ha respondido a tiempo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "L’appareil n’a pas répondu à temps."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "डिवाइस ने समय पर जवाब नहीं दिया।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Il dispositivo non ha risposto in tempo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "デバイスが時間内に応答しませんでした。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "기기가 제시간에 응답하지 않았습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Het apparaat heeft niet op tijd gereageerd."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Urządzenie nie odpowiedziało na czas."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "O dispositivo não respondeu a tempo."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Устройство не ответило вовремя."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Aygıt zamanında yanıt vermedi."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Пристрій не відповів вчасно."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "设备未及时响应。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "裝置未及時回應。"
+          }
+        }
+      }
+    },
+    "The device does not support %@.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "لا يدعم الجهاز %@."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Das Gerät unterstützt %@ nicht."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "El dispositivo no es compatible con %@."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "L’appareil ne prend pas en charge %@."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "डिवाइस %@ का समर्थन नहीं करता।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Il dispositivo non supporta %@."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "デバイスは %@ に対応していません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "기기가 %@을(를) 지원하지 않습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Het apparaat ondersteunt %@ niet."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Urządzenie nie obsługuje operacji %@."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "O dispositivo não suporta %@."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Устройство не поддерживает %@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Aygıt %@ işlemini desteklemiyor."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Пристрій не підтримує %@."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "设备不支持 %@。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "裝置不支援 %@。"
+          }
+        }
+      }
+    },
+    "The device sent malformed data: %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "أرسل الجهاز بيانات غير صالحة: %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Das Gerät hat fehlerhafte Daten gesendet: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "El dispositivo ha enviado datos con formato incorrecto: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "L’appareil a envoyé des données mal formées : %@"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "डिवाइस ने गलत फ़ॉर्मेट वाला डेटा भेजा: %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Il dispositivo ha inviato dati non validi: %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "デバイスが不正なデータを送信しました：%@"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "기기가 잘못된 형식의 데이터를 보냈습니다: %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Het apparaat heeft ongeldige gegevens verstuurd: %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Urządzenie wysłało nieprawidłowe dane: %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "O dispositivo enviou dados malformados: %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Устройство отправило некорректные данные: %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Aygıt bozuk veri gönderdi: %@"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Пристрій надіслав некоректні дані: %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "设备发送了格式错误的数据：%@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "裝置傳送了格式錯誤的資料：%@"
+          }
+        }
+      }
+    },
+    "The device was disconnected.": {
+      "comment": "Error",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "تم قطع اتصال الجهاز."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Die Verbindung zum Gerät wurde getrennt."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "El dispositivo se ha desconectado."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "L’appareil a été déconnecté."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "डिवाइस डिस्कनेक्ट हो गया।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Il dispositivo è stato disconnesso."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "デバイスの接続が解除されました。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "기기 연결이 해제되었습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "De verbinding met het apparaat is verbroken."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Urządzenie zostało odłączone."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "O dispositivo foi desconectado."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Устройство было отключено."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Aygıtın bağlantısı kesildi."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Пристрій було від’єднано."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "设备已断开连接。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "裝置已中斷連接。"
+          }
+        }
+      }
+    },
+    "The device's MTP interface is in use by another process. Quit Image Capture, Photos, Android File Transfer or OpenMTP and try again.": {
+      "comment": "Error. App names are not translated.",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "واجهة MTP في الجهاز قيد الاستخدام بواسطة عملية أخرى. قم بإنهاء «التقاط الصور» أو «الصور» أو Android File Transfer أو OpenMTP وحاول مرة أخرى."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Die MTP-Schnittstelle des Geräts wird von einem anderen Prozess verwendet. Beende Digitale Bilder, Fotos, Android File Transfer oder OpenMTP und versuche es erneut."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Otro proceso está usando la interfaz MTP del dispositivo. Cierra Captura de Imagen, Fotos, Android File Transfer u OpenMTP e inténtalo de nuevo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "L’interface MTP de l’appareil est utilisée par un autre processus. Quittez Transfert d’images, Photos, Android File Transfer ou OpenMTP, puis réessayez."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "डिवाइस का MTP इंटरफ़ेस किसी अन्य प्रोसेस द्वारा उपयोग में है। इमेज कैप्चर, फ़ोटो, Android File Transfer या OpenMTP बंद करें और फिर से कोशिश करें।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "L’interfaccia MTP del dispositivo è in uso da parte di un altro processo. Esci da Acquisizione Immagine, Foto, Android File Transfer o OpenMTP e riprova."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "デバイスの MTP インターフェイスが別のプロセスで使用中です。イメージキャプチャ、写真、Android File Transfer、OpenMTP を終了してから、もう一度お試しください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "다른 프로세스가 기기의 MTP 인터페이스를 사용 중입니다. 이미지 캡처, 사진, Android File Transfer 또는 OpenMTP를 종료한 후 다시 시도하십시오."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "De MTP-interface van het apparaat wordt gebruikt door een ander proces. Stop Digitale opnamen, Foto's, Android File Transfer of OpenMTP en probeer het opnieuw."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Interfejs MTP urządzenia jest używany przez inny proces. Zakończ Pobieranie obrazów, Zdjęcia, Android File Transfer lub OpenMTP i spróbuj ponownie."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "A interface MTP do dispositivo está sendo usada por outro processo. Encerre Captura de Imagem, Fotos, Android File Transfer ou OpenMTP e tente novamente."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Интерфейс MTP устройства используется другим процессом. Завершите «Захват изображений», «Фото», Android File Transfer или OpenMTP и повторите попытку."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Aygıtın MTP arabirimi başka bir işlem tarafından kullanılıyor. Görüntü Yakalama, Fotoğraflar, Android File Transfer veya OpenMTP’den çıkıp yeniden deneyin."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Інтерфейс MTP пристрою використовується іншим процесом. Закрийте «Захоплення зображень», «Фото», Android File Transfer або OpenMTP і спробуйте ще раз."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "设备的 MTP 接口正被另一个进程占用。请退出图像捕捉、照片、Android File Transfer 或 OpenMTP，然后重试。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "裝置的 MTP 介面正被另一個程序使用。請結束影像擷取、照片、Android File Transfer 或 OpenMTP，然後再試一次。"
+          }
+        }
+      }
+    },
+    "The device's MTP interface is in use by “%@”. Quit it and try again.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "واجهة MTP في الجهاز قيد الاستخدام بواسطة «%@». قم بإنهائه وحاول مرة أخرى."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Die MTP-Schnittstelle des Geräts wird von „%@“ verwendet. Beende die App und versuche es erneut."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "“%@” está usando la interfaz MTP del dispositivo. Ciérrala e inténtalo de nuevo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "L’interface MTP de l’appareil est utilisée par « %@ ». Quittez cette app, puis réessayez."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "डिवाइस का MTP इंटरफ़ेस “%@” द्वारा उपयोग में है। उसे बंद करें और फिर से कोशिश करें।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "L’interfaccia MTP del dispositivo è in uso da parte di “%@”. Esci dall’app e riprova."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "デバイスの MTP インターフェイスは「%@」で使用中です。終了してから、もう一度お試しください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "‘%@’이(가) 기기의 MTP 인터페이스를 사용 중입니다. 해당 앱을 종료한 후 다시 시도하십시오."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "De MTP-interface van het apparaat wordt gebruikt door ‘%@’. Stop die app en probeer het opnieuw."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Interfejs MTP urządzenia jest używany przez „%@”. Zakończ tę aplikację i spróbuj ponownie."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "A interface MTP do dispositivo está sendo usada por “%@”. Encerre-o e tente novamente."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Интерфейс MTP устройства используется программой «%@». Завершите ее и повторите попытку."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Aygıtın MTP arabirimi “%@” tarafından kullanılıyor. Bu uygulamadan çıkıp yeniden deneyin."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Інтерфейс MTP пристрою використовується програмою «%@». Закрийте її і спробуйте ще раз."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "设备的 MTP 接口正被“%@”占用。请退出该应用后重试。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "裝置的 MTP 介面正被「%@」使用。請結束該 App 後再試一次。"
+          }
+        }
+      }
+    },
+    "The operation was cancelled.": {
+      "comment": "Error",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "تم إلغاء العملية."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Der Vorgang wurde abgebrochen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Se ha cancelado la operación."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "L’opération a été annulée."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ऑपरेशन रद्द कर दिया गया।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "L’operazione è stata annullata."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "操作はキャンセルされました。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "작업이 취소되었습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "De bewerking is geannuleerd."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Operacja została anulowana."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "A operação foi cancelada."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Операция отменена."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "İşlem iptal edildi."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Операцію скасовано."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "操作已取消。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "操作已取消。"
+          }
+        }
+      }
+    },
+    "Transaction cancelled": {
+      "comment": "MTP device response",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "تم إلغاء المعاملة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Transaktion abgebrochen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Transacción cancelada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Transaction annulée"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ट्रांज़ैक्शन रद्द किया गया"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Transazione annullata"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "トランザクションがキャンセルされました"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "트랜잭션 취소됨"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Transactie geannuleerd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Transakcja anulowana"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Transação cancelada"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Транзакция отменена"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "İşlem iptal edildi"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Транзакцію скасовано"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "事务已取消"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "交易已取消"
+          }
+        }
+      }
+    },
+    "USB error: %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "خطأ USB: %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "USB-Fehler: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Error de USB: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Erreur USB : %@"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "USB त्रुटि: %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Errore USB: %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "USB エラー：%@"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "USB 오류: %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "USB-fout: %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Błąd USB: %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Erro de USB: %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Ошибка USB: %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "USB hatası: %@"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Помилка USB: %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "USB 错误：%@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "USB 錯誤：%@"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.1"
+}

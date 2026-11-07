@@ -14,7 +14,7 @@ struct InstallReviewSheet: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Install \(connection.pendingInstall.count == 1 ? "1 File" : "\(connection.pendingInstall.count) Files")")
+                Text(connection.pendingInstall.count == 1 ? "Install 1 File" : "Install \(connection.pendingInstall.count) Files")
                     .font(.title2.bold())
                 Text("Base games install first, then updates, then DLC. Items already on the console are unchecked.")
                     .font(.callout)
@@ -145,9 +145,9 @@ struct InstallActivityView: View {
 
     private var title: String {
         let directions = Set(installs.map(\.direction))
-        if directions == [.upload] { return "Installing" }
-        if directions == [.download] { return "Copying to Mac" }
-        return "Transfers"
+        if directions == [.upload] { return String(localized: "Installing", comment: "Section title while games install") }
+        if directions == [.download] { return String(localized: "Copying to Mac", comment: "Section title while files copy from the console to the Mac") }
+        return String(localized: "Transfers", comment: "Section title for installs and copies together")
     }
 
     var body: some View {
@@ -189,7 +189,7 @@ private struct InstallRow: View {
                         .font(.headline)
                         .lineLimit(1)
                     if let kind = info.kind {
-                        Text(kind == .update ? "Update \(TitleVersion.short(info.version ?? 0))" : kind.label)
+                        Text(kind == .update ? String(localized: "Update \(TitleVersion.short(info.version ?? 0))", comment: "Update with its version, e.g. “Update v3”") : kind.label)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -242,11 +242,16 @@ private struct InstallRow: View {
     }
 
     private var progressText: String {
-        var parts = ["\(transfer.direction == .download ? "Copying to Mac" : "Installing") · \(Format.bytes(transfer.completedBytes)) of \(Format.bytes(transfer.totalBytes))"]
+        var parts = [
+            transfer.direction == .download
+                ? String(localized: "Copying to Mac", comment: "Transfer status: copying from the console to the Mac")
+                : String(localized: "Installing", comment: "Transfer status: installing on the console"),
+            String(localized: "\(Format.bytes(transfer.completedBytes)) of \(Format.bytes(transfer.totalBytes))", comment: "Transfer progress, e.g. “1.2 GB of 4 GB”"),
+        ]
         if let speed = transfer.bytesPerSecond, speed > 0 {
-            parts.append("\(Format.bytes(UInt64(speed)))/s")
+            parts.append(String(localized: "\(Format.bytes(UInt64(speed)))/s", comment: "Transfer speed, e.g. “40 MB/s”"))
             let remaining = Double(transfer.totalBytes - min(transfer.completedBytes, transfer.totalBytes)) / speed
-            parts.append("\(Format.duration(remaining)) left")
+            parts.append(String(localized: "\(Format.duration(remaining)) left", comment: "Time remaining, e.g. “3m 2s left”"))
         }
         return parts.joined(separator: " · ")
     }
@@ -284,8 +289,8 @@ struct GameDetailView: View {
                             .textSelection(.enabled)
                     }
                     HStack(spacing: 4) {
-                        if let version = game.updateVersion { Badge(text: "Update \(TitleVersion.short(version))", color: .blue) }
-                        if game.dlcCount > 0 { Badge(text: "\(game.dlcCount) DLC", color: .purple) }
+                        if let version = game.updateVersion { Badge(text: String(localized: "Update \(TitleVersion.short(version))", comment: "Update with its version, e.g. “Update v3”"), color: .blue) }
+                        if game.dlcCount > 0 { Badge(text: String(localized: "\(game.dlcCount) DLC", comment: "Number of installed DLC, e.g. “3 DLC”"), color: .purple) }
                     }
                     .padding(.top, 4)
                 }
@@ -322,7 +327,7 @@ struct GameDetailView: View {
                                         Image(systemName: "trash")
                                     }
                                     .buttonStyle(.borderless)
-                                    .help("Remove this \(content.kind == .update ? "update" : "DLC")")
+                                    .help(content.kind == .update ? "Remove this update" : "Remove this DLC")
                                     .accessibilityLabel("Remove \(content.info.title) \(content.kind.label)")
                                 } else {
                                     Color.clear.frame(width: 16)
@@ -352,7 +357,7 @@ struct GameDetailView: View {
         .padding(24)
         .frame(width: 640)
         .confirmationDialog(
-            "Remove \(contentToRemove?.kind == .update ? "the update" : "this DLC") from the console?",
+            contentToRemove?.kind == .update ? "Remove the update from the console?" : "Remove this DLC from the console?",
             isPresented: Binding(get: { contentToRemove != nil }, set: { if !$0 { contentToRemove = nil } }),
             titleVisibility: .visible
         ) {

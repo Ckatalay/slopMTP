@@ -13,6 +13,7 @@ A native macOS MTP client, written in Swift and SwiftUI, for browsing and transf
 - New folder, rename, delete, drag and drop to and from Finder
 - For DBI: a game library with cover art, install review (base → update → DLC), backups of games and saves, uninstalling, and an Album gallery with thumbnails
 - Live refresh from device events, fast listings via `GetObjectPropList`, and downloads that resume where they stopped (`GetPartialObject64`)
+- Localized into 16 languages: German, French, Spanish, Italian, Portuguese (Brazil), Dutch, Polish, Turkish, Russian, Ukrainian, Arabic, Hindi, Chinese (Simplified and Traditional), Japanese and Korean. Translations are machine-generated and marked for review in the String Catalogs; see [TRANSLATION.md](TRANSLATION.md) to help improve them
 - No dependencies: talks to USB directly through Apple's `IOUSBHost` framework (no libusb, no libmtp)
 
 ## Requirements

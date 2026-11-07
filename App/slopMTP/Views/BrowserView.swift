@@ -244,7 +244,9 @@ struct BrowserView: View {
 
     private var deleteTitle: String {
         let objects = connection.pendingDeletion
-        return objects.count == 1 ? "Delete “\(objects[0].name)”?" : "Delete \(objects.count) items?"
+        return objects.count == 1
+            ? String(localized: "Delete “\(objects[0].name)”?", comment: "Confirmation title. The placeholder is a file name.")
+            : String(localized: "Delete \(objects.count) items?", comment: "Confirmation title")
     }
 
     private var deleteBinding: Binding<Bool> {
@@ -263,7 +265,7 @@ private struct PathBar: View {
         HStack(spacing: 8) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 2) {
-                    crumb(connection.selectedStorage?.info.displayName ?? "Storage", systemImage: "sdcard", entry: nil)
+                    crumb(connection.selectedStorage?.info.displayName ?? String(localized: "Storage", comment: "Generic name for a storage on the device"), systemImage: "sdcard", entry: nil)
                     ForEach(connection.path, id: \.self) { entry in
                         Image(systemName: "chevron.right")
                             .font(.caption2)
@@ -311,7 +313,7 @@ private struct DeviceInfoView: View {
             row("Serial", info.serialNumber)
             row("USB ID", String(format: "%04X:%04X", connection.device.vendorID, connection.device.productID))
             row("Extension", info.vendorExtensionDescription)
-            row("Operations", "\(info.operationsSupported.count) supported")
+            row("Operations", String(localized: "\(info.operationsSupported.count) supported", comment: "Number of MTP operations the device supports"))
             row("Large uploads", info.supports(.sendObjectPropList) ? "SendObjectPropList (64-bit)" : "SendObjectInfo")
         }
         .textSelection(.enabled)
@@ -320,7 +322,7 @@ private struct DeviceInfoView: View {
     }
 
     @ViewBuilder
-    private func row(_ label: String, _ value: String) -> some View {
+    private func row(_ label: LocalizedStringKey, _ value: String) -> some View {
         GridRow {
             Text(label).foregroundStyle(.secondary)
             Text(value.isEmpty ? "—" : value)

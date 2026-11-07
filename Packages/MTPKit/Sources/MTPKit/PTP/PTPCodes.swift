@@ -100,6 +100,36 @@ public struct ResponseCode: RawRepresentable, Hashable, Sendable, CustomStringCo
         ]
         return names[rawValue] ?? String(format: "Response 0x%04X", rawValue)
     }
+    /// The response's meaning in the user's language, for error messages.
+    public var localizedDescription: String {
+        switch rawValue {
+        case 0x2001: return L("OK", comment: "MTP device response")
+        case 0x2002: return L("General error", comment: "MTP device response")
+        case 0x2003: return L("Session not open", comment: "MTP device response")
+        case 0x2004: return L("Invalid transaction ID", comment: "MTP device response")
+        case 0x2005: return L("Operation not supported", comment: "MTP device response")
+        case 0x2006: return L("Parameter not supported", comment: "MTP device response")
+        case 0x2007: return L("Incomplete transfer", comment: "MTP device response")
+        case 0x2008: return L("Invalid storage ID", comment: "MTP device response")
+        case 0x2009: return L("Invalid object handle", comment: "MTP device response")
+        case 0x200A: return L("Device property not supported", comment: "MTP device response")
+        case 0x200B: return L("Invalid object format", comment: "MTP device response")
+        case 0x200C: return L("Storage full", comment: "MTP device response")
+        case 0x200D: return L("Object write-protected", comment: "MTP device response")
+        case 0x200E: return L("Storage is read-only", comment: "MTP device response")
+        case 0x200F: return L("Access denied", comment: "MTP device response")
+        case 0x2010: return L("No thumbnail present", comment: "MTP device response")
+        case 0x2019: return L("Device busy", comment: "MTP device response")
+        case 0x201A: return L("Invalid parent object", comment: "MTP device response")
+        case 0x201D: return L("Invalid parameter", comment: "MTP device response")
+        case 0x201E: return L("Session already open", comment: "MTP device response")
+        case 0x201F: return L("Transaction cancelled", comment: "MTP device response")
+        case 0xA801: return L("Invalid object property code", comment: "MTP device response")
+        case 0xA802: return L("Invalid object property format", comment: "MTP device response")
+        case 0xA809: return L("Object too large", comment: "MTP device response")
+        default: return String(format: "0x%04X", rawValue)
+        }
+    }
 }
 
 /// PTP / MTP event codes.

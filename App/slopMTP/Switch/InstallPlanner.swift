@@ -35,13 +35,13 @@ struct InstallCandidate: Identifiable, Hashable {
 
         var message: String {
             switch self {
-            case .new: return "New"
-            case .upgrade(let from): return "Updates \(TitleVersion.short(from)) → newer"
-            case .alreadyInstalled: return "Already installed"
-            case .notNewer(let installed): return "Installed update is already \(TitleVersion.short(installed))"
-            case .superseded: return "A newer update is also being installed"
-            case .missingBase: return "Base game isn't installed"
-            case .unidentified: return "Couldn't identify title"
+            case .new: return String(localized: "New", comment: "Install status: not on the console yet")
+            case .upgrade(let from): return String(localized: "Updates \(TitleVersion.short(from)) → newer", comment: "Install status. The placeholder is the installed update version, e.g. v3.")
+            case .alreadyInstalled: return String(localized: "Already installed", comment: "Install status")
+            case .notNewer(let installed): return String(localized: "Installed update is already \(TitleVersion.short(installed))", comment: "Install status. The placeholder is a version, e.g. v3.")
+            case .superseded: return String(localized: "A newer update is also being installed", comment: "Install status")
+            case .missingBase: return String(localized: "Base game isn't installed", comment: "Install warning for an update or DLC")
+            case .unidentified: return String(localized: "Couldn't identify title", comment: "Install warning when the game can't be identified")
             }
         }
     }

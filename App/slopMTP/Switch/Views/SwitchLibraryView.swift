@@ -31,10 +31,10 @@ struct SwitchLibraryView: View {
 
         var label: String {
             switch self {
-            case .nameAscending: return "Name (A–Z)"
-            case .nameDescending: return "Name (Z–A)"
-            case .sizeDescending: return "Size (Largest First)"
-            case .sizeAscending: return "Size (Smallest First)"
+            case .nameAscending: return String(localized: "Name (A–Z)", comment: "Sort order")
+            case .nameDescending: return String(localized: "Name (Z–A)", comment: "Sort order")
+            case .sizeDescending: return String(localized: "Size (Largest First)", comment: "Sort order")
+            case .sizeAscending: return String(localized: "Size (Smallest First)", comment: "Sort order")
             }
         }
     }
@@ -296,7 +296,7 @@ struct SwitchLibraryView: View {
                     Text(displayName(game))
                         .lineLimit(1)
                     if !game.hasBase, game.contentsLoaded || game.summary != nil {
-                        Badge(text: "No base", color: .orange)
+                        Badge(text: String(localized: "No base", comment: "Badge: an update or DLC is installed without its base game"), color: .orange)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -495,7 +495,9 @@ struct SwitchLibraryView: View {
 
     private var uninstallTitle: String {
         let games = connection.pendingUninstall
-        return games.count == 1 ? "Uninstall “\(displayName(games[0]))”?" : "Uninstall \(games.count) games?"
+        return games.count == 1
+            ? String(localized: "Uninstall “\(displayName(games[0]))”?", comment: "Confirmation title. The placeholder is a game name.")
+            : String(localized: "Uninstall \(games.count) games?", comment: "Confirmation title")
     }
 
     private var uninstallBinding: Binding<Bool> {
@@ -556,13 +558,13 @@ struct GameCard: View {
                 .foregroundStyle(isSelected ? Color.accentColor : .primary)
             HStack(spacing: 4) {
                 if !game.hasBase, game.contentsLoaded || game.summary != nil {
-                    Badge(text: "No base", color: .orange)
+                    Badge(text: String(localized: "No base", comment: "Badge: an update or DLC is installed without its base game"), color: .orange)
                 }
                 if let version = game.updateVersion {
                     Badge(text: TitleVersion.short(version), color: .blue)
                 }
                 if game.dlcCount > 0 {
-                    Badge(text: "\(game.dlcCount) DLC", color: .purple)
+                    Badge(text: String(localized: "\(game.dlcCount) DLC", comment: "Number of installed DLC, e.g. “3 DLC”"), color: .purple)
                 }
             }
             if game.totalSize > 0 {

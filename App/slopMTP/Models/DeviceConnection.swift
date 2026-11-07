@@ -302,8 +302,8 @@ final class DeviceConnection {
 
     func chooseFilesToInstall() {
         let panel = NSOpenPanel()
-        panel.title = "Install Games, Updates or DLC"
-        panel.prompt = "Review"
+        panel.title = String(localized: "Install Games, Updates or DLC", comment: "Open panel title")
+        panel.prompt = String(localized: "Review", comment: "Open panel button that continues to the install review")
         panel.canChooseFiles = true
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = true
@@ -315,7 +315,10 @@ final class DeviceConnection {
     func prepareInstall(_ urls: [URL]) {
         let plan = InstallPlanner.plan(urls, library: library)
         if plan.isEmpty {
-            onError?("Nothing to install", MTPError.localFile("No NSP, NSZ, XCI or XCZ files were found in the dropped items."))
+            onError?(
+                String(localized: "Nothing to install", comment: "Alert title when dropped items contain no game files"),
+                MTPError.localFile(String(localized: "No NSP, NSZ, XCI or XCZ files were found in the dropped items.", comment: "Alert message"))
+            )
         } else {
             pendingInstall = plan
         }
@@ -340,7 +343,9 @@ final class DeviceConnection {
     /// Backs up each game into its own folder, optionally with its save data.
     func backUp(_ games: [InstalledGame], displayName: (InstalledGame) -> String) {
         guard !games.isEmpty else { return }
-        let title = games.count == 1 ? "Back Up “\(displayName(games[0]))”" : "Back Up \(games.count) Games"
+        let title: String.LocalizationValue = games.count == 1
+            ? "Back Up “\(displayName(games[0]))”"
+            : "Back Up \(games.count) Games"
         guard let (directory, includeSaves) = chooseBackupFolder(title: title, offerSaves: dbiLayout?.saves != nil) else { return }
 
         var destinations: [(game: InstalledGame, names: [String], folder: URL)] = []
@@ -382,7 +387,7 @@ final class DeviceConnection {
               let (directory, _) = chooseBackupFolder(title: "Back Up All Saves", offerSaves: false)
         else { return }
         let stamp = Date().formatted(.iso8601.year().month().day().dateSeparator(.dash))
-        let folder = Self.uniqueURL(in: directory, name: "Switch Saves \(stamp)")
+        let folder = Self.uniqueURL(in: directory, name: String(localized: "Switch Saves \(stamp)", comment: "Backup folder name. The placeholder is a date."))
         Task {
             do {
                 try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
@@ -405,10 +410,10 @@ final class DeviceConnection {
         return folders
     }
 
-    private func chooseBackupFolder(title: String, offerSaves: Bool) -> (URL, Bool)? {
+    private func chooseBackupFolder(title: String.LocalizationValue, offerSaves: Bool) -> (URL, Bool)? {
         let panel = NSOpenPanel()
-        panel.title = title
-        panel.prompt = "Back Up Here"
+        panel.title = String(localized: title)
+        panel.prompt = String(localized: "Back Up Here", comment: "Open panel button that starts a backup into the chosen folder")
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.canCreateDirectories = true
@@ -416,7 +421,7 @@ final class DeviceConnection {
 
         var checkbox: NSButton?
         if offerSaves {
-            let box = NSButton(checkboxWithTitle: "Include save data", target: nil, action: nil)
+            let box = NSButton(checkboxWithTitle: String(localized: "Include save data", comment: "Checkbox in the backup folder picker"), target: nil, action: nil)
             box.state = (UserDefaults.standard.object(forKey: "backupIncludesSaves") as? Bool ?? true) ? .on : .off
             panel.accessoryView = box
             panel.isAccessoryViewDisclosed = true
@@ -430,7 +435,7 @@ final class DeviceConnection {
 
     private static func sanitize(_ name: String) -> String {
         let cleaned = name.replacingOccurrences(of: "/", with: "-").replacingOccurrences(of: ":", with: " -")
-        return cleaned.isEmpty ? "Untitled" : cleaned
+        return cleaned.isEmpty ? String(localized: "Untitled", comment: "Fallback name for a file or folder without a name") : cleaned
     }
 
     private static func uniqueURL(in directory: URL, name: String) -> URL {
@@ -467,7 +472,7 @@ final class DeviceConnection {
               let (directory, _) = chooseBackupFolder(title: "Save Album", offerSaves: false)
         else { return }
         let stamp = Date().formatted(.iso8601.year().month().day().dateSeparator(.dash))
-        let folder = Self.uniqueURL(in: directory, name: "Switch Album \(stamp)")
+        let folder = Self.uniqueURL(in: directory, name: String(localized: "Switch Album \(stamp)", comment: "Album backup folder name. The placeholder is a date."))
         Task {
             do {
                 try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
@@ -547,8 +552,9 @@ final class DeviceConnection {
     func chooseFilesToUpload() {
         guard canModify else { return }
         let panel = NSOpenPanel()
-        panel.title = "Upload to \(path.last?.name ?? selectedStorage?.info.displayName ?? "device")"
-        panel.prompt = "Upload"
+        let destination = path.last?.name ?? selectedStorage?.info.displayName ?? String(localized: "device", comment: "Generic name for the connected device")
+        panel.title = String(localized: "Upload to \(destination)", comment: "Open panel title. The placeholder is a folder or storage name.")
+        panel.prompt = String(localized: "Upload", comment: "Open panel button")
         panel.canChooseFiles = true
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = true
@@ -567,8 +573,10 @@ final class DeviceConnection {
     func chooseDownloadDestination(for objects: [MTPObject]) {
         guard !objects.isEmpty else { return }
         let panel = NSOpenPanel()
-        panel.title = "Download \(objects.count == 1 ? "“\(objects[0].name)”" : "\(objects.count) items")"
-        panel.prompt = "Download Here"
+        panel.title = objects.count == 1
+            ? String(localized: "Download “\(objects[0].name)”", comment: "Open panel title. The placeholder is a file name.")
+            : String(localized: "Download \(objects.count) items", comment: "Open panel title")
+        panel.prompt = String(localized: "Download Here", comment: "Open panel button")
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.canCreateDirectories = true
@@ -641,10 +649,10 @@ final class DeviceConnection {
         let isInstall = [dbiLayout?.sdInstall?.id, dbiLayout?.nandInstall?.id].contains(transfer.storageID)
         if isInstall, case .failed = transfer.state, SwitchFileInfo(fileName: transfer.name).isCompressed {
             // DBI rejects NCZ content at the end of the transfer with a generic error when it runs as an applet.
-            transfer.state = .failed("DBI couldn't install this compressed file. \(SwitchFileInfo.titleModeHint)")
+            transfer.state = .failed(String(localized: "DBI couldn't install this compressed file. \(SwitchFileInfo.titleModeHint)", comment: "Install error. The placeholder is the title mode explanation."))
         }
         if case .failed(let message) = transfer.state {
-            onError?("Transfer of “\(transfer.name)” failed", MTPError.localFile(message))
+            onError?(String(localized: "Transfer of “\(transfer.name)” failed", comment: "Alert title. The placeholder is a file name."), MTPError.localFile(message))
         }
         guard transfer.direction == .upload else { return }
         if let candidate = installCandidates.removeValue(forKey: transfer.id), transfer.state == .completed {
@@ -698,9 +706,9 @@ final class DeviceConnection {
         finderDrag.begin(promises)
     }
 
-    private func report(_ title: String, _ error: Error) {
+    private func report(_ title: String.LocalizationValue, _ error: Error) {
         if case MTPError.disconnected = error { isDisconnected = true }
-        onError?(title, error)
+        onError?(String(localized: title), error)
     }
 }
 

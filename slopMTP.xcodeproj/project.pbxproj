@@ -12,6 +12,7 @@
 		1B0D96E2C44DB5922BDACD56 /* DeviceConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD457B84A246AF43A727AD3 /* DeviceConnection.swift */; };
 		235EEFF89C4EB5BC000FBDF8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAEC75B3304369B011B5393 /* SettingsView.swift */; };
 		27BB3E7919DB6322971F7A35 /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C2C274CA6F485888080047 /* BrowserView.swift */; };
+		3428A3B21D688205498E1F55 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 37E946C9777B9BC11AB25BE6 /* Localizable.xcstrings */; };
 		37654EB442883FC2FF6CB51D /* SlopMTPApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB624726C056EBA3C2EE56D6 /* SlopMTPApp.swift */; };
 		3CD1F5F9F3BEB2D3AAF8CF96 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 89EBC8FB03901F13ED122BE6 /* AppIcon.icon */; };
 		4C5BFC4C5EC19D47F17CC7C7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D6D26AAB7FD3A77D43F7EB1 /* ContentView.swift */; };
@@ -40,6 +41,7 @@
 		1C47ABAB5F5618DD231DC92B /* CoverArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverArtView.swift; sourceTree = "<group>"; };
 		1EAEC75B3304369B011B5393 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		37AD3016245B6CA988619590 /* TransfersPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransfersPanel.swift; sourceTree = "<group>"; };
+		37E946C9777B9BC11AB25BE6 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		3FE5A8603C1A81262ABF472D /* slopMTP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = slopMTP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44A6389740FACB092470CE4C /* TitleDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleDatabase.swift; sourceTree = "<group>"; };
 		515BCBF8BF45DCE3BAB0975F /* TransferQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferQueue.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				89EBC8FB03901F13ED122BE6 /* AppIcon.icon */,
+				37E946C9777B9BC11AB25BE6 /* Localizable.xcstrings */,
 				CB624726C056EBA3C2EE56D6 /* SlopMTPApp.swift */,
 				5352B8FD44B1E8222428DAA3 /* Models */,
 				792E3C46C37279B6FB50D3C9 /* Switch */,
@@ -233,6 +236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CD1F5F9F3BEB2D3AAF8CF96 /* AppIcon.icon in Resources */,
+				3428A3B21D688205498E1F55 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,6 +378,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -382,6 +387,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 			};
@@ -433,6 +439,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -440,6 +447,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 6.0;
 			};

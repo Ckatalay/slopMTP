@@ -146,7 +146,7 @@ final class TransferQueue {
                     if let url = transfer.resultURL {
                         continuation.resume(returning: url)
                     } else {
-                        continuation.resume(throwing: MTPError.localFile("The download produced no file."))
+                        continuation.resume(throwing: MTPError.localFile(String(localized: "The download produced no file.", comment: "Error when a finished download has no file")))
                     }
                 case .failed(let message):
                     continuation.resume(throwing: MTPError.localFile(message))
@@ -297,7 +297,7 @@ final class TransferQueue {
 
     private static func sanitize(_ name: String) -> String {
         let cleaned = name.replacingOccurrences(of: "/", with: "-").replacingOccurrences(of: ":", with: "-")
-        return cleaned.isEmpty ? "Untitled" : cleaned
+        return cleaned.isEmpty ? String(localized: "Untitled", comment: "Fallback name for a file or folder without a name") : cleaned
     }
 
     private static func uniqueURL(in directory: URL, name: String) -> URL {

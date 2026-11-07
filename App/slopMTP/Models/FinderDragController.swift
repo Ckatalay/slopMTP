@@ -54,7 +54,7 @@ final class FinderDragController: NSObject, NSDraggingSource, NSFilePromiseProvi
     // MARK: NSFilePromiseProviderDelegate
 
     nonisolated func filePromiseProvider(_ filePromiseProvider: NSFilePromiseProvider, fileNameForType fileType: String) -> String {
-        (filePromiseProvider.userInfo as? PromiseBox)?.promise.fileName ?? "Untitled"
+        (filePromiseProvider.userInfo as? PromiseBox)?.promise.fileName ?? String(localized: "Untitled", comment: "Fallback name for a file or folder without a name")
     }
 
     nonisolated func filePromiseProvider(

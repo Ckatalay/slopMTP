@@ -15,9 +15,9 @@ struct TitleID: Hashable, Comparable, Sendable, CustomStringConvertible {
 
         var label: String {
             switch self {
-            case .application: return "Base Game"
-            case .update: return "Update"
-            case .addOn: return "DLC"
+            case .application: return String(localized: "Base Game", comment: "Kind of Switch content: the game itself")
+            case .update: return String(localized: "Update", comment: "Kind of Switch content: a game update (patch)")
+            case .addOn: return String(localized: "DLC", comment: "Kind of Switch content: downloadable content (add-on)")
             }
         }
     }

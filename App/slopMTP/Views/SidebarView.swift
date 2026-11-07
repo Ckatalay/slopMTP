@@ -27,7 +27,7 @@ struct SidebarView: View {
                         }
                     }
                 }
-                Section(connection.dbiLayout != nil ? "Storage" : connection.displayName) {
+                Section(connection.dbiLayout != nil ? String(localized: "Storage", comment: "Sidebar section listing the device's storages") : connection.displayName) {
                     ForEach(connection.storages) { storage in
                         StorageRow(storage: storage)
                             .tag(DeviceConnection.SidebarItem.storage(storage.id))

@@ -25,7 +25,9 @@ struct SwitchFileInfo: Hashable, Sendable {
     /// NSZ / XCZ must be decompressed on the console, which DBI only does in title mode.
     var isCompressed: Bool { fileExtension == "nsz" || fileExtension == "xcz" }
 
-    static let titleModeHint = "Compressed games (NSZ/XCZ) need DBI running in title mode: hold R while launching any game to start DBI, instead of opening it from the Album. In applet mode the console doesn't have enough memory to decompress them."
+    static var titleModeHint: String {
+        String(localized: "Compressed games (NSZ/XCZ) need DBI running in title mode: hold R while launching any game to start DBI, instead of opening it from the Album. In applet mode the console doesn't have enough memory to decompress them.", comment: "Explains DBI's title mode. DBI, NSZ, XCZ and R (a button) are not translated.")
+    }
 
     init(fileName: String) {
         let ns = fileName as NSString

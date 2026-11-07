@@ -15,6 +15,7 @@
 		65D70A83D24405E500ECB341 /* SwitchLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77627099D2EB1C378A3F16 /* SwitchLibrary.swift */; };
 		8A115C575A343CD1E59E9C6B /* TransfersPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D00E0A1605B07A14BAF66A2 /* TransfersPanel.swift */; };
 		8A39DA4F49AEF3CE0F9E7745 /* SwitchFileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D701EF44DF5C5893ADD97F6D /* SwitchFileInfo.swift */; };
+		8C8A773294FFD0B9BCCE2C33 /* Glass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D7855F0FDE24640CFC12CC /* Glass.swift */; };
 		961F20F9C79E2D95A3D9F235 /* InstallViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AE02C6404BEBF10E80BD53 /* InstallViews.swift */; };
 		9F03141C5FD633D758C6FAC3 /* TransferQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B8BAAFAF9E35696A28826E /* TransferQueue.swift */; };
 		BA070CD91DE270D4088AB10D /* SwitchLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F4F7C854DD7B85375825DA /* SwitchLibraryView.swift */; };
@@ -46,6 +47,7 @@
 		92A4054CDDE4C7614FD23780 /* CoverArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverArtView.swift; sourceTree = "<group>"; };
 		9D00E0A1605B07A14BAF66A2 /* TransfersPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransfersPanel.swift; sourceTree = "<group>"; };
 		A696E1950C15E1196F6F9E88 /* DeviceConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceConnection.swift; sourceTree = "<group>"; };
+		C9D7855F0FDE24640CFC12CC /* Glass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glass.swift; sourceTree = "<group>"; };
 		D701EF44DF5C5893ADD97F6D /* SwitchFileInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchFileInfo.swift; sourceTree = "<group>"; };
 		F91BD04A2E000414E911DF9B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FB15D2D2E79C40150FBC0E15 /* TitleDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleDatabase.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				29D157655520948EA499BE15 /* BrowserView.swift */,
 				F91BD04A2E000414E911DF9B /* ContentView.swift */,
 				3F0933B207250738E967A982 /* Format.swift */,
+				C9D7855F0FDE24640CFC12CC /* Glass.swift */,
 				8E7D2E224603DCA641FBD583 /* SettingsView.swift */,
 				3F7F0ECFF8E070F3B69E5EF4 /* SidebarView.swift */,
 				9D00E0A1605B07A14BAF66A2 /* TransfersPanel.swift */,
@@ -222,6 +225,7 @@
 				0428E6844AB73BA56B5DDA8E /* CoverArtView.swift in Sources */,
 				EA3E1056B54FF0E46DE9A903 /* DeviceConnection.swift in Sources */,
 				3F08F5B2B38A2A8EFCD6C16A /* Format.swift in Sources */,
+				8C8A773294FFD0B9BCCE2C33 /* Glass.swift in Sources */,
 				C7E68D6B93BF8901E657341B /* InstallPlanner.swift in Sources */,
 				961F20F9C79E2D95A3D9F235 /* InstallViews.swift in Sources */,
 				FF654E547D339F4A9AEAA3C5 /* SettingsView.swift in Sources */,

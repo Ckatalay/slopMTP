@@ -46,7 +46,8 @@ struct SwitchLibraryView: View {
             }
             .padding(24)
         }
-        .background(.background)
+        .softTopEdge()
+        .background { AmbientBackground(colors: [.red, .indigo, .teal]) }
         .dropDestination(for: URL.self) { urls, _ in
             let files = urls.filter(\.isFileURL)
             guard !files.isEmpty else { return false }
@@ -112,9 +113,11 @@ struct SwitchLibraryView: View {
                 .foregroundStyle(.secondary)
             }
             Spacer()
-            HStack(spacing: 12) {
-                if let sd = layout.sdInstall { CapacityPill(title: "SD Card", storage: sd) }
-                if let nand = layout.nandInstall { CapacityPill(title: "System Memory", storage: nand) }
+            GlassGroup {
+                HStack(spacing: 12) {
+                    if let sd = layout.sdInstall { CapacityPill(title: "SD Card", storage: sd) }
+                    if let nand = layout.nandInstall { CapacityPill(title: "System Memory", storage: nand) }
+                }
             }
         }
     }
@@ -190,8 +193,8 @@ private struct CapacityPill: View {
                 .monospacedDigit()
         }
         .frame(width: 150)
-        .padding(12)
-        .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .padding(14)
+        .glassPanel(cornerRadius: 18)
         .accessibilityElement(children: .combine)
     }
 }
@@ -217,17 +220,17 @@ private struct DropZone: View {
             Spacer()
             Button("Choose Files…", action: choose)
                 .controlSize(.large)
+                .glassButtonStyle(prominent: true)
         }
-        .padding(20)
-        .background {
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(isTargeted ? Color.accentColor.opacity(0.12) : Color.secondary.opacity(0.06))
-        }
+        .padding(22)
+        .glassPanel(cornerRadius: 24, tint: isTargeted ? .accentColor.opacity(0.35) : nil, interactive: true)
         .overlay {
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .strokeBorder(style: StrokeStyle(lineWidth: 2, dash: [8, 6]))
-                .foregroundStyle(isTargeted ? Color.accentColor : Color.secondary.opacity(0.4))
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .strokeBorder(style: StrokeStyle(lineWidth: 1.5, dash: [8, 6]))
+                .foregroundStyle(isTargeted ? Color.accentColor : Color.white.opacity(0.18))
+                .padding(6)
         }
+        .scaleEffect(isTargeted ? 1.01 : 1)
         .animation(.easeOut(duration: 0.15), value: isTargeted)
     }
 }
@@ -277,9 +280,9 @@ struct Badge: View {
     var body: some View {
         Text(text)
             .font(.caption2.weight(.semibold))
-            .padding(.horizontal, 6)
-            .padding(.vertical, 2)
-            .background(color.opacity(0.18), in: Capsule())
+            .padding(.horizontal, 7)
+            .padding(.vertical, 3)
             .foregroundStyle(color)
+            .glassCapsule(tint: color.opacity(0.25))
     }
 }

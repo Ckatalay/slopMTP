@@ -27,7 +27,7 @@ struct TransfersPanel: View {
             }
             .frame(maxHeight: 170)
         }
-        .background(.bar)
+        .glassPanel(cornerRadius: 20)
     }
 }
 

@@ -164,7 +164,7 @@ struct InstallActivityView: View {
                         if transfer.id != installs.last?.id { Divider() }
                     }
                 }
-                .background(.quaternary.opacity(0.4), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .glassPanel(cornerRadius: 20)
             }
         }
     }

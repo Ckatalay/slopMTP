@@ -16,15 +16,17 @@ struct BrowserView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            PathBar(connection: connection)
-            Divider()
-            fileTable
-            if !connection.transfers.transfers.isEmpty {
-                Divider()
-                TransfersPanel(queue: connection.transfers)
+        fileTable
+            .softVerticalEdges()
+            .edgeBar(.top) {
+                PathBar(connection: connection)
             }
-        }
+            .edgeBar(.bottom) {
+                if !connection.transfers.transfers.isEmpty {
+                    TransfersPanel(queue: connection.transfers)
+                        .padding(10)
+                }
+            }
         .navigationTitle(connection.path.last?.name ?? connection.selectedStorage?.info.displayName ?? connection.displayName)
         .navigationSubtitle(connection.displayName)
         .toolbar { toolbar }
@@ -258,10 +260,13 @@ private struct PathBar: View {
                     crumb(entry.name, systemImage: "folder", entry: entry)
                 }
             }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
         }
-        .background(.bar)
+        .glassPanel(cornerRadius: 20)
+        .fixedSize(horizontal: false, vertical: true)
+        .padding(.horizontal, 10)
+        .padding(.top, 6)
     }
 
     private func crumb(_ title: String, systemImage: String, entry: DeviceConnection.PathEntry?) -> some View {

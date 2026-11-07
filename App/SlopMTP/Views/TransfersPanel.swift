@@ -17,17 +17,28 @@ struct TransfersPanel: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 6)
 
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(queue.transfers.reversed()) { transfer in
-                        TransferRow(transfer: transfer) { queue.cancel(transfer) }
-                        Divider()
-                    }
+            // Hug the rows; only scroll once there are more than a few.
+            if queue.transfers.count > 3 {
+                ScrollView { rows }
+                    .frame(height: 190)
+            } else {
+                rows
+            }
+        }
+        .padding(.bottom, 4)
+        .glassPanel(cornerRadius: 20)
+    }
+
+    private var rows: some View {
+        let transfers = Array(queue.transfers.reversed())
+        return VStack(spacing: 0) {
+            ForEach(transfers) { transfer in
+                TransferRow(transfer: transfer) { queue.cancel(transfer) }
+                if transfer.id != transfers.last?.id {
+                    Divider().padding(.horizontal, 12)
                 }
             }
-            .frame(maxHeight: 170)
         }
-        .glassPanel(cornerRadius: 20)
     }
 }
 

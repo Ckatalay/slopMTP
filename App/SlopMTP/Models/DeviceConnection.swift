@@ -345,11 +345,15 @@ final class DeviceConnection {
     }
 
     private func transferFinished(_ transfer: Transfer) {
+        let isInstall = [dbiLayout?.sdInstall?.id, dbiLayout?.nandInstall?.id].contains(transfer.storageID)
+        if isInstall, case .failed = transfer.state, SwitchFileInfo(fileName: transfer.name).isCompressed {
+            // DBI rejects NCZ content at the end of the transfer with a generic error when it runs as an applet.
+            transfer.state = .failed("DBI couldn't install this compressed file. \(SwitchFileInfo.titleModeHint)")
+        }
         if case .failed(let message) = transfer.state {
             onError?("Transfer of “\(transfer.name)” failed", MTPError.localFile(message))
         }
         guard transfer.direction == .upload else { return }
-        let isInstall = [dbiLayout?.sdInstall?.id, dbiLayout?.nandInstall?.id].contains(transfer.storageID)
         Task {
             if transfer.parent == currentParent, transfer.storageID == selectedStorageID {
                 await reload()

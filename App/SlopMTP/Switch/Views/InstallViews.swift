@@ -23,6 +23,19 @@ struct InstallReviewSheet: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(20)
 
+            if selected.contains(where: { $0.info.isCompressed }) {
+                Label {
+                    Text(SwitchFileInfo.titleModeHint)
+                        .fixedSize(horizontal: false, vertical: true)
+                } icon: {
+                    Image(systemName: "info.circle.fill").foregroundStyle(.blue)
+                }
+                .font(.callout)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 12)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
             Divider()
 
             List {

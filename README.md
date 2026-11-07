@@ -17,9 +17,17 @@ A native macOS MTP client, written in Swift and SwiftUI, for browsing and transf
 
 ## Requirements
 
-- macOS 14 Sonoma or later
+- macOS 14 Sonoma or later, Apple silicon or Intel
 - Xcode 16 or later to build
 - A Switch running an MTP responder: DBI ("Run MTP responder") or Sphaira (MTP enabled in settings)
+
+## Install
+
+```sh
+brew install --cask ckatalay/tap/slopmtp
+```
+
+Or download the notarized app from [Releases](https://github.com/Ckatalay/slopMTP/releases).
 
 ## Building
 

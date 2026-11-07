@@ -24,12 +24,23 @@ xcodebuild -project SlopMTP.xcodeproj -scheme SlopMTP -configuration Release \
 
 echo "==> Verifying signature"
 codesign --verify --deep --strict --verbose=2 "$APP"
-codesign -dv "$APP" 2>&1 | grep -E "Authority=Developer ID Application|flags="
+codesign -dvv "$APP" 2>&1 | grep -E "Authority=Developer ID Application|flags="
+if codesign -d --entitlements - "$APP" 2>/dev/null | grep -q get-task-allow; then
+  echo "The app still has the get-task-allow entitlement; notarization would fail."
+  exit 1
+fi
 
 echo "==> Notarizing"
 ditto -c -k --sequesterRsrc --keepParent "$APP" "$DIST/notarize.zip"
-xcrun notarytool submit "$DIST/notarize.zip" --keychain-profile slopmtp-notary --wait
+RESULT=$(xcrun notarytool submit "$DIST/notarize.zip" --keychain-profile slopmtp-notary --wait --output-format json)
 rm "$DIST/notarize.zip"
+STATUS=$(echo "$RESULT" | python3 -c 'import json,sys; print(json.load(sys.stdin)["status"])')
+SUBMISSION=$(echo "$RESULT" | python3 -c 'import json,sys; print(json.load(sys.stdin)["id"])')
+echo "Notarization: $STATUS ($SUBMISSION)"
+if [[ "$STATUS" != "Accepted" ]]; then
+  xcrun notarytool log "$SUBMISSION" --keychain-profile slopmtp-notary
+  exit 1
+fi
 
 echo "==> Stapling"
 xcrun stapler staple "$APP"

@@ -12,7 +12,10 @@ struct SwitchLibraryView: View {
     @State private var detailGame: InstalledGame?
     @State private var selection: Set<String> = []
     @State private var selectionAnchor: String?
-    @State private var cardFrames: [String: CGRect] = [:]
+    /// Card frames for rubber-band hit testing. Kept outside SwiftUI state: they change on every
+    /// frame of a resize (e.g. the sidebar animating), and re-rendering for each would stutter.
+    @State private var cardFrames = FrameStore()
+    @State private var columnCount = 0
     @State private var marquee: CGRect?
     @State private var marqueeBase: Set<String> = []
     @State private var marqueeStart: CGPoint = .zero
@@ -373,7 +376,7 @@ struct SwitchLibraryView: View {
             ForEach(visibleGames) { game in
                 GameCard(game: game, displayName: displayName(game), isSelected: selection.contains(game.id))
                     .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(Self.gridSpace)) } action: { frame in
-                        cardFrames[game.id] = frame
+                        cardFrames.frames[game.id] = frame
                     }
                     .simultaneousGesture(TapGesture().onEnded { click(game) })
                     // Dragging a cover hands it to Finder as a file promise; dragging a selected
@@ -385,6 +388,13 @@ struct SwitchLibraryView: View {
                     .contextMenu { contextMenu(for: game) }
             }
         }
+        // Reflow smoothly when the column count changes instead of jumping mid-resize.
+        .onGeometryChange(for: Int.self) { proxy in
+            max(1, Int((proxy.size.width + 20) / (150 + 20)))
+        } action: { count in
+            columnCount = count
+        }
+        .animation(.smooth(duration: 0.3), value: columnCount)
     }
 
     /// Finder-style rubber-band selection; ⌘ or ⇧ extends the existing selection.
@@ -422,7 +432,7 @@ struct SwitchLibraryView: View {
         )
         marquee = rect
         let visibleIDs = Set(visibleGames.map(\.id))
-        let hit = cardFrames.filter { visibleIDs.contains($0.key) && $0.value.intersects(rect) }.keys
+        let hit = cardFrames.frames.filter { visibleIDs.contains($0.key) && $0.value.intersects(rect) }.keys
         selection = marqueeBase.union(hit)
     }
 
@@ -644,4 +654,9 @@ final class EdgeAutoscroller {
         scrollView.reflectScrolledClipView(clip)
         onScroll?(clip.isFlipped ? newY - oldY : oldY - newY)
     }
+}
+
+/// A plain reference holder whose changes don't invalidate views.
+final class FrameStore {
+    var frames: [String: CGRect] = [:]
 }

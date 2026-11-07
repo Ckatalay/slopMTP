@@ -24,13 +24,13 @@ A native macOS MTP client, written in Swift and SwiftUI, for browsing and transf
 ## Building
 
 ```sh
-open slopMTP.xcodeproj        # then Run (⌘R)
+open SlopMTP.xcodeproj        # then Run (⌘R)
 ```
 
 or from the command line:
 
 ```sh
-xcodebuild -project slopMTP.xcodeproj -scheme slopMTP -configuration Release build
+xcodebuild -project SlopMTP.xcodeproj -scheme SlopMTP -configuration Release build
 ```
 
 The Xcode project is generated with [XcodeGen](https://github.com/yonaskolb/XcodeGen) from `project.yml`. After adding or removing files run `xcodegen generate`.
@@ -63,7 +63,7 @@ swift run mtp-probe --download <handle> <local path>
 ## Architecture
 
 ```
-App/slopMTP/              SwiftUI app (models + views)
+App/SlopMTP/              SwiftUI app (models + views)
 Packages/MTPKit/          Reusable protocol library
   PTP/                    Codes, container framing, dataset encoding/decoding
   Transport/              MTPTransport protocol, IOUSBHost USB transport, device watcher

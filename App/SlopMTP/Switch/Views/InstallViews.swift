@@ -136,21 +136,25 @@ private struct CandidateRow: View {
     }
 }
 
-/// Installs in progress or recently finished, shown above the library grid.
+/// Installs and copies to the Mac (backups, drags to Finder), shown above the library grid.
 struct InstallActivityView: View {
     let connection: DeviceConnection
     let layout: DBILayout
 
-    private var installs: [Transfer] {
-        let installStorages = Set([layout.sdInstall?.id, layout.nandInstall?.id].compactMap { $0 })
-        return connection.transfers.transfers.filter { $0.direction == .upload && installStorages.contains($0.storageID) }
+    private var installs: [Transfer] { connection.transfers.transfers }
+
+    private var title: String {
+        let directions = Set(installs.map(\.direction))
+        if directions == [.upload] { return "Installing" }
+        if directions == [.download] { return "Copying to Mac" }
+        return "Transfers"
     }
 
     var body: some View {
         if !installs.isEmpty {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Text("Installing")
+                    Text(title)
                         .font(.title2.bold())
                     Spacer()
                     if connection.transfers.hasFinishedTransfers {
@@ -200,7 +204,7 @@ private struct InstallRow: View {
                 case .queued:
                     Text("Waiting…").font(.caption).foregroundStyle(.secondary)
                 case .completed:
-                    Label("Installed", systemImage: "checkmark.circle.fill")
+                    Label(transfer.direction == .download ? "Copied to Mac" : "Installed", systemImage: "checkmark.circle.fill")
                         .font(.caption)
                         .foregroundStyle(.green)
                 case .failed(let message):
@@ -238,7 +242,7 @@ private struct InstallRow: View {
     }
 
     private var progressText: String {
-        var parts = ["\(Format.bytes(transfer.completedBytes)) of \(Format.bytes(transfer.totalBytes))"]
+        var parts = ["\(transfer.direction == .download ? "Copying to Mac" : "Installing") · \(Format.bytes(transfer.completedBytes)) of \(Format.bytes(transfer.totalBytes))"]
         if let speed = transfer.bytesPerSecond, speed > 0 {
             parts.append("\(Format.bytes(UInt64(speed)))/s")
             let remaining = Double(transfer.totalBytes - min(transfer.completedBytes, transfer.totalBytes)) / speed

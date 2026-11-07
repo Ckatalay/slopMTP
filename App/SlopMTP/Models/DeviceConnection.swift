@@ -575,10 +575,11 @@ final class DeviceConnection {
         let promises = objects.map { object in
             FinderDragController.Promise(
                 fileName: Self.sanitize(object.name),
-                type: object.isFolder ? .folder : UTType(filenameExtension: (object.name as NSString).pathExtension) ?? .data
-            ) { @MainActor [weak self] url in
+                type: object.isFolder ? .folder : UTType(filenameExtension: (object.name as NSString).pathExtension) ?? .data,
+                totalBytes: object.size
+            ) { @MainActor [weak self] url, progress in
                 guard let self else { throw MTPError.disconnected }
-                _ = try await self.transfers.downloadAndWait(object, to: url.deletingLastPathComponent(), exactURL: url)
+                _ = try await self.transfers.downloadAndWait(object, to: url.deletingLastPathComponent(), exactURL: url, progress: progress)
             }
         }
         finderDrag.begin(promises)
@@ -589,11 +590,14 @@ final class DeviceConnection {
         let promises = games.map { game in
             let real = game.contents.map(\.object).filter { $0.storageID != 0 }
             let objects = real.isEmpty ? [game.mergedDump].compactMap { $0 } : real
-            return FinderDragController.Promise(fileName: Self.sanitize(displayName(game)), type: .folder) { @MainActor [weak self] url in
+            let total = objects.reduce(UInt64(0)) { $0 + $1.size }
+            return FinderDragController.Promise(fileName: Self.sanitize(displayName(game)), type: .folder, totalBytes: total) { @MainActor [weak self] url, progress in
                 guard let self else { throw MTPError.disconnected }
                 try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
                 for object in objects {
-                    _ = try await self.transfers.downloadAndWait(object, to: url)
+                    let step = Progress(totalUnitCount: Int64(clamping: max(object.size, 1)))
+                    progress.addChild(step, withPendingUnitCount: Int64(clamping: object.size))
+                    _ = try await self.transfers.downloadAndWait(object, to: url, progress: step)
                 }
             }
         }

@@ -8,8 +8,9 @@ final class FinderDragController: NSObject, NSDraggingSource, NSFilePromiseProvi
     struct Promise {
         var fileName: String
         var type: UTType
-        /// Produces the file or folder at the given URL.
-        var write: @MainActor @Sendable (URL) async throws -> Void
+        var totalBytes: UInt64
+        /// Produces the file or folder at the given URL, reporting into the given progress.
+        var write: @MainActor @Sendable (URL, Progress) async throws -> Void
     }
 
     private(set) var isDragging = false
@@ -69,8 +70,15 @@ final class FinderDragController: NSObject, NSDraggingSource, NSFilePromiseProvi
         // background thread just reports back when it's done.
         let reply = ReplyBox(completionHandler)
         Task { @MainActor in
+            // A published file progress makes Finder draw a progress bar on the item, like its own copies.
+            let progress = Progress(totalUnitCount: Int64(clamping: max(box.promise.totalBytes, 1)))
+            progress.kind = .file
+            progress.fileOperationKind = .downloading
+            progress.fileURL = url
+            progress.publish()
+            defer { progress.unpublish() }
             do {
-                try await box.promise.write(url)
+                try await box.promise.write(url, progress)
                 reply.handler(nil)
             } catch {
                 reply.handler(error)

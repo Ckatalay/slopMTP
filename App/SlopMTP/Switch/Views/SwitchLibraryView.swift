@@ -14,6 +14,9 @@ struct SwitchLibraryView: View {
     @State private var cardFrames: [String: CGRect] = [:]
     @State private var marquee: CGRect?
     @State private var marqueeBase: Set<String> = []
+    @State private var marqueeStart: CGPoint = .zero
+    @State private var marqueeCurrent: CGPoint = .zero
+    @State private var autoscroller = EdgeAutoscroller()
     @FocusState private var isGridFocused: Bool
 
     nonisolated private static let gridSpace = "libraryGrid"
@@ -262,22 +265,35 @@ struct SwitchLibraryView: View {
                     isGridFocused = true
                     let modifiers = NSEvent.modifierFlags
                     marqueeBase = modifiers.contains(.command) || modifiers.contains(.shift) ? selection : []
+                    // Scroll when the pointer nears the top or bottom edge; the content moves under a
+                    // still pointer, so shift the rectangle's moving corner by the scrolled amount.
+                    autoscroller.begin { delta in
+                        marqueeCurrent.y += delta
+                        updateMarquee()
+                    }
                 }
-                let rect = CGRect(
-                    x: min(value.startLocation.x, value.location.x),
-                    y: min(value.startLocation.y, value.location.y),
-                    width: abs(value.location.x - value.startLocation.x),
-                    height: abs(value.location.y - value.startLocation.y)
-                )
-                marquee = rect
-                let visibleIDs = Set(visibleGames.map(\.id))
-                let hit = cardFrames.filter { visibleIDs.contains($0.key) && $0.value.intersects(rect) }.keys
-                selection = marqueeBase.union(hit)
+                marqueeStart = value.startLocation
+                marqueeCurrent = value.location
+                updateMarquee()
             }
             .onEnded { _ in
+                autoscroller.end()
                 marquee = nil
                 selectionAnchor = selection.count == 1 ? selection.first : selectionAnchor
             }
+    }
+
+    private func updateMarquee() {
+        let rect = CGRect(
+            x: min(marqueeStart.x, marqueeCurrent.x),
+            y: min(marqueeStart.y, marqueeCurrent.y),
+            width: abs(marqueeCurrent.x - marqueeStart.x),
+            height: abs(marqueeCurrent.y - marqueeStart.y)
+        )
+        marquee = rect
+        let visibleIDs = Set(visibleGames.map(\.id))
+        let hit = cardFrames.filter { visibleIDs.contains($0.key) && $0.value.intersects(rect) }.keys
+        selection = marqueeBase.union(hit)
     }
 
     private func click(_ game: InstalledGame) {
@@ -471,5 +487,67 @@ private struct SelectionBar: View {
         .padding(.vertical, 12)
         .glassPanel(cornerRadius: 22)
         .frame(maxWidth: 560)
+    }
+}
+
+/// Scrolls the scroll view under the pointer while it's held near (or past) its top or bottom edge,
+/// faster the closer it gets. Runs on a timer, so it keeps going while the pointer is still.
+@MainActor
+final class EdgeAutoscroller {
+    private weak var scrollView: NSScrollView?
+    private var timer: Timer?
+    private var onScroll: ((CGFloat) -> Void)?
+
+    private let edgeZone: CGFloat = 48
+    private let maxStep: CGFloat = 24
+
+    func begin(onScroll: @escaping (CGFloat) -> Void) {
+        end()
+        guard let event = NSApp.currentEvent, let window = event.window, let content = window.contentView else { return }
+        var view = content.hitTest(content.convert(event.locationInWindow, from: nil))
+        while let current = view, !(current is NSScrollView) { view = current.superview }
+        guard let scrollView = view as? NSScrollView else { return }
+        self.scrollView = scrollView
+        self.onScroll = onScroll
+        let timer = Timer(timeInterval: 1.0 / 60, repeats: true) { [weak self] _ in
+            MainActor.assumeIsolated { self?.tick() }
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        self.timer = timer
+    }
+
+    func end() {
+        timer?.invalidate()
+        timer = nil
+        scrollView = nil
+        onScroll = nil
+    }
+
+    private func tick() {
+        guard let scrollView, let window = scrollView.window, let document = scrollView.documentView else { return }
+        let clip = scrollView.contentView
+        let pointer = clip.convert(window.mouseLocationOutsideOfEventStream, from: nil)
+        let visible = clip.bounds
+        // Distances to the visible top and bottom in the clip view's own orientation.
+        let fromTop = clip.isFlipped ? pointer.y - visible.minY : visible.maxY - pointer.y
+        let fromBottom = clip.isFlipped ? visible.maxY - pointer.y : pointer.y - visible.minY
+
+        var step: CGFloat = 0
+        if fromTop < edgeZone {
+            step = -maxStep * min(1, (edgeZone - fromTop) / edgeZone)
+        } else if fromBottom < edgeZone {
+            step = maxStep * min(1, (edgeZone - fromBottom) / edgeZone)
+        }
+        guard step != 0 else { return }
+
+        // `step` is in "towards the end of the document" terms; convert to the clip's y axis.
+        let maxOffset = max(0, document.frame.height - visible.height)
+        let oldY = visible.origin.y
+        let wanted = clip.isFlipped ? oldY + step : oldY - step
+        let newY = min(max(wanted, clip.isFlipped ? 0 : document.frame.minY), clip.isFlipped ? maxOffset : document.frame.maxY - visible.height)
+        guard newY != oldY else { return }
+        clip.scroll(to: NSPoint(x: visible.origin.x, y: newY))
+        scrollView.reflectScrolledClipView(clip)
+        onScroll?(clip.isFlipped ? newY - oldY : oldY - newY)
     }
 }

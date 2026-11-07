@@ -81,7 +81,7 @@ struct SwitchLibraryView: View {
                 }
                 .help("Install games, updates or DLC")
                 Button {
-                    Task { await connection.reloadLibrary() }
+                    Task { await connection.reloadLibrary(refreshSession: true) }
                 } label: {
                     Label("Refresh", systemImage: "arrow.clockwise")
                 }

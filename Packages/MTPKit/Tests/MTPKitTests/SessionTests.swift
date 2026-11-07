@@ -39,6 +39,13 @@ import Testing
         #expect(responder.log.suffix(3) == [.openSession, .closeSession, .openSession])
     }
 
+    @Test func reopensSession() async throws {
+        let (session, responder) = try await makeSession()
+        try await session.reopenSession()
+        #expect(responder.log.suffix(2) == [.closeSession, .openSession])
+        #expect(try await session.storageIDs() == [MockResponder.storageID])
+    }
+
     @Test func listsStoragesAndContents() async throws {
         let responder = MockResponder()
         let folder = responder.addNode(name: "Games", isFolder: true)

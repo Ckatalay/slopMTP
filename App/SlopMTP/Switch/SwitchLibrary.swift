@@ -164,5 +164,41 @@ final class SwitchLibrary {
                 games[index].applicationID = contents.compactMap(\.titleID).first?.applicationID
             }
         }
+        guard current == generation else { return }
+        games = Self.mergingDuplicates(games)
+    }
+
+    /// Folds entries with the same application ID into one (e.g. an update installed before
+    /// its base game can be listed under a different folder name).
+    static func mergingDuplicates(_ games: [InstalledGame]) -> [InstalledGame] {
+        var result: [InstalledGame] = []
+        var indexByApp: [TitleID: Int] = [:]
+        for game in games {
+            guard let app = game.applicationID else {
+                result.append(game)
+                continue
+            }
+            guard let existingIndex = indexByApp[app] else {
+                indexByApp[app] = result.count
+                result.append(game)
+                continue
+            }
+            var merged = result[existingIndex]
+            let other = game
+            if other.hasBase && !merged.hasBase {
+                merged.name = other.name
+                merged.folder = other.folder ?? merged.folder
+            }
+            let known = Set(merged.contents.map(\.id))
+            merged.contents += other.contents.filter { !known.contains($0.id) }
+            merged.contents.sort { ($0.kind, $0.object.name) < ($1.kind, $1.object.name) }
+            merged.contentsLoaded = merged.contentsLoaded || other.contentsLoaded
+            if merged.mergedDump == nil || (other.summary?.hasBase == true && merged.summary?.hasBase != true) {
+                merged.mergedDump = other.mergedDump ?? merged.mergedDump
+                merged.summary = other.summary ?? merged.summary
+            }
+            result[existingIndex] = merged
+        }
+        return result
     }
 }

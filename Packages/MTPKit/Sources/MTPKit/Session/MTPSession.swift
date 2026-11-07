@@ -64,6 +64,22 @@ public actor MTPSession {
         return info
     }
 
+    /// Closes and reopens the session. Some responders (DBI) build their object tree when a
+    /// session opens, so this is how to see objects that appeared since, e.g. newly installed games.
+    /// Object handles from before the call must be treated as invalid.
+    public func reopenSession() throws {
+        if sessionID != nil {
+            _ = try? rawTransaction(.closeSession)
+            sessionID = nil
+        }
+        nextTransactionID = 0
+        let response = try rawTransaction(.openSession, [1])
+        guard response.code == .ok || response.code == .sessionAlreadyOpen else {
+            throw MTPError.response(response.code, operation: .openSession)
+        }
+        sessionID = 1
+    }
+
     public func close() {
         if sessionID != nil {
             _ = try? rawTransaction(.closeSession)

@@ -196,9 +196,23 @@ final class DeviceConnection {
 
     // MARK: - Switch library
 
-    func reloadLibrary() async {
+    /// Reloads the installed-games list. DBI only rebuilds its object tree when a session opens,
+    /// so `refreshSession` reopens it first; that invalidates object handles held by the file browser.
+    func reloadLibrary(refreshSession: Bool = false) async {
         guard let layout = dbiLayout, !isDisconnected else { return }
-        await library.reload(session: session, layout: layout)
+        if refreshSession, !transfers.hasActiveTransfers {
+            do {
+                try await session.reopenSession()
+                storages = (try? await session.storages()) ?? storages
+                path = []
+                items = []
+                selection = []
+            } catch {
+                report("Couldn't refresh the device", error)
+                return
+            }
+        }
+        await library.reload(session: session, layout: dbiLayout ?? layout)
     }
 
     func chooseFilesToInstall() {
@@ -360,7 +374,7 @@ final class DeviceConnection {
             }
             await refreshStorageInfo()
             if isInstall, transfer.state == .completed, !transfers.hasActiveTransfers {
-                await reloadLibrary()
+                await reloadLibrary(refreshSession: true)
             }
         }
     }

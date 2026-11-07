@@ -109,11 +109,11 @@ final class TransferQueue {
     /// Downloads a file or folder. With `resuming`, existing names are reused instead of made
     /// unique: finished files are skipped and `.part` files continue where they stopped.
     @discardableResult
-    func enqueueDownload(_ object: MTPObject, to directory: URL, resuming: Bool = false) -> Transfer {
+    func enqueueDownload(_ object: MTPObject, to directory: URL, resuming: Bool = false, exactURL: URL? = nil) -> Transfer {
         let transfer = Transfer(name: object.name, direction: .download, storageID: object.storageID, parent: object.parent) { session, transfer, relay in
             transfer.state = .preparing
             var plan: [(MTPObject, URL)] = []
-            let root = try await Self.planDownload(object, into: directory, reuseExisting: resuming, session: session, plan: &plan)
+            let root = try await Self.planDownload(object, into: directory, reuseExisting: resuming, exactURL: exactURL, session: session, plan: &plan)
             transfer.resultURL = root
             let alreadyDone = resuming ? Self.completedSize(of: object, at: root, plan: plan) : 0
             transfer.totalBytes = plan.reduce(alreadyDone) { $0 + $1.0.size }
@@ -130,14 +130,14 @@ final class TransferQueue {
             }
             transfer.currentFile = root.lastPathComponent
         }
-        transfer.retry = { [weak self] in self?.enqueueDownload(object, to: directory, resuming: true) }
+        transfer.retry = { [weak self] in self?.enqueueDownload(object, to: directory, resuming: true, exactURL: exactURL) }
         append(transfer)
         return transfer
     }
 
     /// Downloads and waits for the result, e.g. to hand a file to Finder.
-    func downloadAndWait(_ object: MTPObject, to directory: URL, progress: Progress? = nil) async throws -> URL {
-        let transfer = enqueueDownload(object, to: directory)
+    func downloadAndWait(_ object: MTPObject, to directory: URL, exactURL: URL? = nil, progress: Progress? = nil) async throws -> URL {
+        let transfer = enqueueDownload(object, to: directory, exactURL: exactURL)
         transfer.externalProgress = progress
         return try await withCheckedThrowingContinuation { continuation in
             transfer.completion = { transfer in
@@ -225,11 +225,11 @@ final class TransferQueue {
     // MARK: - Planning
 
     private static func planDownload(
-        _ object: MTPObject, into directory: URL, reuseExisting: Bool,
+        _ object: MTPObject, into directory: URL, reuseExisting: Bool, exactURL: URL? = nil,
         session: MTPSession, plan: inout [(MTPObject, URL)]
     ) async throws -> URL {
         let name = sanitize(object.name)
-        let destination = reuseExisting ? directory.appendingPathComponent(name) : uniqueURL(in: directory, name: name)
+        let destination = exactURL ?? (reuseExisting ? directory.appendingPathComponent(name) : uniqueURL(in: directory, name: name))
         if object.isFolder {
             try FileManager.default.createDirectory(at: destination, withIntermediateDirectories: true)
             for child in try await session.contents(storageID: object.storageID, parent: object.handle) {

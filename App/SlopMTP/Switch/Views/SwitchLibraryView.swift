@@ -214,11 +214,12 @@ struct SwitchLibraryView: View {
                         cardFrames[game.id] = frame
                     }
                     .simultaneousGesture(TapGesture().onEnded { click(game) })
-                    // Dragging a selected game takes the whole selection, like Finder.
-                    .draggable(connection.dragItem(for: selection.contains(game.id) ? selectedGames : [game], displayName: displayName)) {
-                        CoverArtView(titleID: game.applicationID, name: displayName(game), cornerRadius: 12)
-                            .frame(width: 96, height: 96)
-                    }
+                    // Dragging a cover hands it to Finder as a file promise; dragging a selected
+                    // game takes the whole selection, like Finder.
+                    .gesture(DragGesture(minimumDistance: 6).onChanged { _ in
+                        guard !connection.finderDrag.isDragging else { return }
+                        connection.beginFinderDrag(for: selection.contains(game.id) ? selectedGames : [game], displayName: displayName)
+                    })
                     .contextMenu { contextMenu(for: game) }
             }
         }

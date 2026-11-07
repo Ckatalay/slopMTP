@@ -12,6 +12,7 @@
 		299DF9C4DCFD49770EF16B96 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198603BABEFDE82145A7B9F1 /* AppModel.swift */; };
 		2F1321447792D7F686861013 /* TitleID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A1F380BEA304BEF00A3CCC /* TitleID.swift */; };
 		3F08F5B2B38A2A8EFCD6C16A /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0933B207250738E967A982 /* Format.swift */; };
+		52977E164D367A3881441ABD /* FinderDragController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2CCAE9EB2F68C57BF74A4B /* FinderDragController.swift */; };
 		65D70A83D24405E500ECB341 /* SwitchLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77627099D2EB1C378A3F16 /* SwitchLibrary.swift */; };
 		8A115C575A343CD1E59E9C6B /* TransfersPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D00E0A1605B07A14BAF66A2 /* TransfersPanel.swift */; };
 		8A39DA4F49AEF3CE0F9E7745 /* SwitchFileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D701EF44DF5C5893ADD97F6D /* SwitchFileInfo.swift */; };
@@ -35,6 +36,7 @@
 		14F155B94E7668D97E53A14B /* InstallPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallPlanner.swift; sourceTree = "<group>"; };
 		198603BABEFDE82145A7B9F1 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		19A1F380BEA304BEF00A3CCC /* TitleID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleID.swift; sourceTree = "<group>"; };
+		1D2CCAE9EB2F68C57BF74A4B /* FinderDragController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderDragController.swift; sourceTree = "<group>"; };
 		2426B3C37A5D2269739A02D4 /* MTPKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MTPKit; path = Packages/MTPKit; sourceTree = SOURCE_ROOT; };
 		29D157655520948EA499BE15 /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
 		3334979DFA01B68915CF477E /* SlopMTPApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlopMTPApp.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 			children = (
 				198603BABEFDE82145A7B9F1 /* AppModel.swift */,
 				A696E1950C15E1196F6F9E88 /* DeviceConnection.swift */,
+				1D2CCAE9EB2F68C57BF74A4B /* FinderDragController.swift */,
 				12B8BAAFAF9E35696A28826E /* TransferQueue.swift */,
 			);
 			path = Models;
@@ -224,6 +227,7 @@
 				BCD7B72A6C897DF647481B95 /* ContentView.swift in Sources */,
 				0428E6844AB73BA56B5DDA8E /* CoverArtView.swift in Sources */,
 				EA3E1056B54FF0E46DE9A903 /* DeviceConnection.swift in Sources */,
+				52977E164D367A3881441ABD /* FinderDragController.swift in Sources */,
 				3F08F5B2B38A2A8EFCD6C16A /* Format.swift in Sources */,
 				8C8A773294FFD0B9BCCE2C33 /* Glass.swift in Sources */,
 				C7E68D6B93BF8901E657341B /* InstallPlanner.swift in Sources */,

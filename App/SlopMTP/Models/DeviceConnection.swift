@@ -2,7 +2,6 @@ import AppKit
 import Foundation
 import MTPKit
 import Observation
-import CoreTransferable
 import UniformTypeIdentifiers
 
 /// An open MTP session plus browsing and transfer state for one device.
@@ -27,6 +26,7 @@ final class DeviceConnection {
     var selection: Set<UInt32> = []
 
     let transfers = TransferQueue()
+    let finderDrag = FinderDragController()
     let library = SwitchLibrary()
 
     enum SidebarItem: Hashable {
@@ -569,43 +569,35 @@ final class DeviceConnection {
 
     // MARK: - Drag to Finder
 
-    /// Scratch space for drags; Finder copies the file out of here when the drop completes.
-    static let dragDirectory = FileManager.default.temporaryDirectory.appendingPathComponent("SlopMTP Drags", isDirectory: true)
-
-    private func freshDragDirectory() throws -> URL {
-        let directory = Self.dragDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        return directory
-    }
-
-    /// A drag item for a device file or folder. Nothing is downloaded until it's dropped; then it
-    /// goes through the transfer queue (so it shows in Transfers) and is handed to the destination.
-    func dragItem(for object: MTPObject) -> DeviceDragItem {
-        DeviceDragItem(isFolder: object.isFolder) { @MainActor [weak self] in
-            guard let self else { throw MTPError.disconnected }
-            return try await self.transfers.downloadAndWait(object, to: self.freshDragDirectory())
+    /// Starts dragging device files or folders to Finder. Nothing downloads until the drop; then
+    /// each item is downloaded straight to where Finder wants it, through the transfer queue.
+    func beginFinderDrag(for objects: [MTPObject]) {
+        let promises = objects.map { object in
+            FinderDragController.Promise(
+                fileName: Self.sanitize(object.name),
+                type: object.isFolder ? .folder : UTType(filenameExtension: (object.name as NSString).pathExtension) ?? .data
+            ) { @MainActor [weak self] url in
+                guard let self else { throw MTPError.disconnected }
+                _ = try await self.transfers.downloadAndWait(object, to: url.deletingLastPathComponent(), exactURL: url)
+            }
         }
+        finderDrag.begin(promises)
     }
 
-    /// A drag item for one or more installed games: a folder per game (or a folder of game folders).
-    func dragItem(for games: [InstalledGame], displayName: (InstalledGame) -> String) -> DeviceDragItem {
-        let name = games.count == 1 ? Self.sanitize(displayName(games[0])) : "\(games.count) Switch Games"
-        let jobs = games.map { game in
+    /// Starts dragging installed games to Finder, as one folder per game.
+    func beginFinderDrag(for games: [InstalledGame], displayName: (InstalledGame) -> String) {
+        let promises = games.map { game in
             let real = game.contents.map(\.object).filter { $0.storageID != 0 }
-            return (folder: Self.sanitize(displayName(game)), objects: real.isEmpty ? [game.mergedDump].compactMap { $0 } : real)
-        }
-        return DeviceDragItem(isFolder: true) { @MainActor [weak self] in
-            guard let self else { throw MTPError.disconnected }
-            let root = try self.freshDragDirectory().appendingPathComponent(name, isDirectory: true)
-            for job in jobs {
-                let folder = jobs.count == 1 ? root : root.appendingPathComponent(job.folder, isDirectory: true)
-                try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-                for object in job.objects {
-                    _ = try await self.transfers.downloadAndWait(object, to: folder)
+            let objects = real.isEmpty ? [game.mergedDump].compactMap { $0 } : real
+            return FinderDragController.Promise(fileName: Self.sanitize(displayName(game)), type: .folder) { @MainActor [weak self] url in
+                guard let self else { throw MTPError.disconnected }
+                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+                for object in objects {
+                    _ = try await self.transfers.downloadAndWait(object, to: url)
                 }
             }
-            return root
         }
+        finderDrag.begin(promises)
     }
 
     private func report(_ title: String, _ error: Error) {
@@ -614,19 +606,3 @@ final class DeviceConnection {
     }
 }
 
-/// Something on the device that can be dragged out to Finder. The file is produced on drop.
-struct DeviceDragItem: Transferable, Sendable {
-    let isFolder: Bool
-    let export: @Sendable () async throws -> URL
-
-    static var transferRepresentation: some TransferRepresentation {
-        FileRepresentation(exportedContentType: .folder) { item in
-            SentTransferredFile(try await item.export())
-        }
-        .exportingCondition { $0.isFolder }
-        FileRepresentation(exportedContentType: .data) { item in
-            SentTransferredFile(try await item.export())
-        }
-        .exportingCondition { !$0.isFolder }
-    }
-}

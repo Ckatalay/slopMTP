@@ -69,6 +69,14 @@ struct BrowserView: View {
                     Image(systemName: Format.symbol(for: item))
                         .foregroundStyle(item.isFolder ? Color.accentColor : .secondary)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+                // Drag a name out to Finder (file promise); a selected row drags the whole selection.
+                .gesture(DragGesture(minimumDistance: 6).onChanged { _ in
+                    guard !connection.finderDrag.isDragging else { return }
+                    let objects = connection.selection.contains(item.handle) ? connection.selectedItems : [item]
+                    connection.beginFinderDrag(for: objects)
+                })
             }
             TableColumn("Size", value: \.size) { item in
                 Text(item.isFolder ? "—" : Format.bytes(item.size))
@@ -85,7 +93,6 @@ struct BrowserView: View {
             ForEach(sortedItems) { item in
                 // Dragging rows to Finder downloads them on drop.
                 TableRow(item)
-                    .draggable(connection.dragItem(for: item))
             }
         }
         .contextMenu(forSelectionType: UInt32.self) { handles in

@@ -49,9 +49,6 @@ struct SwitchLibraryView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 header
-                DropZone(isTargeted: isDropTargeted, targetLabel: connection.installTarget.label) {
-                    connection.chooseFilesToInstall()
-                }
                 InstallActivityView(connection: connection, layout: layout)
                 installedSection
             }
@@ -362,38 +359,6 @@ private struct CapacityPill: View {
         .padding(14)
         .glassPanel(cornerRadius: 18)
         .accessibilityElement(children: .combine)
-    }
-}
-
-private struct DropZone: View {
-    static let cornerRadius: CGFloat = 24
-
-    let isTargeted: Bool
-    let targetLabel: String
-    let choose: () -> Void
-
-    var body: some View {
-        HStack(spacing: 18) {
-            Image(systemName: isTargeted ? "arrow.down.circle.fill" : "square.and.arrow.down.on.square")
-                .font(.system(size: 36, weight: .light))
-                .foregroundStyle(isTargeted ? Color.accentColor : .secondary)
-                .symbolEffect(.bounce, value: isTargeted)
-            VStack(alignment: .leading, spacing: 4) {
-                Text(isTargeted ? "Release to review and install" : "Drop games, updates and DLC here")
-                    .font(.title3.weight(.semibold))
-                Text("NSP · NSZ · XCI · XCZ, or whole folders. Installs to \(targetLabel); base games install before updates and DLC.")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-            }
-            Spacer()
-            Button("Choose Files…", action: choose)
-                .controlSize(.large)
-                .glassButtonStyle(prominent: true)
-        }
-        .padding(22)
-        .glassPanel(cornerRadius: Self.cornerRadius, tint: isTargeted ? .accentColor.opacity(0.35) : nil, interactive: true)
-        .scaleEffect(isTargeted ? 1.01 : 1)
-        .animation(.easeOut(duration: 0.15), value: isTargeted)
     }
 }
 

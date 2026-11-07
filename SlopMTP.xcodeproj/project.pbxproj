@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0023A33371A4C0DB162D941F /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7F0ECFF8E070F3B69E5EF4 /* SidebarView.swift */; };
 		0428E6844AB73BA56B5DDA8E /* CoverArtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A4054CDDE4C7614FD23780 /* CoverArtView.swift */; };
+		1B5C5C6E72E56E5AD691CDD6 /* AlbumLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7B29E0C0262596095930D5 /* AlbumLibrary.swift */; };
 		299DF9C4DCFD49770EF16B96 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198603BABEFDE82145A7B9F1 /* AppModel.swift */; };
 		2F1321447792D7F686861013 /* TitleID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A1F380BEA304BEF00A3CCC /* TitleID.swift */; };
 		3F08F5B2B38A2A8EFCD6C16A /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0933B207250738E967A982 /* Format.swift */; };
@@ -17,6 +18,7 @@
 		8A115C575A343CD1E59E9C6B /* TransfersPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D00E0A1605B07A14BAF66A2 /* TransfersPanel.swift */; };
 		8A39DA4F49AEF3CE0F9E7745 /* SwitchFileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D701EF44DF5C5893ADD97F6D /* SwitchFileInfo.swift */; };
 		8C8A773294FFD0B9BCCE2C33 /* Glass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D7855F0FDE24640CFC12CC /* Glass.swift */; };
+		8FC6B9C8B5B70943973012E3 /* AlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC83E1FB41F423962924089B /* AlbumView.swift */; };
 		961F20F9C79E2D95A3D9F235 /* InstallViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AE02C6404BEBF10E80BD53 /* InstallViews.swift */; };
 		9F03141C5FD633D758C6FAC3 /* TransferQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B8BAAFAF9E35696A28826E /* TransferQueue.swift */; };
 		BA070CD91DE270D4088AB10D /* SwitchLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F4F7C854DD7B85375825DA /* SwitchLibraryView.swift */; };
@@ -51,6 +53,8 @@
 		A696E1950C15E1196F6F9E88 /* DeviceConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceConnection.swift; sourceTree = "<group>"; };
 		C9D7855F0FDE24640CFC12CC /* Glass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glass.swift; sourceTree = "<group>"; };
 		D701EF44DF5C5893ADD97F6D /* SwitchFileInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchFileInfo.swift; sourceTree = "<group>"; };
+		DC83E1FB41F423962924089B /* AlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumView.swift; sourceTree = "<group>"; };
+		DF7B29E0C0262596095930D5 /* AlbumLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumLibrary.swift; sourceTree = "<group>"; };
 		F91BD04A2E000414E911DF9B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FB15D2D2E79C40150FBC0E15 /* TitleDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleDatabase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -123,6 +127,7 @@
 		A2EE719B64C819377A6322E7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				DC83E1FB41F423962924089B /* AlbumView.swift */,
 				92A4054CDDE4C7614FD23780 /* CoverArtView.swift */,
 				68AE02C6404BEBF10E80BD53 /* InstallViews.swift */,
 				57F4F7C854DD7B85375825DA /* SwitchLibraryView.swift */,
@@ -141,6 +146,7 @@
 		F194F4F459D109186408F8FC /* Switch */ = {
 			isa = PBXGroup;
 			children = (
+				DF7B29E0C0262596095930D5 /* AlbumLibrary.swift */,
 				14F155B94E7668D97E53A14B /* InstallPlanner.swift */,
 				D701EF44DF5C5893ADD97F6D /* SwitchFileInfo.swift */,
 				8D77627099D2EB1C378A3F16 /* SwitchLibrary.swift */,
@@ -222,6 +228,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B5C5C6E72E56E5AD691CDD6 /* AlbumLibrary.swift in Sources */,
+				8FC6B9C8B5B70943973012E3 /* AlbumView.swift in Sources */,
 				299DF9C4DCFD49770EF16B96 /* AppModel.swift in Sources */,
 				D00532F7D48F59559403C582 /* BrowserView.swift in Sources */,
 				BCD7B72A6C897DF647481B95 /* ContentView.swift in Sources */,

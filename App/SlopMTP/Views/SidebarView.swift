@@ -21,6 +21,10 @@ struct SidebarView: View {
                     Section("Switch") {
                         Label("Game Library", systemImage: "square.grid.2x2.fill")
                             .tag(DeviceConnection.SidebarItem.library)
+                        if connection.dbiLayout?.album != nil {
+                            Label("Album", systemImage: "photo.on.rectangle.angled")
+                                .tag(DeviceConnection.SidebarItem.album)
+                        }
                     }
                 }
                 Section(connection.dbiLayout != nil ? "Storage" : connection.displayName) {

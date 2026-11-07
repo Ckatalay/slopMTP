@@ -189,6 +189,15 @@ import Testing
         #expect(try Data(contentsOf: url) == payload)
     }
 
+    @Test func readsPartialData() async throws {
+        let responder = MockResponder()
+        let payload = Data((0..<10_000).map { UInt8(truncatingIfNeeded: $0 &* 3) })
+        let handle = responder.addNode(name: "shot.jpg", data: payload)
+        let (session, _) = try await makeSession(responder)
+        #expect(try await session.partialData(of: handle, count: 4096) == payload.prefix(4096))
+        #expect(try await session.partialData(of: handle, offset: 9000, count: 4096) == payload.suffix(1000))
+    }
+
     @Test func deliversDeviceEvents() async throws {
         let (session, responder) = try await makeSession()
         let stream = session.events()

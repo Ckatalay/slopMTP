@@ -257,6 +257,7 @@ struct GameDetailView: View {
     let game: InstalledGame
     let connection: DeviceConnection
     @Environment(\.dismiss) private var dismiss
+    @State private var contentToRemove: InstalledGame.Content?
 
     private var entry: TitleDatabase.Entry? { game.applicationID.flatMap { TitleDatabase.shared.entry(for: $0) } }
 
@@ -313,6 +314,19 @@ struct GameDetailView: View {
                                     .monospacedDigit()
                                     .foregroundStyle(.secondary)
                                     .frame(width: 80, alignment: .trailing)
+                                // Updates and DLC can be removed on their own; the base goes with "Uninstall".
+                                if content.kind != .application, content.object.storageID != 0 {
+                                    Button {
+                                        contentToRemove = content
+                                    } label: {
+                                        Image(systemName: "trash")
+                                    }
+                                    .buttonStyle(.borderless)
+                                    .help("Remove this \(content.kind == .update ? "update" : "DLC")")
+                                    .accessibilityLabel("Remove \(content.info.title) \(content.kind.label)")
+                                } else {
+                                    Color.clear.frame(width: 16)
+                                }
                             }
                             .padding(.vertical, 6)
                             Divider()
@@ -326,13 +340,31 @@ struct GameDetailView: View {
                     Button("Back Up to Mac…") { connection.backUp(game) }
                         .help("Saves a copy of this game's installed content to your Mac")
                 }
+                Button("Uninstall…", role: .destructive) {
+                    dismiss()
+                    connection.pendingUninstall = [game]
+                }
                 Spacer()
                 Button("Done") { dismiss() }
                     .keyboardShortcut(.defaultAction)
             }
         }
         .padding(24)
-        .frame(width: 620)
+        .frame(width: 640)
+        .confirmationDialog(
+            "Remove \(contentToRemove?.kind == .update ? "the update" : "this DLC") from the console?",
+            isPresented: Binding(get: { contentToRemove != nil }, set: { if !$0 { contentToRemove = nil } }),
+            titleVisibility: .visible
+        ) {
+            Button("Remove", role: .destructive) {
+                guard let content = contentToRemove else { return }
+                contentToRemove = nil
+                dismiss()
+                Task { await connection.remove(content, from: game) }
+            }
+        } message: {
+            Text(contentToRemove?.object.name ?? "")
+        }
     }
 
     private static func releaseDate(_ value: Int) -> Date? {

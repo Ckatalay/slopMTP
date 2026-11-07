@@ -155,6 +155,13 @@ final class SwitchLibrary {
         }
     }
 
+    /// Drops games from the list right away (e.g. after uninstalling), before the next reload.
+    func remove(ids: Set<String>) {
+        let removedApps = Set(games.filter { ids.contains($0.id) }.compactMap(\.applicationID))
+        games.removeAll { ids.contains($0.id) }
+        recordedInstalls.removeAll { $0.applicationID.map(removedApps.contains) ?? false }
+    }
+
     func reload(session: MTPSession, layout: DBILayout) async {
         generation += 1
         let current = generation

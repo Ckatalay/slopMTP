@@ -87,6 +87,7 @@ struct SwitchLibraryView: View {
                     count: selectedGames.count,
                     size: selectedGames.reduce(0) { $0 + $1.totalSize },
                     backUp: { connection.backUp(selectedGames, displayName: displayName) },
+                    uninstall: { connection.pendingUninstall = selectedGames },
                     clear: { selection = [] }
                 )
                 .padding(12)
@@ -107,6 +108,16 @@ struct SwitchLibraryView: View {
                     .padding(6)
                     .allowsHitTesting(false)
             }
+        }
+        .confirmationDialog(uninstallTitle, isPresented: uninstallBinding, titleVisibility: .visible) {
+            Button(connection.pendingUninstall.count == 1 ? "Uninstall" : "Uninstall \(connection.pendingUninstall.count) Games", role: .destructive) {
+                let games = connection.pendingUninstall
+                connection.pendingUninstall = []
+                selection.subtract(games.map(\.id))
+                Task { await connection.uninstall(games) }
+            }
+        } message: {
+            Text("This removes the game, its update and its DLC from the console. The console normally keeps save data, but back up any saves you care about first.")
         }
         .sheet(item: $detailGame) { game in
             GameDetailView(game: game, connection: connection)
@@ -334,6 +345,12 @@ struct SwitchLibraryView: View {
             if targets.count == 1, let game = targets.first, game.folder != nil {
                 Button("Show in Files") { connection.showInFiles(game, layout: layout) }
             }
+            if !targets.isEmpty {
+                Divider()
+                Button(targets.count == 1 ? "Uninstall…" : "Uninstall \(targets.count) Games…", role: .destructive) {
+                    connection.pendingUninstall = targets
+                }
+            }
         } primaryAction: { ids in
             if ids.count == 1, let game = visibleGames.first(where: { ids.contains($0.id) }) {
                 detailGame = game
@@ -470,6 +487,19 @@ struct SwitchLibraryView: View {
         if targets.count == 1, game.folder != nil {
             Button("Show in Files") { connection.showInFiles(game, layout: layout) }
         }
+        Divider()
+        Button(targets.count == 1 ? "Uninstall…" : "Uninstall \(targets.count) Games…", role: .destructive) {
+            connection.pendingUninstall = targets
+        }
+    }
+
+    private var uninstallTitle: String {
+        let games = connection.pendingUninstall
+        return games.count == 1 ? "Uninstall “\(displayName(games[0]))”?" : "Uninstall \(games.count) games?"
+    }
+
+    private var uninstallBinding: Binding<Bool> {
+        Binding(get: { !connection.pendingUninstall.isEmpty }, set: { if !$0 { connection.pendingUninstall = [] } })
     }
 
     private func displayName(_ game: InstalledGame) -> String {
@@ -567,6 +597,7 @@ private struct SelectionBar: View {
     let count: Int
     let size: UInt64
     let backUp: () -> Void
+    let uninstall: () -> Void
     let clear: () -> Void
 
     var body: some View {
@@ -583,6 +614,8 @@ private struct SelectionBar: View {
             }
             Spacer()
             Button("Deselect", action: clear)
+                .glassButtonStyle()
+            Button("Uninstall…", role: .destructive, action: uninstall)
                 .glassButtonStyle()
             Button("Back Up…", action: backUp)
                 .glassButtonStyle(prominent: true)

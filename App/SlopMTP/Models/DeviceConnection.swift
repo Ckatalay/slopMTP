@@ -28,15 +28,19 @@ final class DeviceConnection {
     let transfers = TransferQueue()
     let finderDrag = FinderDragController()
     let library = SwitchLibrary()
+    let album = AlbumLibrary()
 
     enum SidebarItem: Hashable {
         case library
+        case album
         case storage(UInt32)
     }
 
     /// DBI's storage layout, when the device is a Switch running DBI.
     var dbiLayout: DBILayout? { DBILayout(storages: storages) }
     private(set) var showsLibrary = false
+    private(set) var showsAlbum = false
+    var pendingUninstall: [InstalledGame] = []
     var pendingInstall: [InstallCandidate] = []
     var installTarget: DBILayout.InstallTarget = DBILayout.InstallTarget(rawValue: UserDefaults.standard.string(forKey: "installTarget") ?? "") ?? .sdCard {
         didSet { UserDefaults.standard.set(installTarget.rawValue, forKey: "installTarget") }
@@ -200,15 +204,21 @@ final class DeviceConnection {
 
     var sidebarSelection: SidebarItem? {
         if showsLibrary { return .library }
+        if showsAlbum { return .album }
         return selectedStorageID.map(SidebarItem.storage)
     }
 
     func select(_ item: SidebarItem?) async {
         switch item {
         case .library:
+            showsAlbum = false
             showsLibrary = true
+        case .album:
+            showsLibrary = false
+            showsAlbum = true
         case .storage(let id):
             showsLibrary = false
+            showsAlbum = false
             await selectStorage(id)
         case nil:
             break
@@ -217,6 +227,7 @@ final class DeviceConnection {
 
     func selectStorage(_ id: UInt32?) async {
         showsLibrary = false
+        showsAlbum = false
         guard id != selectedStorageID else { return }
         selectedStorageID = id
         path = []
@@ -436,10 +447,93 @@ final class DeviceConnection {
         guard let folder = game.folder else { return }
         Task {
             showsLibrary = false
+            showsAlbum = false
             selectedStorageID = layout.installedGames.id
             path = [PathEntry(handle: folder.handle, name: folder.name)]
             await reload()
         }
+    }
+
+    // MARK: - Album
+
+    func reloadAlbum() async {
+        guard let storage = dbiLayout?.album, !isDisconnected else { return }
+        await album.reload(session: session, storage: storage)
+    }
+
+    /// Copies DBI's whole Album storage into a dated folder.
+    func backUpAlbum(layout: DBILayout) {
+        guard let storage = layout.album,
+              let (directory, _) = chooseBackupFolder(title: "Save Album", offerSaves: false)
+        else { return }
+        let stamp = Date().formatted(.iso8601.year().month().day().dateSeparator(.dash))
+        let folder = Self.uniqueURL(in: directory, name: "Switch Album \(stamp)")
+        Task {
+            do {
+                try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+                for object in try await session.contents(storageID: storage.id) {
+                    transfers.enqueueDownload(object, to: folder)
+                }
+            } catch {
+                report("Couldn't save the album", error)
+            }
+        }
+    }
+
+    /// Downloads an item to a temporary folder and opens it in its default app (Preview, QuickTime…).
+    func openOnMac(_ object: MTPObject) {
+        Task {
+            do {
+                let directory = FileManager.default.temporaryDirectory
+                    .appendingPathComponent("SlopMTP Previews", isDirectory: true)
+                    .appendingPathComponent(UUID().uuidString, isDirectory: true)
+                try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+                let url = try await transfers.downloadAndWait(object, to: directory)
+                NSWorkspace.shared.open(url)
+            } catch MTPError.cancelled {
+                return
+            } catch {
+                report("Couldn't open “\(object.name)”", error)
+            }
+        }
+    }
+
+    // MARK: - Uninstall
+
+    /// Uninstalls games by deleting their folders in DBI's "Installed games" storage.
+    func uninstall(_ games: [InstalledGame]) async {
+        var removed: [String] = []
+        for game in games {
+            do {
+                if let folder = game.folder {
+                    try await session.delete(folder.handle)
+                } else {
+                    for object in game.contents.map(\.object) where object.storageID != 0 {
+                        try await session.delete(object.handle)
+                    }
+                    if let dump = game.mergedDump { try await session.delete(dump.handle) }
+                }
+                removed.append(game.id)
+            } catch {
+                report("Couldn't uninstall “\(game.name)”", error)
+                break
+            }
+        }
+        library.remove(ids: Set(removed))
+        await reloadLibrary(refreshSession: true)
+        await refreshStorageInfo()
+    }
+
+    /// Removes one installed item (an update or a DLC) of a game.
+    func remove(_ content: InstalledGame.Content, from game: InstalledGame) async {
+        do {
+            try await session.delete(content.object.handle)
+        } catch {
+            report("Couldn't remove “\(content.object.name)”", error)
+            return
+        }
+        await reloadLibrary(refreshSession: true)
+        await refreshStorageInfo()
     }
 
     private func refreshStorageInfo() async {

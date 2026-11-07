@@ -14,6 +14,9 @@ struct ContentView: View {
                 if connection.showsLibrary, let layout = connection.dbiLayout {
                     SwitchLibraryView(connection: connection, layout: layout)
                         .id(ObjectIdentifier(connection))
+                } else if connection.showsAlbum, let layout = connection.dbiLayout, let album = layout.album {
+                    AlbumView(connection: connection, layout: layout, storage: album)
+                        .id(ObjectIdentifier(connection))
                 } else {
                     BrowserView(connection: connection)
                         .id(ObjectIdentifier(connection))

@@ -262,6 +262,25 @@ extension MTPSession {
         }
     }
 
+    /// Reads up to `count` bytes starting at `offset`, using GetPartialObject64 or GetPartialObject.
+    public func partialData(of handle: UInt32, offset: UInt64 = 0, count: UInt32) throws -> Data {
+        var collected = Data()
+        if deviceInfo?.supports(.getPartialObject64) == true {
+            try transaction(.getPartialObject64, [handle, UInt32(offset & 0xFFFF_FFFF), UInt32(offset >> 32), count], dataPhase: .incoming { collected.append($0) })
+        } else if deviceInfo?.supports(.getPartialObject) == true, offset <= UInt64(UInt32.max) {
+            try transaction(.getPartialObject, [handle, UInt32(offset), count], dataPhase: .incoming { collected.append($0) })
+        } else {
+            throw MTPError.operationNotSupported(.getPartialObject)
+        }
+        return collected
+    }
+
+    /// The device-provided thumbnail (GetThumb), if the device supports it.
+    public func thumbnail(of handle: UInt32) throws -> Data {
+        guard deviceInfo?.supports(.getThumb) == true else { throw MTPError.operationNotSupported(.getThumb) }
+        return try transactionData(.getThumb, [handle])
+    }
+
     /// Reads an object fully into memory. Intended for small files.
     public func data(of handle: UInt32) throws -> Data {
         try transactionData(.getObject, [handle])

@@ -6,7 +6,8 @@ struct SwitchLibraryView: View {
     let layout: DBILayout
 
     @State private var search = ""
-    @State private var sort: Sort = .name
+    @AppStorage("librarySort") private var sort: Sort = .nameAscending
+    @AppStorage("libraryViewMode") private var viewMode: ViewMode = .grid
     @State private var isDropTargeted = false
     @State private var detailGame: InstalledGame?
     @State private var selection: Set<String> = []
@@ -22,8 +23,21 @@ struct SwitchLibraryView: View {
     nonisolated private static let gridSpace = "libraryGrid"
 
     enum Sort: String, CaseIterable, Identifiable {
-        case name = "Name"
-        case size = "Size"
+        case nameAscending, nameDescending, sizeDescending, sizeAscending
+        var id: String { rawValue }
+
+        var label: String {
+            switch self {
+            case .nameAscending: return "Name (A–Z)"
+            case .nameDescending: return "Name (Z–A)"
+            case .sizeDescending: return "Size (Largest First)"
+            case .sizeAscending: return "Size (Smallest First)"
+            }
+        }
+    }
+
+    enum ViewMode: String, CaseIterable, Identifiable {
+        case grid, list
         var id: String { rawValue }
     }
 
@@ -39,22 +53,19 @@ struct SwitchLibraryView: View {
                     || game.applicationID?.description.localizedCaseInsensitiveContains(search) == true
             }
         }
+        let byName: (InstalledGame, InstalledGame) -> Bool = {
+            displayName($0).localizedStandardCompare(displayName($1)) == .orderedAscending
+        }
         switch sort {
-        case .name: return games.sorted { displayName($0).localizedStandardCompare(displayName($1)) == .orderedAscending }
-        case .size: return games.sorted { $0.totalSize > $1.totalSize }
+        case .nameAscending: return games.sorted(by: byName)
+        case .nameDescending: return games.sorted { byName($1, $0) }
+        case .sizeDescending: return games.sorted { $0.totalSize != $1.totalSize ? $0.totalSize > $1.totalSize : byName($0, $1) }
+        case .sizeAscending: return games.sorted { $0.totalSize != $1.totalSize ? $0.totalSize < $1.totalSize : byName($0, $1) }
         }
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                header
-                InstallActivityView(connection: connection, layout: layout)
-                installedSection
-            }
-            .padding(24)
-        }
-        .softVerticalEdges()
+        content
         .focusable()
         .focusEffectDisabled()
         .focused($isGridFocused)
@@ -139,6 +150,30 @@ struct SwitchLibraryView: View {
 
     // MARK: - Sections
 
+    /// The grid scrolls as one page; the list keeps the header fixed and lets the table scroll.
+    @ViewBuilder
+    private var content: some View {
+        switch viewMode {
+        case .grid:
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    header
+                    InstallActivityView(connection: connection, layout: layout)
+                    installedSection
+                }
+                .padding(24)
+            }
+            .softVerticalEdges()
+        case .list:
+            VStack(alignment: .leading, spacing: 20) {
+                header
+                InstallActivityView(connection: connection, layout: layout)
+                installedSection
+            }
+            .padding([.horizontal, .top], 24)
+        }
+    }
+
     private var header: some View {
         HStack(alignment: .top, spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
@@ -176,15 +211,23 @@ struct SwitchLibraryView: View {
 
     private var installedSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack {
+            HStack(spacing: 12) {
                 Text("Installed")
                     .font(.title2.bold())
                 Spacer()
-                Picker("Sort by", selection: $sort) {
-                    ForEach(Sort.allCases) { Text($0.rawValue).tag($0) }
+                Picker("Sort", selection: $sort) {
+                    ForEach(Sort.allCases) { Text($0.label).tag($0) }
+                }
+                .pickerStyle(.menu)
+                .fixedSize()
+                Picker("View", selection: $viewMode) {
+                    Label("Grid", systemImage: "square.grid.2x2").tag(ViewMode.grid)
+                    Label("List", systemImage: "list.bullet").tag(ViewMode.list)
                 }
                 .pickerStyle(.segmented)
+                .labelsHidden()
                 .fixedSize()
+                .help("Show as grid or list")
             }
 
             if library.games.isEmpty {
@@ -194,10 +237,103 @@ struct SwitchLibraryView: View {
                     if let error = library.lastError { Text(error) }
                 }
                 .frame(maxWidth: .infinity, minHeight: 200)
-            } else {
+            } else if viewMode == .grid {
                 grid
+            } else {
+                list
             }
         }
+    }
+
+    // MARK: - List
+
+    private var list: some View {
+        Table(visibleGames, selection: $selection, sortOrder: tableSortOrder) {
+            TableColumn("Name", value: \.name) { game in
+                HStack(spacing: 10) {
+                    CoverArtView(titleID: game.applicationID, name: displayName(game), cornerRadius: 6)
+                        .frame(width: 32, height: 32)
+                    Text(displayName(game))
+                        .lineLimit(1)
+                    if !game.hasBase, game.contentsLoaded || game.summary != nil {
+                        Badge(text: "No base", color: .orange)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+                // Drag a game out to Finder; a selected row takes the whole selection.
+                .gesture(DragGesture(minimumDistance: 6).onChanged { _ in
+                    guard !connection.finderDrag.isDragging else { return }
+                    connection.beginFinderDrag(for: selection.contains(game.id) ? selectedGames : [game], displayName: displayName)
+                })
+            }
+            TableColumn("Update") { game in
+                Text(game.updateVersion.map(TitleVersion.short) ?? "—")
+                    .foregroundStyle(.secondary)
+            }
+            .width(min: 60, ideal: 70, max: 90)
+            TableColumn("DLC") { game in
+                Text(game.dlcCount > 0 ? "\(game.dlcCount)" : "—")
+                    .monospacedDigit()
+                    .foregroundStyle(.secondary)
+            }
+            .width(min: 40, ideal: 50, max: 70)
+            TableColumn("Size", value: \.totalSize) { game in
+                Text(game.totalSize > 0 ? Format.bytes(game.totalSize) : "—")
+                    .monospacedDigit()
+                    .foregroundStyle(.secondary)
+            }
+            .width(min: 70, ideal: 90, max: 120)
+            TableColumn("Title ID") { game in
+                Text(game.applicationID?.description ?? "—")
+                    .font(.callout.monospaced())
+                    .foregroundStyle(.tertiary)
+                    .textSelection(.enabled)
+            }
+            .width(min: 140, ideal: 160, max: 180)
+        }
+        .contextMenu(forSelectionType: String.self) { ids in
+            let targets = visibleGames.filter { ids.contains($0.id) }
+            if targets.count == 1, let game = targets.first {
+                Button("Details…") { detailGame = game }
+            }
+            if !targets.isEmpty {
+                Button(targets.count == 1 ? "Back Up to Mac…" : "Back Up \(targets.count) Games to Mac…") {
+                    connection.backUp(targets, displayName: displayName)
+                }
+            }
+            if targets.count == 1, let game = targets.first, game.folder != nil {
+                Button("Show in Files") { connection.showInFiles(game, layout: layout) }
+            }
+        } primaryAction: { ids in
+            if ids.count == 1, let game = visibleGames.first(where: { ids.contains($0.id) }) {
+                detailGame = game
+            }
+        }
+        .softVerticalEdges()
+    }
+
+    /// Bridges the table's sortable column headers to the shared sort setting. The key paths only
+    /// identify the column; rows are always ordered by `visibleGames`, which sorts by display name.
+    private var tableSortOrder: Binding<[KeyPathComparator<InstalledGame>]> {
+        Binding(
+            get: {
+                switch sort {
+                case .nameAscending: return [KeyPathComparator(\.name, comparator: .localizedStandard)]
+                case .nameDescending: return [KeyPathComparator(\.name, comparator: .localizedStandard, order: .reverse)]
+                case .sizeDescending: return [KeyPathComparator(\.totalSize, order: .reverse)]
+                case .sizeAscending: return [KeyPathComparator(\.totalSize)]
+                }
+            },
+            set: { comparators in
+                guard let first = comparators.first else { return }
+                if first.keyPath == \InstalledGame.totalSize {
+                    sort = first.order == .forward ? .sizeAscending : .sizeDescending
+                } else {
+                    sort = first.order == .forward ? .nameAscending : .nameDescending
+                }
+            }
+        )
     }
 
     // MARK: - Selection
@@ -366,12 +502,11 @@ struct GameCard: View {
     let game: InstalledGame
     let displayName: String
     var isSelected = false
-    @State private var isHovered = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             CoverArtView(titleID: game.applicationID, name: displayName, cornerRadius: 14)
-                .shadow(color: .black.opacity(isHovered ? 0.35 : 0.15), radius: isHovered ? 10 : 4, y: isHovered ? 6 : 2)
+                .shadow(color: .black.opacity(0.15), radius: 4, y: 2)
                 .padding(3)
                 .overlay {
                     RoundedRectangle(cornerRadius: 17, style: .continuous)
@@ -399,9 +534,6 @@ struct GameCard: View {
                     .foregroundStyle(.secondary)
             }
         }
-        .scaleEffect(isHovered ? 1.03 : 1)
-        .animation(.spring(duration: 0.25), value: isHovered)
-        .onHover { isHovered = $0 }
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(isSelected ? [.isSelected, .isButton] : .isButton)

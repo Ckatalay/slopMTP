@@ -8,29 +8,47 @@
 
 /* Begin PBXBuildFile section */
 		0023A33371A4C0DB162D941F /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7F0ECFF8E070F3B69E5EF4 /* SidebarView.swift */; };
+		0428E6844AB73BA56B5DDA8E /* CoverArtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A4054CDDE4C7614FD23780 /* CoverArtView.swift */; };
 		299DF9C4DCFD49770EF16B96 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198603BABEFDE82145A7B9F1 /* AppModel.swift */; };
+		2F1321447792D7F686861013 /* TitleID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A1F380BEA304BEF00A3CCC /* TitleID.swift */; };
 		3F08F5B2B38A2A8EFCD6C16A /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0933B207250738E967A982 /* Format.swift */; };
+		65D70A83D24405E500ECB341 /* SwitchLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77627099D2EB1C378A3F16 /* SwitchLibrary.swift */; };
 		8A115C575A343CD1E59E9C6B /* TransfersPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D00E0A1605B07A14BAF66A2 /* TransfersPanel.swift */; };
+		8A39DA4F49AEF3CE0F9E7745 /* SwitchFileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D701EF44DF5C5893ADD97F6D /* SwitchFileInfo.swift */; };
+		961F20F9C79E2D95A3D9F235 /* InstallViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AE02C6404BEBF10E80BD53 /* InstallViews.swift */; };
 		9F03141C5FD633D758C6FAC3 /* TransferQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B8BAAFAF9E35696A28826E /* TransferQueue.swift */; };
+		BA070CD91DE270D4088AB10D /* SwitchLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F4F7C854DD7B85375825DA /* SwitchLibraryView.swift */; };
 		BCD7B72A6C897DF647481B95 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91BD04A2E000414E911DF9B /* ContentView.swift */; };
+		C7E68D6B93BF8901E657341B /* InstallPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F155B94E7668D97E53A14B /* InstallPlanner.swift */; };
 		D00532F7D48F59559403C582 /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D157655520948EA499BE15 /* BrowserView.swift */; };
+		D26B2CDFABE4658F56895E17 /* TitleDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB15D2D2E79C40150FBC0E15 /* TitleDatabase.swift */; };
 		D4487344048D71AAA7E4185B /* MTPKit in Frameworks */ = {isa = PBXBuildFile; productRef = A05D8E8DA9139B1618904CF7 /* MTPKit */; };
 		EA3E1056B54FF0E46DE9A903 /* DeviceConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A696E1950C15E1196F6F9E88 /* DeviceConnection.swift */; };
 		FD37CFA5F3C2C202EAB5E6C0 /* SlopMTPApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3334979DFA01B68915CF477E /* SlopMTPApp.swift */; };
+		FF654E547D339F4A9AEAA3C5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7D2E224603DCA641FBD583 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		075078FABCF67C1EB60F62AF /* SlopMTP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SlopMTP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12B8BAAFAF9E35696A28826E /* TransferQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferQueue.swift; sourceTree = "<group>"; };
+		14F155B94E7668D97E53A14B /* InstallPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallPlanner.swift; sourceTree = "<group>"; };
 		198603BABEFDE82145A7B9F1 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		19A1F380BEA304BEF00A3CCC /* TitleID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleID.swift; sourceTree = "<group>"; };
 		2426B3C37A5D2269739A02D4 /* MTPKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MTPKit; path = Packages/MTPKit; sourceTree = SOURCE_ROOT; };
 		29D157655520948EA499BE15 /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
 		3334979DFA01B68915CF477E /* SlopMTPApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlopMTPApp.swift; sourceTree = "<group>"; };
 		3F0933B207250738E967A982 /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
 		3F7F0ECFF8E070F3B69E5EF4 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		57F4F7C854DD7B85375825DA /* SwitchLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchLibraryView.swift; sourceTree = "<group>"; };
+		68AE02C6404BEBF10E80BD53 /* InstallViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallViews.swift; sourceTree = "<group>"; };
+		8D77627099D2EB1C378A3F16 /* SwitchLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchLibrary.swift; sourceTree = "<group>"; };
+		8E7D2E224603DCA641FBD583 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		92A4054CDDE4C7614FD23780 /* CoverArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverArtView.swift; sourceTree = "<group>"; };
 		9D00E0A1605B07A14BAF66A2 /* TransfersPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransfersPanel.swift; sourceTree = "<group>"; };
 		A696E1950C15E1196F6F9E88 /* DeviceConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceConnection.swift; sourceTree = "<group>"; };
+		D701EF44DF5C5893ADD97F6D /* SwitchFileInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchFileInfo.swift; sourceTree = "<group>"; };
 		F91BD04A2E000414E911DF9B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FB15D2D2E79C40150FBC0E15 /* TitleDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleDatabase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +69,7 @@
 				29D157655520948EA499BE15 /* BrowserView.swift */,
 				F91BD04A2E000414E911DF9B /* ContentView.swift */,
 				3F0933B207250738E967A982 /* Format.swift */,
+				8E7D2E224603DCA641FBD583 /* SettingsView.swift */,
 				3F7F0ECFF8E070F3B69E5EF4 /* SidebarView.swift */,
 				9D00E0A1605B07A14BAF66A2 /* TransfersPanel.swift */,
 			);
@@ -89,9 +108,20 @@
 			children = (
 				3334979DFA01B68915CF477E /* SlopMTPApp.swift */,
 				3DEEB061DDB64512A6E7DD75 /* Models */,
+				F194F4F459D109186408F8FC /* Switch */,
 				30BA558C8C9B95958D7A7B51 /* Views */,
 			);
 			path = SlopMTP;
+			sourceTree = "<group>";
+		};
+		A2EE719B64C819377A6322E7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				92A4054CDDE4C7614FD23780 /* CoverArtView.swift */,
+				68AE02C6404BEBF10E80BD53 /* InstallViews.swift */,
+				57F4F7C854DD7B85375825DA /* SwitchLibraryView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		E62CB96558A10A0F55EFDDFB /* Packages */ = {
@@ -100,6 +130,19 @@
 				2426B3C37A5D2269739A02D4 /* MTPKit */,
 			);
 			path = Packages;
+			sourceTree = "<group>";
+		};
+		F194F4F459D109186408F8FC /* Switch */ = {
+			isa = PBXGroup;
+			children = (
+				14F155B94E7668D97E53A14B /* InstallPlanner.swift */,
+				D701EF44DF5C5893ADD97F6D /* SwitchFileInfo.swift */,
+				8D77627099D2EB1C378A3F16 /* SwitchLibrary.swift */,
+				FB15D2D2E79C40150FBC0E15 /* TitleDatabase.swift */,
+				19A1F380BEA304BEF00A3CCC /* TitleID.swift */,
+				A2EE719B64C819377A6322E7 /* Views */,
+			);
+			path = Switch;
 			sourceTree = "<group>";
 		};
 		F999027C57AAE0E649B07187 /* Products */ = {
@@ -176,10 +219,19 @@
 				299DF9C4DCFD49770EF16B96 /* AppModel.swift in Sources */,
 				D00532F7D48F59559403C582 /* BrowserView.swift in Sources */,
 				BCD7B72A6C897DF647481B95 /* ContentView.swift in Sources */,
+				0428E6844AB73BA56B5DDA8E /* CoverArtView.swift in Sources */,
 				EA3E1056B54FF0E46DE9A903 /* DeviceConnection.swift in Sources */,
 				3F08F5B2B38A2A8EFCD6C16A /* Format.swift in Sources */,
+				C7E68D6B93BF8901E657341B /* InstallPlanner.swift in Sources */,
+				961F20F9C79E2D95A3D9F235 /* InstallViews.swift in Sources */,
+				FF654E547D339F4A9AEAA3C5 /* SettingsView.swift in Sources */,
 				0023A33371A4C0DB162D941F /* SidebarView.swift in Sources */,
 				FD37CFA5F3C2C202EAB5E6C0 /* SlopMTPApp.swift in Sources */,
+				8A39DA4F49AEF3CE0F9E7745 /* SwitchFileInfo.swift in Sources */,
+				65D70A83D24405E500ECB341 /* SwitchLibrary.swift in Sources */,
+				BA070CD91DE270D4088AB10D /* SwitchLibraryView.swift in Sources */,
+				D26B2CDFABE4658F56895E17 /* TitleDatabase.swift in Sources */,
+				2F1321447792D7F686861013 /* TitleID.swift in Sources */,
 				9F03141C5FD633D758C6FAC3 /* TransferQueue.swift in Sources */,
 				8A115C575A343CD1E59E9C6B /* TransfersPanel.swift in Sources */,
 			);

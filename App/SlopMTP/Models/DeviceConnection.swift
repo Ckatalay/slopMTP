@@ -25,6 +25,20 @@ final class DeviceConnection {
     var selection: Set<UInt32> = []
 
     let transfers = TransferQueue()
+    let library = SwitchLibrary()
+
+    enum SidebarItem: Hashable {
+        case library
+        case storage(UInt32)
+    }
+
+    /// DBI's storage layout, when the device is a Switch running DBI.
+    var dbiLayout: DBILayout? { DBILayout(storages: storages) }
+    private(set) var showsLibrary = false
+    var pendingInstall: [InstallCandidate] = []
+    var installTarget: DBILayout.InstallTarget = DBILayout.InstallTarget(rawValue: UserDefaults.standard.string(forKey: "installTarget") ?? "") ?? .sdCard {
+        didSet { UserDefaults.standard.set(installTarget.rawValue, forKey: "installTarget") }
+    }
 
     // Prompts driven by the UI.
     var isShowingNewFolderPrompt = false
@@ -98,7 +112,11 @@ final class DeviceConnection {
     func loadStorages() async {
         do {
             storages = try await session.storages()
-            if selectedStorageID == nil || !storages.contains(where: { $0.id == selectedStorageID }) {
+            if dbiLayout != nil {
+                showsLibrary = true
+                Task { await TitleDatabase.shared.loadIfNeeded() }
+                await reloadLibrary()
+            } else if selectedStorageID == nil || !storages.contains(where: { $0.id == selectedStorageID }) {
                 await selectStorage(storages.first?.id)
             }
         } catch {
@@ -106,7 +124,25 @@ final class DeviceConnection {
         }
     }
 
+    var sidebarSelection: SidebarItem? {
+        if showsLibrary { return .library }
+        return selectedStorageID.map(SidebarItem.storage)
+    }
+
+    func select(_ item: SidebarItem?) async {
+        switch item {
+        case .library:
+            showsLibrary = true
+        case .storage(let id):
+            showsLibrary = false
+            await selectStorage(id)
+        case nil:
+            break
+        }
+    }
+
     func selectStorage(_ id: UInt32?) async {
+        showsLibrary = false
         guard id != selectedStorageID else { return }
         selectedStorageID = id
         path = []
@@ -155,6 +191,58 @@ final class DeviceConnection {
             guard generation == listingGeneration else { return }
             items = []
             report("Couldn't list folder", error)
+        }
+    }
+
+    // MARK: - Switch library
+
+    func reloadLibrary() async {
+        guard let layout = dbiLayout, !isDisconnected else { return }
+        await library.reload(session: session, layout: layout)
+    }
+
+    func chooseFilesToInstall() {
+        let panel = NSOpenPanel()
+        panel.title = "Install Games, Updates or DLC"
+        panel.prompt = "Review"
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = true
+        panel.allowedContentTypes = []
+        guard panel.runModal() == .OK else { return }
+        prepareInstall(panel.urls)
+    }
+
+    func prepareInstall(_ urls: [URL]) {
+        let plan = InstallPlanner.plan(urls, library: library)
+        if plan.isEmpty {
+            onError?("Nothing to install", MTPError.localFile("No NSP, NSZ, XCI or XCZ files were found in the dropped items."))
+        } else {
+            pendingInstall = plan
+        }
+    }
+
+    func startPendingInstall() {
+        guard let target = dbiLayout?.storage(for: installTarget) else { return }
+        for candidate in pendingInstall where candidate.isSelected {
+            transfers.enqueueUpload(candidate.url, storageID: target.id, parent: MTPConstants.rootParent)
+        }
+        pendingInstall = []
+    }
+
+    /// Saves a game's installed contents (or DBI's merged dump) to a folder on the Mac.
+    func backUp(_ game: InstalledGame) {
+        let objects = game.contents.isEmpty ? [game.mergedDump].compactMap { $0 } : game.contents.map(\.object)
+        chooseDownloadDestination(for: objects)
+    }
+
+    func showInFiles(_ game: InstalledGame, layout: DBILayout) {
+        guard let folder = game.folder else { return }
+        Task {
+            showsLibrary = false
+            selectedStorageID = layout.installedGames.id
+            path = [PathEntry(handle: folder.handle, name: folder.name)]
+            await reload()
         }
     }
 
@@ -261,11 +349,15 @@ final class DeviceConnection {
             onError?("Transfer of “\(transfer.name)” failed", MTPError.localFile(message))
         }
         guard transfer.direction == .upload else { return }
+        let isInstall = [dbiLayout?.sdInstall?.id, dbiLayout?.nandInstall?.id].contains(transfer.storageID)
         Task {
             if transfer.parent == currentParent, transfer.storageID == selectedStorageID {
                 await reload()
             }
             await refreshStorageInfo()
+            if isInstall, transfer.state == .completed, !transfers.hasActiveTransfers {
+                await reloadLibrary()
+            }
         }
     }
 

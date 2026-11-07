@@ -17,10 +17,16 @@ struct SidebarView: View {
             }
 
             if let connection = model.connection {
-                Section(connection.displayName) {
+                if connection.dbiLayout != nil {
+                    Section("Switch") {
+                        Label("Game Library", systemImage: "square.grid.2x2.fill")
+                            .tag(DeviceConnection.SidebarItem.library)
+                    }
+                }
+                Section(connection.dbiLayout != nil ? "Storage" : connection.displayName) {
                     ForEach(connection.storages) { storage in
                         StorageRow(storage: storage)
-                            .tag(storage.id)
+                            .tag(DeviceConnection.SidebarItem.storage(storage.id))
                     }
                 }
             }
@@ -28,12 +34,12 @@ struct SidebarView: View {
         .listStyle(.sidebar)
     }
 
-    private var storageSelection: Binding<UInt32?> {
+    private var storageSelection: Binding<DeviceConnection.SidebarItem?> {
         Binding(
-            get: { model.connection?.selectedStorageID },
-            set: { id in
+            get: { model.connection?.sidebarSelection },
+            set: { item in
                 guard let connection = model.connection else { return }
-                Task { await connection.selectStorage(id) }
+                Task { await connection.select(item) }
             }
         )
     }

@@ -32,6 +32,43 @@ do {
     print("Extension: \(info.vendorExtensionDescription)")
     print("Operations: " + info.operationsSupported.map(\.description).sorted().joined(separator: ", "))
 
+    let args = CommandLine.arguments
+    // --list <storageID hex> [parent handle]: list one folder in full and exit.
+    if let i = args.firstIndex(of: "--list"), args.count > i + 1, let storageID = UInt32(args[i + 1], radix: 16) {
+        let parent = args.count > i + 2 ? UInt32(args[i + 2]) ?? MTPConstants.rootParent : MTPConstants.rootParent
+        for item in try await session.contents(storageID: storageID, parent: parent) {
+            print("[\(item.handle)] \(item.isFolder ? "📁" : "  ") \(item.name)  \(item.isFolder ? "" : "\(item.size) B")")
+        }
+        await session.close()
+        exit(0)
+    }
+    // --cat <handle>: print a small file and exit.
+    if let i = args.firstIndex(of: "--cat"), args.count > i + 1, let handle = UInt32(args[i + 1]) {
+        print(String(decoding: try await session.data(of: handle), as: UTF8.self))
+        await session.close()
+        exit(0)
+    }
+
+    // --upload <storageID hex> <file>: upload into the storage root and exit.
+    if let i = args.firstIndex(of: "--upload"), args.count > i + 2, let storageID = UInt32(args[i + 1], radix: 16) {
+        let url = URL(fileURLWithPath: args[i + 2])
+        let start = Date()
+        let lastPrint = LockedDate()
+        do {
+            let handle = try await session.upload(url, storageID: storageID) { done, total in
+                if lastPrint.shouldPrint() {
+                    print(String(format: "  %.1f%%  %llu / %llu  %.1f MB/s", Double(done) / Double(max(total, 1)) * 100, done, total,
+                                 Double(done) / Date().timeIntervalSince(start) / 1_000_000))
+                }
+            }
+            print(String(format: "Uploaded as handle %u in %.1fs", handle, Date().timeIntervalSince(start)))
+        } catch {
+            print(String(format: "Upload failed after %.1fs: %@", Date().timeIntervalSince(start), error.localizedDescription))
+        }
+        await session.close()
+        exit(0)
+    }
+
     for storage in try await session.storages() {
         let s = storage.info
         print(String(format: "\nStorage 0x%08X “%@” free %llu / %llu, access %d", storage.id, s.displayName, s.freeSpaceInBytes, s.maxCapacity, s.accessCapability))
@@ -43,7 +80,6 @@ do {
         }
     }
 
-    let args = CommandLine.arguments
     if let i = args.firstIndex(of: "--download"), args.count > i + 2, let handle = UInt32(args[i + 1]) {
         let object = try await session.object(handle)
         let start = Date()
@@ -55,4 +91,16 @@ do {
 } catch {
     print("Error: \(error.localizedDescription)")
     exit(1)
+}
+
+final class LockedDate: @unchecked Sendable {
+    private let lock = NSLock()
+    private var last = Date.distantPast
+    func shouldPrint() -> Bool {
+        lock.withLock {
+            guard Date().timeIntervalSince(last) > 2 else { return false }
+            last = Date()
+            return true
+        }
+    }
 }

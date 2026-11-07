@@ -11,8 +11,13 @@ struct ContentView: View {
                 .navigationSplitViewColumnWidth(min: 200, ideal: 240, max: 320)
         } detail: {
             if let connection = model.connection {
-                BrowserView(connection: connection)
-                    .id(ObjectIdentifier(connection))
+                if connection.showsLibrary, let layout = connection.dbiLayout {
+                    SwitchLibraryView(connection: connection, layout: layout)
+                        .id(ObjectIdentifier(connection))
+                } else {
+                    BrowserView(connection: connection)
+                        .id(ObjectIdentifier(connection))
+                }
             } else {
                 EmptyStateView()
             }

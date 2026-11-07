@@ -1,0 +1,168 @@
+import Foundation
+import MTPKit
+import Observation
+
+/// The special storages DBI's MTP responder exposes.
+struct DBILayout: Equatable {
+    var installedGames: MTPStorage
+    var sdInstall: MTPStorage?
+    var nandInstall: MTPStorage?
+    var saves: MTPStorage?
+    var album: MTPStorage?
+
+    /// DBI names its storages "N: Description".
+    init?(storages: [MTPStorage]) {
+        func find(_ name: String) -> MTPStorage? {
+            storages.first { DBILayout.baseName($0.info.displayName).caseInsensitiveCompare(name) == .orderedSame }
+        }
+        guard let installed = find("Installed games"), find("SD Card install") != nil || find("NAND install") != nil else { return nil }
+        installedGames = installed
+        sdInstall = find("SD Card install")
+        nandInstall = find("NAND install")
+        saves = find("Saves")
+        album = find("Album")
+    }
+
+    static func baseName(_ name: String) -> String {
+        guard let colon = name.firstIndex(of: ":"), name[..<colon].allSatisfy(\.isNumber) else { return name }
+        return name[name.index(after: colon)...].trimmingCharacters(in: .whitespaces)
+    }
+
+    enum InstallTarget: String, CaseIterable, Identifiable {
+        case sdCard, nand
+        var id: String { rawValue }
+        var label: String { self == .sdCard ? "SD Card" : "System Memory" }
+    }
+
+    func storage(for target: InstallTarget) -> MTPStorage? {
+        target == .sdCard ? sdInstall : nandInstall
+    }
+}
+
+/// An installed game as reported by DBI, with its base / update / DLC contents.
+struct InstalledGame: Identifiable, Hashable {
+    struct Content: Identifiable, Hashable {
+        var id: UInt32 { object.handle }
+        var object: MTPObject
+        var info: SwitchFileInfo
+
+        var titleID: TitleID? { info.titleID }
+        var kind: TitleID.Kind { info.kind ?? .application }
+    }
+
+    var id: String
+    /// Name as shown on the console.
+    var name: String
+    var applicationID: TitleID?
+    var folder: MTPObject?
+    /// DBI's merged dump of base + update + DLC, if offered.
+    var mergedDump: MTPObject?
+    var contents: [Content] = []
+    var summary: SwitchFileInfo.DBISummary?
+    var contentsLoaded = false
+
+    var hasBase: Bool {
+        contents.contains { $0.kind == .application } || summary?.hasBase == true
+    }
+
+    var updateVersion: UInt32? {
+        contents.filter { $0.kind == .update }.compactMap(\.info.version).max() ?? summary?.updateVersion
+    }
+
+    var dlcIDs: Set<TitleID> {
+        Set(contents.filter { $0.kind == .addOn }.compactMap(\.titleID))
+    }
+
+    var dlcCount: Int {
+        contentsLoaded ? contents.filter { $0.kind == .addOn }.count : summary?.dlcCount ?? 0
+    }
+
+    var totalSize: UInt64 {
+        if contentsLoaded, !contents.isEmpty { return contents.reduce(0) { $0 + $1.object.size } }
+        return mergedDump?.size ?? 0
+    }
+}
+
+@MainActor
+@Observable
+final class SwitchLibrary {
+    private(set) var games: [InstalledGame] = []
+    private(set) var isLoading = false
+    private(set) var lastError: String?
+    @ObservationIgnored private var generation = 0
+
+    func game(for id: TitleID) -> InstalledGame? {
+        games.first { $0.applicationID == id.applicationID }
+    }
+
+    func game(named title: String) -> InstalledGame? {
+        let key = SwitchFileInfo.normalize(title)
+        guard !key.isEmpty else { return nil }
+        return games.first { SwitchFileInfo.normalize($0.name) == key }
+    }
+
+    func reload(session: MTPSession, layout: DBILayout) async {
+        generation += 1
+        let current = generation
+        isLoading = true
+        lastError = nil
+        defer { if current == generation { isLoading = false } }
+
+        let storageID = layout.installedGames.id
+        let root: [MTPObject]
+        do {
+            root = try await session.contents(storageID: storageID)
+        } catch {
+            lastError = error.localizedDescription
+            return
+        }
+        guard current == generation else { return }
+
+        // Group the root listing: one folder per game plus DBI's merged dumps next to them.
+        var byKey: [String: InstalledGame] = [:]
+        var order: [String] = []
+        func upsert(_ key: String, _ update: (inout InstalledGame) -> Void, name: String) {
+            if byKey[key] == nil {
+                byKey[key] = InstalledGame(id: key, name: name)
+                order.append(key)
+            }
+            update(&byKey[key]!)
+        }
+
+        for object in root {
+            let info = SwitchFileInfo(fileName: object.name)
+            let key = SwitchFileInfo.normalize(object.isFolder ? object.name : info.title)
+            let name = object.isFolder ? object.name : info.title
+            if object.isFolder {
+                upsert(key, { $0.folder = object }, name: name)
+            } else if info.isInstallable {
+                upsert(key, { game in
+                    if info.summary != nil || game.mergedDump == nil {
+                        game.mergedDump = object
+                        game.summary = info.summary ?? game.summary
+                    }
+                    if let id = info.titleID { game.applicationID = id.applicationID }
+                }, name: name)
+            }
+        }
+
+        games = order.compactMap { byKey[$0] }.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+
+        // Fill in per-content details (title IDs, update versions, DLC) folder by folder.
+        for game in games where game.folder != nil {
+            guard current == generation, let folder = game.folder else { return }
+            guard let children = try? await session.contents(storageID: storageID, parent: folder.handle) else { continue }
+            let contents = children
+                .filter { !$0.isFolder }
+                .map { InstalledGame.Content(object: $0, info: SwitchFileInfo(fileName: $0.name)) }
+                .filter { $0.info.isInstallable }
+                .sorted { ($0.kind, $0.object.name) < ($1.kind, $1.object.name) }
+            guard current == generation, let index = games.firstIndex(where: { $0.id == game.id }) else { return }
+            games[index].contents = contents
+            games[index].contentsLoaded = true
+            if games[index].applicationID == nil {
+                games[index].applicationID = contents.compactMap(\.titleID).first?.applicationID
+            }
+        }
+    }
+}

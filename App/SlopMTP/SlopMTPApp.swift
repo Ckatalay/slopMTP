@@ -11,6 +11,9 @@ struct SlopMTPApp: App {
                 .frame(minWidth: 860, minHeight: 520)
                 .onAppear { model.start() }
         }
+        Settings {
+            SettingsView()
+        }
         .commands {
             CommandGroup(after: .newItem) {
                 Button("New Folder…") { model.connection?.requestNewFolder() }
@@ -19,6 +22,10 @@ struct SlopMTPApp: App {
                 Button("Upload…") { model.connection?.chooseFilesToUpload() }
                     .keyboardShortcut("u", modifiers: [.command])
                     .disabled(model.connection?.canModify != true)
+                Divider()
+                Button("Install Games…") { model.connection?.chooseFilesToInstall() }
+                    .keyboardShortcut("i", modifiers: [.command])
+                    .disabled(model.connection?.dbiLayout == nil)
             }
             CommandGroup(after: .toolbar) {
                 Button("Refresh") { Task { await model.connection?.reload() } }

@@ -155,15 +155,41 @@ struct SwitchLibraryView: View {
     private var content: some View {
         switch viewMode {
         case .grid:
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    header
-                    InstallActivityView(connection: connection, layout: layout)
-                    installedSection
+            GeometryReader { viewport in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        header
+                        InstallActivityView(connection: connection, layout: layout)
+                        installedSection
+                    }
+                    .padding(24)
+                    // Fill at least the visible area so empty space below a short library counts too.
+                    .frame(maxWidth: .infinity, minHeight: viewport.size.height, alignment: .top)
+                    // The whole page's empty space starts a rubber band or deselects; covers and
+                    // controls sit on top and keep their own behaviour.
+                    .background {
+                        Color.clear
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                isGridFocused = true
+                                selection = []
+                            }
+                            .gesture(marqueeGesture)
+                    }
+                    .coordinateSpace(.named(Self.gridSpace))
+                    .overlay(alignment: .topLeading) {
+                        if let marquee {
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.accentColor.opacity(0.15))
+                                .overlay(RoundedRectangle(cornerRadius: 4).strokeBorder(Color.accentColor.opacity(0.8)))
+                                .frame(width: marquee.width, height: marquee.height)
+                                .offset(x: marquee.minX, y: marquee.minY)
+                                .allowsHitTesting(false)
+                        }
+                    }
                 }
-                .padding(24)
+                .softVerticalEdges()
             }
-            .softVerticalEdges()
         case .list:
             VStack(alignment: .leading, spacing: 20) {
                 header
@@ -357,35 +383,6 @@ struct SwitchLibraryView: View {
                         connection.beginFinderDrag(for: selection.contains(game.id) ? selectedGames : [game], displayName: displayName)
                     })
                     .contextMenu { contextMenu(for: game) }
-            }
-        }
-        // The rubber band and click-to-deselect live on the empty background behind the cards,
-        // so a drag that starts on a card is always a drag to Finder.
-        .background {
-            // Extends into the margins around the grid, so a rubber band can start beside,
-            // above or below the cards, not only in the gaps between them.
-            // The hit shape goes on the expanded view, before the negative padding shrinks the
-            // reported frame back to the grid's size.
-            Color.clear
-                .contentShape(Rectangle())
-                .padding(.horizontal, -24)
-                .padding(.top, -12)
-                .padding(.bottom, -24)
-                .onTapGesture {
-                    isGridFocused = true
-                    selection = []
-                }
-                .gesture(marqueeGesture)
-        }
-        .coordinateSpace(.named(Self.gridSpace))
-        .overlay(alignment: .topLeading) {
-            if let marquee {
-                RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.accentColor.opacity(0.15))
-                    .overlay(RoundedRectangle(cornerRadius: 4).strokeBorder(Color.accentColor.opacity(0.8)))
-                    .frame(width: marquee.width, height: marquee.height)
-                    .offset(x: marquee.minX, y: marquee.minY)
-                    .allowsHitTesting(false)
             }
         }
     }

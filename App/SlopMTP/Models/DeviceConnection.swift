@@ -46,6 +46,8 @@ final class DeviceConnection {
     var pendingDeletion: [MTPObject] = []
 
     @ObservationIgnored var onError: ((String, Error) -> Void)?
+    /// What each install transfer is, so the library can update the moment it finishes.
+    @ObservationIgnored private var installCandidates: [UUID: InstallCandidate] = [:]
     @ObservationIgnored private var listingGeneration = 0
 
     private init(device: USBMTPDevice, deviceInfo: DeviceInfo, session: MTPSession) {
@@ -239,14 +241,16 @@ final class DeviceConnection {
     func startPendingInstall() {
         guard let target = dbiLayout?.storage(for: installTarget) else { return }
         for candidate in pendingInstall where candidate.isSelected {
-            transfers.enqueueUpload(candidate.url, storageID: target.id, parent: MTPConstants.rootParent)
+            let transfer = transfers.enqueueUpload(candidate.url, storageID: target.id, parent: MTPConstants.rootParent)
+            installCandidates[transfer.id] = candidate
         }
         pendingInstall = []
     }
 
     /// Saves a game's installed contents (or DBI's merged dump) to a folder on the Mac.
     func backUp(_ game: InstalledGame) {
-        let objects = game.contents.isEmpty ? [game.mergedDump].compactMap { $0 } : game.contents.map(\.object)
+        let real = game.contents.map(\.object).filter { $0.storageID != 0 }
+        let objects = real.isEmpty ? [game.mergedDump].compactMap { $0 } : real
         chooseDownloadDestination(for: objects)
     }
 
@@ -368,6 +372,9 @@ final class DeviceConnection {
             onError?("Transfer of “\(transfer.name)” failed", MTPError.localFile(message))
         }
         guard transfer.direction == .upload else { return }
+        if let candidate = installCandidates.removeValue(forKey: transfer.id), transfer.state == .completed {
+            library.recordInstall(candidate)
+        }
         Task {
             if transfer.parent == currentParent, transfer.storageID == selectedStorageID {
                 await reload()

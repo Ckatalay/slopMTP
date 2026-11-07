@@ -119,7 +119,8 @@ final class TransferQueue {
         append(transfer)
     }
 
-    func enqueueUpload(_ url: URL, storageID: UInt32, parent: UInt32) {
+    @discardableResult
+    func enqueueUpload(_ url: URL, storageID: UInt32, parent: UInt32) -> Transfer {
         let transfer = Transfer(name: url.lastPathComponent, direction: .upload, storageID: storageID, parent: parent) { session, transfer, relay in
             transfer.state = .preparing
             let files = try Self.planUpload(url)
@@ -145,6 +146,7 @@ final class TransferQueue {
             }
         }
         append(transfer)
+        return transfer
     }
 
     // MARK: - Running

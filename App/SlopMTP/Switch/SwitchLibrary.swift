@@ -90,6 +90,10 @@ final class SwitchLibrary {
     private(set) var isLoading = false
     private(set) var lastError: String?
     @ObservationIgnored private var generation = 0
+    @ObservationIgnored private var syntheticHandle: UInt32 = .max
+    /// Handles at or above this are placeholders for recorded installs, not device objects.
+    private let syntheticFloor: UInt32 = .max - 100_000
+    @ObservationIgnored private var recordedInstalls: [InstallCandidate] = []
 
     func game(for id: TitleID) -> InstalledGame? {
         games.first { $0.applicationID == id.applicationID }
@@ -99,6 +103,56 @@ final class SwitchLibrary {
         let key = SwitchFileInfo.normalize(title)
         guard !key.isEmpty else { return nil }
         return games.first { SwitchFileInfo.normalize($0.name) == key }
+    }
+
+    /// Adds a just-installed item without asking the device, which won't list it until its next
+    /// session. The next reload replaces this with what the console actually reports.
+    func recordInstall(_ candidate: InstallCandidate) {
+        recordedInstalls.append(candidate)
+        apply(candidate)
+    }
+
+    /// Whether the console's own listing already includes this install.
+    private func isReported(_ candidate: InstallCandidate) -> Bool {
+        guard let id = candidate.titleID, let game = game(for: id) else { return false }
+        return game.contents.contains { content in
+            content.object.handle < syntheticFloor && content.titleID == id
+                && (candidate.kind != .update || (content.info.version ?? 0) >= candidate.version)
+        }
+    }
+
+    private func apply(_ candidate: InstallCandidate) {
+        syntheticHandle &-= 1
+        var info = candidate.info
+        info.titleID = candidate.titleID ?? info.titleID
+        info.version = candidate.version
+        if info.titleID == nil { info.taggedKind = candidate.kind }
+        let object = MTPObject(
+            handle: syntheticHandle, storageID: 0, parent: 0, name: candidate.url.lastPathComponent,
+            format: .undefined, size: candidate.size, modified: Date()
+        )
+        let content = InstalledGame.Content(object: object, info: info)
+
+        let index = candidate.applicationID.flatMap { app in games.firstIndex { $0.applicationID == app } }
+            ?? games.firstIndex { SwitchFileInfo.normalize($0.name) == SwitchFileInfo.normalize(candidate.info.title) }
+        if let index {
+            // A newer update replaces the old one; everything else is added alongside.
+            if candidate.kind == .update {
+                games[index].contents.removeAll { $0.kind == .update }
+            }
+            games[index].contents.removeAll { $0.titleID != nil && $0.titleID == content.titleID && $0.kind != .update }
+            games[index].contents.append(content)
+            games[index].contents.sort { ($0.kind, $0.object.name) < ($1.kind, $1.object.name) }
+            games[index].contentsLoaded = true
+            if candidate.kind == .application { games[index].summary?.hasBase = true }
+        } else {
+            var game = InstalledGame(id: "installed-\(candidate.applicationID?.description ?? candidate.info.title)", name: candidate.info.title)
+            game.applicationID = candidate.applicationID
+            game.contents = [content]
+            game.contentsLoaded = true
+            games.append(game)
+            games.sort { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+        }
     }
 
     func reload(session: MTPSession, layout: DBILayout) async {
@@ -166,6 +220,11 @@ final class SwitchLibrary {
         }
         guard current == generation else { return }
         games = Self.mergingDuplicates(games)
+
+        // Keep showing installs the console hasn't started reporting yet.
+        let pending = recordedInstalls
+        recordedInstalls = pending.filter { !isReported($0) }
+        recordedInstalls.forEach(apply)
     }
 
     /// Folds entries with the same application ID into one (e.g. an update installed before

@@ -18,6 +18,7 @@ final class AppModel {
         guard !started else { return }
         started = true
         try? FileManager.default.removeItem(at: DeviceConnection.dragDirectory)
+
         watcher.onChange = { [weak self] devices in
             self?.devicesChanged(devices)
         }

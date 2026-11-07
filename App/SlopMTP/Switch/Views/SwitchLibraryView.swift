@@ -1,5 +1,8 @@
 import MTPKit
+import OSLog
 import SwiftUI
+
+private let dragLog = Logger(subsystem: "io.github.ckatalay.SlopMTP", category: "drag")
 
 struct SwitchLibraryView: View {
     @Bindable var connection: DeviceConnection
@@ -215,6 +218,7 @@ struct SwitchLibraryView: View {
                     }
                     .onTapGesture { click(game) }
                     .onDrag {
+                        dragLog.debug("drag card \(displayName(game), privacy: .public)")
                         // Dragging a selected game takes the whole selection, like Finder.
                         let games = selection.contains(game.id) ? selectedGames : [game]
                         return connection.dragProvider(for: games, displayName: displayName)
@@ -225,7 +229,12 @@ struct SwitchLibraryView: View {
         // The rubber band and click-to-deselect live on the empty background behind the cards,
         // so a drag that starts on a card is always a drag to Finder.
         .background {
+            // Extends into the margins around the grid, so a rubber band can start beside,
+            // above or below the cards, not only in the gaps between them.
             Color.clear
+                .padding(.horizontal, -24)
+                .padding(.top, -12)
+                .padding(.bottom, -24)
                 .contentShape(Rectangle())
                 .onTapGesture {
                     isGridFocused = true

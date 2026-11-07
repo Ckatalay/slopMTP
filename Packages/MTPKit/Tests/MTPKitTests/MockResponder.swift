@@ -20,8 +20,11 @@ final class MockResponder: MTPTransport, @unchecked Sendable {
     var supportedOperations: [OperationCode] = [
         .getDeviceInfo, .openSession, .closeSession, .getStorageIDs, .getStorageInfo,
         .getObjectHandles, .getObjectInfo, .getObject, .deleteObject, .sendObjectInfo,
-        .sendObject, .getObjectPropValue, .setObjectPropValue,
+        .sendObject, .getObjectPropValue, .setObjectPropValue, .getObjectPropList, .getPartialObject64,
     ]
+    /// Handles left out of GetObjectPropList replies, to exercise the per-object fallback.
+    var omitFromPropList: Set<UInt32> = []
+    private var eventHandler: (@Sendable (Data) -> Void)?
     /// Pretend this object is larger than 4 GiB in ObjectInfo, while reporting the real size via ObjectSize.
     var hugeSizeOverride: [UInt32: UInt64] = [:]
 
@@ -89,6 +92,19 @@ final class MockResponder: MTPTransport, @unchecked Sendable {
     }
 
     func close() {}
+
+    func startEventStream(_ handler: @escaping @Sendable (Data) -> Void) -> Bool {
+        eventHandler = handler
+        return true
+    }
+
+    func stopEventStream() {
+        eventHandler = nil
+    }
+
+    func emit(_ code: EventCode, _ parameters: [UInt32] = []) {
+        eventHandler?(PTPContainer.encode(type: .event, code: code.rawValue, transactionID: 0, parameters: parameters))
+    }
 
     // MARK: - Responder
 
@@ -209,6 +225,35 @@ final class MockResponder: MTPTransport, @unchecked Sendable {
             var r = PTPDataReader(dataIn)
             nodes[params[0]]?.name = (try? r.readString()) ?? ""
             respond(.ok, tid)
+
+        case .getObjectPropList:
+            let parent = params[0] == 0 ? 0 : params[0]
+            let children = nodes.filter { $0.value.parent == parent && !omitFromPropList.contains($0.key) }.sorted { $0.key < $1.key }
+            var w = PTPDataWriter()
+            w.write(UInt32(children.count * 6))
+            for (handle, node) in children {
+                func element(_ code: ObjectPropertyCode, _ type: PTPDataType) {
+                    w.write(handle)
+                    w.write(code.rawValue)
+                    w.write(type.rawValue)
+                }
+                element(.storageID, .uint32); w.write(Self.storageID)
+                element(.objectFormat, .uint16); w.write(node.isFolder ? ObjectFormat.association.rawValue : ObjectFormat.undefined.rawValue)
+                element(.objectSize, .uint64); w.write(hugeSizeOverride[handle] ?? UInt64(node.data.count))
+                element(.objectFileName, .string); w.writeString(node.name)
+                element(.parentObject, .uint32); w.write(node.parent)
+                // An array-typed property the parser must skip.
+                w.write(handle); w.write(UInt16(0xDC03)); w.write(UInt16(0x4002)); w.writeArray([UInt8(1), 2, 3])
+            }
+            sendData(w.data, code, tid)
+            respond(.ok, tid)
+
+        case .getPartialObject64:
+            guard let node = nodes[params[0]], !node.isFolder else { return respond(.invalidObjectHandle, tid) }
+            let offset = Int(UInt64(params[1]) | UInt64(params[2]) << 32)
+            let end = min(node.data.count, offset + Int(params[3]))
+            sendData(offset < end ? node.data.subdata(in: offset..<end) : Data(), code, tid)
+            respond(.ok, tid, [UInt32(max(0, end - offset))])
 
         case .getObject:
             guard let node = nodes[params[0]], !node.isFolder else { return respond(.invalidObjectHandle, tid) }

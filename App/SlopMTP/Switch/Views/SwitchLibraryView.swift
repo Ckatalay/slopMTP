@@ -16,7 +16,7 @@ struct SwitchLibraryView: View {
     @State private var marqueeBase: Set<String> = []
     @FocusState private var isGridFocused: Bool
 
-    private static let gridSpace = "libraryGrid"
+    nonisolated private static let gridSpace = "libraryGrid"
 
     enum Sort: String, CaseIterable, Identifiable {
         case name = "Name"
@@ -214,6 +214,11 @@ struct SwitchLibraryView: View {
                         cardFrames[game.id] = frame
                     }
                     .onTapGesture { click(game) }
+                    .onDrag {
+                        // Dragging a selected game takes the whole selection, like Finder.
+                        let games = selection.contains(game.id) ? selectedGames : [game]
+                        return connection.dragProvider(for: games, displayName: displayName)
+                    }
                     .contextMenu { contextMenu(for: game) }
             }
         }

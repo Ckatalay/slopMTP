@@ -102,6 +102,25 @@ public struct ResponseCode: RawRepresentable, Hashable, Sendable, CustomStringCo
     }
 }
 
+/// PTP / MTP event codes.
+public struct EventCode: RawRepresentable, Hashable, Sendable {
+    public let rawValue: UInt16
+    public init(rawValue: UInt16) { self.rawValue = rawValue }
+    public init(_ rawValue: UInt16) { self.rawValue = rawValue }
+
+    public static let cancelTransaction = EventCode(0x4001)
+    public static let objectAdded = EventCode(0x4002)
+    public static let objectRemoved = EventCode(0x4003)
+    public static let storeAdded = EventCode(0x4004)
+    public static let storeRemoved = EventCode(0x4005)
+    public static let devicePropChanged = EventCode(0x4006)
+    public static let objectInfoChanged = EventCode(0x4007)
+    public static let deviceInfoChanged = EventCode(0x4008)
+    public static let storeFull = EventCode(0x400A)
+    public static let storageInfoChanged = EventCode(0x400C)
+    public static let objectPropChanged = EventCode(0xC801)
+}
+
 /// Object format codes.
 public struct ObjectFormat: RawRepresentable, Hashable, Sendable {
     public let rawValue: UInt16

@@ -1,6 +1,6 @@
 import Foundation
 import IOKit
-import IOUSBHost
+@preconcurrency import IOUSBHost
 
 /// MTP transport over a USB interface (PTP "Still Image" class or vendor-specific MTP),
 /// built on the IOUSBHost user-space framework.
@@ -14,6 +14,8 @@ public final class USBTransport: MTPTransport, @unchecked Sendable {
     private var bulkOut: IOUSBHostPipe?
     private var interruptIn: IOUSBHostPipe?
     private var terminated = false
+    private var interruptPacketSize = 64
+    private var eventsActive = false
 
     /// Opens the IOUSBHostInterface with the given registry entry ID.
     ///
@@ -63,6 +65,7 @@ public final class USBTransport: MTPTransport, @unchecked Sendable {
                 foundOut = address
             case 0x03 where isIn && foundInterrupt == nil:
                 foundInterrupt = address
+                interruptPacketSize = max(Int(UInt16(littleEndian: ep.wMaxPacketSize) & 0x07FF), 8)
             default:
                 break
             }
@@ -173,8 +176,67 @@ public final class USBTransport: MTPTransport, @unchecked Sendable {
         }
     }
 
+    // MARK: - Events
+
+    public func startEventStream(_ handler: @escaping @Sendable (Data) -> Void) -> Bool {
+        lock.lock()
+        guard let pipe = interruptIn, !terminated, !eventsActive else {
+            lock.unlock()
+            return false
+        }
+        eventsActive = true
+        lock.unlock()
+        armEventRead(on: pipe, handler: handler)
+        return true
+    }
+
+    public func stopEventStream() {
+        lock.lock()
+        let pipe = eventsActive ? interruptIn : nil
+        eventsActive = false
+        lock.unlock()
+        try? pipe?.__abort(with: .asynchronous)
+    }
+
+    /// Queues one asynchronous interrupt read; the completion handler re-arms it.
+    /// Runs on IOUSBHost's own queue, so it never contends with the session's bulk transfers.
+    private func armEventRead(on pipe: IOUSBHostPipe, handler: @escaping @Sendable (Data) -> Void) {
+        guard let data = NSMutableData(length: interruptPacketSize * 2) else { return }
+        // IOUSBHost owns the buffer until the completion handler runs.
+        let buffer = UncheckedBox(data)
+        do {
+            try pipe.enqueueIORequest(with: data, completionTimeout: 0) { [weak self] status, transferred in
+                guard let self else { return }
+                if status == 0, transferred > 0 {
+                    handler(Data(bytes: buffer.value.bytes, count: transferred))
+                }
+                self.lock.lock()
+                let keepGoing = self.eventsActive && !self.terminated && self.interruptIn === pipe
+                self.lock.unlock()
+                guard keepGoing else { return }
+                switch status {
+                case 0:
+                    self.armEventRead(on: pipe, handler: handler)
+                case kIOUSBPipeStalledValue:
+                    try? pipe.clearStall()
+                    self.armEventRead(on: pipe, handler: handler)
+                default:
+                    // Aborted, device gone or an unexpected error: stop listening.
+                    self.lock.lock()
+                    self.eventsActive = false
+                    self.lock.unlock()
+                }
+            }
+        } catch {
+            lock.lock()
+            eventsActive = false
+            lock.unlock()
+        }
+    }
+
     public func close() {
         lock.lock()
+        eventsActive = false
         let interface = self.interface
         let pipes = [bulkIn, bulkOut, interruptIn].compactMap { $0 }
         self.interface = nil
@@ -279,6 +341,11 @@ public final class USBTransport: MTPTransport, @unchecked Sendable {
             return .usb(String(format: "%@ (0x%08X)", error.localizedDescription, UInt32(bitPattern: ioReturn(of: error))))
         }
     }
+}
+
+private struct UncheckedBox<Value>: @unchecked Sendable {
+    let value: Value
+    init(_ value: Value) { self.value = value }
 }
 
 private final class TerminationBox: @unchecked Sendable {

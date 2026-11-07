@@ -67,6 +67,17 @@ private struct TransferRow: View {
                     .lineLimit(1)
             }
             Spacer()
+            if transfer.retry != nil, transfer.state != .completed, transfer.state.isFinished {
+                Button {
+                    transfer.retry?()
+                } label: {
+                    Image(systemName: "arrow.clockwise.circle.fill")
+                }
+                .buttonStyle(.borderless)
+                .foregroundStyle(.secondary)
+                .help(transfer.direction == .download ? "Retry (resumes where it stopped)" : "Retry")
+                .accessibilityLabel("Retry \(transfer.name)")
+            }
             if !transfer.state.isFinished {
                 Button(action: cancel) {
                     Image(systemName: "xmark.circle.fill")

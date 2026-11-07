@@ -10,7 +10,8 @@ A native macOS MTP client, written in Swift and SwiftUI, for browsing and transf
 - Browses every storage the responder exposes (SD card, NAND partitions, DBI's virtual folders), with free space shown
 - Downloads and uploads files and whole folders, with a transfer queue showing progress, speed and time remaining
 - Handles files over 4 GiB (64-bit `ObjectSize`, `SendObjectPropList` when the responder supports it, unknown-length data phases)
-- New folder, rename, delete, drag and drop from Finder
+- New folder, rename, delete, drag and drop to and from Finder
+- Live refresh from device events, fast listings via `GetObjectPropList`, and downloads that resume where they stopped (`GetPartialObject64`)
 - No dependencies: talks to USB directly through Apple's `IOUSBHost` framework (no libusb, no libmtp)
 
 ## Requirements
@@ -73,10 +74,8 @@ Packages/MTPKit/          Reusable protocol library
 
 ## Roadmap
 
-- Device events (interrupt endpoint) for live refresh
-- Drag files out to Finder
-- `GetObjectPropList` for faster listing of large folders
-- Resuming interrupted downloads with `GetPartialObject64`
+- Thumbnails for the Album storage
+- Uninstalling games from the library
 
 ## License
 

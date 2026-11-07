@@ -86,6 +86,25 @@ public struct PTPDataReader: Sendable {
         offset += count
     }
 
+    /// Reads a value of a raw PTP data type code. Array types (0x4001–0x400A) are skipped and
+    /// return nil; unknown types throw, since their length can't be determined.
+    public mutating func readValue(rawType: UInt16) throws -> PTPValue? {
+        if let type = PTPDataType(rawValue: rawType) {
+            return try readValue(of: type)
+        }
+        if (0x4001...0x400A).contains(rawType) {
+            let elementSizes = [1, 1, 2, 2, 4, 4, 8, 8, 16, 16]
+            let size = elementSizes[Int(rawType - 0x4001)]
+            let count = Int(try read(UInt32.self))
+            guard count <= remaining / size else {
+                throw MTPError.malformedData("Array of \(count) elements exceeds remaining \(remaining) bytes")
+            }
+            try skip(count * size)
+            return nil
+        }
+        throw MTPError.malformedData(String(format: "Unknown data type 0x%04X", rawType))
+    }
+
     /// Reads a value of the given PTP data type, returning it as a number or string.
     public mutating func readValue(of type: PTPDataType) throws -> PTPValue {
         switch type {

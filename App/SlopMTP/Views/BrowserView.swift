@@ -61,7 +61,7 @@ struct BrowserView: View {
     // MARK: - Table
 
     private var fileTable: some View {
-        Table(sortedItems, selection: $connection.selection, sortOrder: $sortOrder) {
+        Table(of: MTPObject.self, selection: $connection.selection, sortOrder: $sortOrder) {
             TableColumn("Name", value: \.name, comparator: .localizedStandard) { item in
                 Label {
                     Text(item.name).lineLimit(1)
@@ -81,6 +81,12 @@ struct BrowserView: View {
                     .foregroundStyle(.secondary)
             }
             .width(min: 120, ideal: 160, max: 220)
+        } rows: {
+            ForEach(sortedItems) { item in
+                // Dragging rows to Finder downloads them on drop.
+                TableRow(item)
+                    .itemProvider { connection.dragProvider(for: item) }
+            }
         }
         .contextMenu(forSelectionType: UInt32.self) { handles in
             contextMenu(for: handles)

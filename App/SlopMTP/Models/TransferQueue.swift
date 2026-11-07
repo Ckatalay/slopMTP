@@ -31,11 +31,20 @@ final class Transfer: Identifiable {
     let parent: UInt32
     var state: State = .queued
     var totalBytes: UInt64 = 0
-    var completedBytes: UInt64 = 0
+    var completedBytes: UInt64 = 0 {
+        didSet { externalProgress?.completedUnitCount = Int64(clamping: completedBytes) }
+    }
     var currentFile: String?
     var startedAt: Date?
     var finishedAt: Date?
 
+    /// Where a finished download was saved (the file, or the top folder).
+    var resultURL: URL?
+    /// Re-runs the transfer; downloads resume from their partial files.
+    @ObservationIgnored var retry: (@MainActor () -> Void)?
+    /// Mirrors progress into a system `Progress`, e.g. for a drag to Finder.
+    @ObservationIgnored var externalProgress: Progress?
+    @ObservationIgnored fileprivate var completion: (@MainActor (Transfer) -> Void)?
     @ObservationIgnored fileprivate var task: Task<Void, Never>?
     @ObservationIgnored fileprivate let work: @MainActor (MTPSession, Transfer, ProgressRelay) async throws -> Void
 
@@ -97,26 +106,55 @@ final class TransferQueue {
 
     // MARK: - Enqueueing
 
-    func enqueueDownload(_ object: MTPObject, to directory: URL) {
+    /// Downloads a file or folder. With `resuming`, existing names are reused instead of made
+    /// unique: finished files are skipped and `.part` files continue where they stopped.
+    @discardableResult
+    func enqueueDownload(_ object: MTPObject, to directory: URL, resuming: Bool = false) -> Transfer {
         let transfer = Transfer(name: object.name, direction: .download, storageID: object.storageID, parent: object.parent) { session, transfer, relay in
             transfer.state = .preparing
             var plan: [(MTPObject, URL)] = []
-            let root = try await Self.planDownload(object, into: directory, session: session, plan: &plan)
-            transfer.totalBytes = plan.reduce(0) { $0 + $1.0.size }
+            let root = try await Self.planDownload(object, into: directory, reuseExisting: resuming, session: session, plan: &plan)
+            transfer.resultURL = root
+            let alreadyDone = resuming ? Self.completedSize(of: object, at: root, plan: plan) : 0
+            transfer.totalBytes = plan.reduce(alreadyDone) { $0 + $1.0.size }
+            transfer.completedBytes = alreadyDone
             transfer.state = .running
 
-            var finishedBytes: UInt64 = 0
+            var finishedBytes = alreadyDone
             for (file, url) in plan {
                 try Task.checkCancellation()
                 transfer.currentFile = file.name
-                let base = finishedBytes
-                try await session.download(file, to: url, progress: relay.handler(offset: base))
+                try await session.download(file, to: url, progress: relay.handler(offset: finishedBytes))
                 finishedBytes += file.size
                 transfer.completedBytes = finishedBytes
             }
             transfer.currentFile = root.lastPathComponent
         }
+        transfer.retry = { [weak self] in self?.enqueueDownload(object, to: directory, resuming: true) }
         append(transfer)
+        return transfer
+    }
+
+    /// Downloads and waits for the result, e.g. to hand a file to Finder.
+    func downloadAndWait(_ object: MTPObject, to directory: URL, progress: Progress? = nil) async throws -> URL {
+        let transfer = enqueueDownload(object, to: directory)
+        transfer.externalProgress = progress
+        return try await withCheckedThrowingContinuation { continuation in
+            transfer.completion = { transfer in
+                switch transfer.state {
+                case .completed:
+                    if let url = transfer.resultURL {
+                        continuation.resume(returning: url)
+                    } else {
+                        continuation.resume(throwing: MTPError.localFile("The download produced no file."))
+                    }
+                case .failed(let message):
+                    continuation.resume(throwing: MTPError.localFile(message))
+                default:
+                    continuation.resume(throwing: MTPError.cancelled)
+                }
+            }
+        }
     }
 
     @discardableResult
@@ -145,6 +183,7 @@ final class TransferQueue {
                 }
             }
         }
+        transfer.retry = { [weak self] in self?.enqueueUpload(url, storageID: storageID, parent: parent) }
         append(transfer)
         return transfer
     }
@@ -176,6 +215,8 @@ final class TransferQueue {
             next.finishedAt = Date()
             next.task = nil
             isRunning = false
+            next.completion?(next)
+            next.completion = nil
             onTransferFinished?(next)
             runNext()
         }
@@ -183,18 +224,42 @@ final class TransferQueue {
 
     // MARK: - Planning
 
-    private static func planDownload(_ object: MTPObject, into directory: URL, session: MTPSession, plan: inout [(MTPObject, URL)]) async throws -> URL {
-        let destination = uniqueURL(in: directory, name: sanitize(object.name))
+    private static func planDownload(
+        _ object: MTPObject, into directory: URL, reuseExisting: Bool,
+        session: MTPSession, plan: inout [(MTPObject, URL)]
+    ) async throws -> URL {
+        let name = sanitize(object.name)
+        let destination = reuseExisting ? directory.appendingPathComponent(name) : uniqueURL(in: directory, name: name)
         if object.isFolder {
             try FileManager.default.createDirectory(at: destination, withIntermediateDirectories: true)
             for child in try await session.contents(storageID: object.storageID, parent: object.handle) {
                 try Task.checkCancellation()
-                _ = try await planDownload(child, into: destination, session: session, plan: &plan)
+                _ = try await planDownload(child, into: destination, reuseExisting: reuseExisting, session: session, plan: &plan)
             }
-        } else {
+        } else if !(reuseExisting && isComplete(object, at: destination)) {
             plan.append((object, destination))
         }
         return destination
+    }
+
+    private static func isComplete(_ object: MTPObject, at url: URL) -> Bool {
+        let size = (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? NSNumber)?.uint64Value
+        return size == object.size
+    }
+
+    /// Bytes of `object` already on disk as finished files (for progress when resuming).
+    private static func completedSize(of object: MTPObject, at root: URL, plan: [(MTPObject, URL)]) -> UInt64 {
+        guard object.isFolder else { return 0 }
+        let pending = Set(plan.map(\.1.path))
+        var total: UInt64 = 0
+        let enumerator = FileManager.default.enumerator(at: root, includingPropertiesForKeys: [.fileSizeKey, .isRegularFileKey])
+        while let url = enumerator?.nextObject() as? URL {
+            guard url.pathExtension != "part", !pending.contains(url.path),
+                  let values = try? url.resourceValues(forKeys: [.fileSizeKey, .isRegularFileKey]), values.isRegularFile == true
+            else { continue }
+            total += UInt64(values.fileSize ?? 0)
+        }
+        return total
     }
 
     struct UploadEntry {

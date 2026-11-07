@@ -31,6 +31,8 @@ public actor MTPSession {
     public private(set) var deviceInfo: DeviceInfo?
     public private(set) var sessionID: UInt32?
     private var nextTransactionID: UInt32 = 0
+    /// Set once the device rejects GetObjectPropList, so listings stop trying it.
+    var propListUnsupported = false
 
     public init(transport: any MTPTransport) {
         self.transport = transport
@@ -86,6 +88,24 @@ public actor MTPSession {
         }
         sessionID = nil
         transport.close()
+    }
+
+    /// Device events (object added/removed, storage changes…). Finishes immediately if the
+    /// transport has no event channel. Only one stream can be active at a time.
+    public nonisolated func events() -> AsyncStream<PTPEvent> {
+        let transport = self.transport
+        return AsyncStream { continuation in
+            let started = transport.startEventStream { data in
+                if let event = try? PTPEvent(parsing: data) {
+                    continuation.yield(event)
+                }
+            }
+            guard started else {
+                continuation.finish()
+                return
+            }
+            continuation.onTermination = { _ in transport.stopEventStream() }
+        }
     }
 
     public func fetchDeviceInfo() throws -> DeviceInfo {

@@ -102,6 +102,8 @@ public struct PTPEvent: Equatable, Sendable {
     public var transactionID: UInt32
     public var parameters: [UInt32]
 
+    public var eventCode: EventCode { EventCode(code) }
+
     public init(parsing data: Data) throws {
         let header = try PTPContainerHeader(parsing: data)
         guard header.type == .event else {

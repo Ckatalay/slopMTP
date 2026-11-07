@@ -20,4 +20,15 @@ public protocol MTPTransport: AnyObject, Sendable {
 
     /// Releases the underlying device. Further calls must fail with `MTPError.disconnected`.
     func close()
+
+    /// Starts delivering raw event containers from the interrupt endpoint, independently of
+    /// (and concurrently with) bulk transfers. Returns false if the transport has no event channel.
+    func startEventStream(_ handler: @escaping @Sendable (Data) -> Void) -> Bool
+
+    func stopEventStream()
+}
+
+extension MTPTransport {
+    public func startEventStream(_ handler: @escaping @Sendable (Data) -> Void) -> Bool { false }
+    public func stopEventStream() {}
 }

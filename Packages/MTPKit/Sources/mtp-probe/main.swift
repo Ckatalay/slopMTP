@@ -31,6 +31,7 @@ do {
     print("Model: \(info.manufacturer) \(info.model) \(info.deviceVersion) serial \(info.serialNumber)")
     print("Extension: \(info.vendorExtensionDescription)")
     print("Operations: " + info.operationsSupported.map(\.description).sorted().joined(separator: ", "))
+    print("Events: " + info.eventsSupported.map { String(format: "0x%04X", $0) }.joined(separator: ", "))
 
     let args = CommandLine.arguments
     // --list <storageID hex> [parent handle]: list one folder in full and exit.

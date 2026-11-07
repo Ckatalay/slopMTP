@@ -2,6 +2,7 @@ import AppKit
 import Foundation
 import MTPKit
 import Observation
+import UniformTypeIdentifiers
 
 /// An open MTP session plus browsing and transfer state for one device.
 @MainActor
@@ -48,6 +49,15 @@ final class DeviceConnection {
     @ObservationIgnored var onError: ((String, Error) -> Void)?
     /// What each install transfer is, so the library can update the moment it finishes.
     @ObservationIgnored private var installCandidates: [UUID: InstallCandidate] = [:]
+    @ObservationIgnored private var eventTask: Task<Void, Never>?
+    @ObservationIgnored private var eventRefresh: Task<Void, Never>?
+    @ObservationIgnored private var pendingEventChanges = EventChanges()
+
+    private struct EventChanges {
+        var objects = false
+        var storages = false
+        var isEmpty: Bool { !objects && !storages }
+    }
     @ObservationIgnored private var listingGeneration = 0
 
     private init(device: USBMTPDevice, deviceInfo: DeviceInfo, session: MTPSession) {
@@ -58,6 +68,7 @@ final class DeviceConnection {
         transfers.onTransferFinished = { [weak self] transfer in
             self?.transferFinished(transfer)
         }
+        startListeningForEvents()
     }
 
     static func open(_ device: USBMTPDevice) async throws -> DeviceConnection {
@@ -75,14 +86,74 @@ final class DeviceConnection {
     }
 
     func close() async {
+        stopListeningForEvents()
         transfers.cancelAll()
         await session.close()
     }
 
     func markDisconnected() {
         isDisconnected = true
+        stopListeningForEvents()
         transfers.cancelAll()
         Task { await session.close() }
+    }
+
+    // MARK: - Device events
+
+    /// Listens on the interrupt endpoint so the UI follows changes made on the device itself.
+    private func startListeningForEvents() {
+        let events = session.events()
+        eventTask = Task { [weak self] in
+            for await event in events {
+                self?.handle(event)
+            }
+        }
+    }
+
+    private func stopListeningForEvents() {
+        eventTask?.cancel()
+        eventTask = nil
+        eventRefresh?.cancel()
+        eventRefresh = nil
+    }
+
+    private func handle(_ event: PTPEvent) {
+        switch event.eventCode {
+        case .objectAdded, .objectRemoved, .objectInfoChanged, .objectPropChanged:
+            pendingEventChanges.objects = true
+        case .storeAdded, .storeRemoved, .storageInfoChanged, .storeFull, .deviceInfoChanged:
+            pendingEventChanges.storages = true
+        default:
+            return
+        }
+        scheduleEventRefresh()
+    }
+
+    /// Coalesces bursts of events. While transfers run, the refresh waits for them: listings would
+    /// queue behind the transfer anyway, and our own uploads generate events too.
+    private func scheduleEventRefresh() {
+        eventRefresh?.cancel()
+        eventRefresh = Task { [weak self] in
+            try? await Task.sleep(for: .milliseconds(600))
+            guard !Task.isCancelled, let self, !self.transfers.hasActiveTransfers else { return }
+            await self.applyEventChanges()
+        }
+    }
+
+    private func applyEventChanges() async {
+        let changes = pendingEventChanges
+        pendingEventChanges = EventChanges()
+        guard !changes.isEmpty, !isDisconnected else { return }
+        if changes.storages {
+            await refreshStorageInfo()
+        }
+        if changes.objects {
+            if showsLibrary {
+                await reloadLibrary()
+            } else {
+                await reload()
+            }
+        }
     }
 
     // MARK: - Derived state
@@ -469,6 +540,9 @@ final class DeviceConnection {
     }
 
     private func transferFinished(_ transfer: Transfer) {
+        if !transfers.hasActiveTransfers, !pendingEventChanges.isEmpty {
+            scheduleEventRefresh()
+        }
         let isInstall = [dbiLayout?.sdInstall?.id, dbiLayout?.nandInstall?.id].contains(transfer.storageID)
         if isInstall, case .failed = transfer.state, SwitchFileInfo(fileName: transfer.name).isCompressed {
             // DBI rejects NCZ content at the end of the transfer with a generic error when it runs as an applet.
@@ -492,8 +566,86 @@ final class DeviceConnection {
         }
     }
 
+    // MARK: - Drag to Finder
+
+    /// Scratch space for drags; Finder copies the file out of here when the drop completes.
+    static let dragDirectory = FileManager.default.temporaryDirectory.appendingPathComponent("SlopMTP Drags", isDirectory: true)
+
+    private func freshDragDirectory() throws -> URL {
+        let directory = Self.dragDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        return directory
+    }
+
+    /// A promise for a device file or folder: it's downloaded (through the transfer queue, with
+    /// progress) only when dropped, then handed to the drop destination.
+    func dragProvider(for object: MTPObject) -> NSItemProvider {
+        let provider = NSItemProvider()
+        provider.suggestedName = object.name
+        let type = object.isFolder ? UTType.folder : UTType(filenameExtension: (object.name as NSString).pathExtension) ?? .data
+        provider.registerFileRepresentation(forTypeIdentifier: type.identifier, fileOptions: [], visibility: .all) { [weak self] completion in
+            let progress = Progress(totalUnitCount: Int64(clamping: max(object.size, 1)))
+            let reply = UncheckedSendable(completion)
+            let sendableProgress = UncheckedSendable(progress)
+            Task { @MainActor in
+                guard let self else { return reply.value(nil, false, MTPError.disconnected) }
+                do {
+                    let url = try await self.transfers.downloadAndWait(object, to: self.freshDragDirectory(), progress: sendableProgress.value)
+                    reply.value(url, false, nil)
+                } catch {
+                    reply.value(nil, false, error)
+                }
+            }
+            return progress
+        }
+        return provider
+    }
+
+    /// A promise for one or more installed games: a folder per game (or a folder of game folders).
+    func dragProvider(for games: [InstalledGame], displayName: @escaping (InstalledGame) -> String) -> NSItemProvider {
+        let provider = NSItemProvider()
+        let name = games.count == 1 ? Self.sanitize(displayName(games[0])) : "\(games.count) Switch Games"
+        provider.suggestedName = name
+        let jobs = games.map { game in
+            let real = game.contents.map(\.object).filter { $0.storageID != 0 }
+            return (folder: Self.sanitize(displayName(game)), objects: real.isEmpty ? [game.mergedDump].compactMap { $0 } : real)
+        }
+        let total = jobs.flatMap(\.objects).reduce(UInt64(0)) { $0 + $1.size }
+        provider.registerFileRepresentation(forTypeIdentifier: UTType.folder.identifier, fileOptions: [], visibility: .all) { [weak self] completion in
+            let progress = Progress(totalUnitCount: Int64(clamping: max(total, 1)))
+            let reply = UncheckedSendable(completion)
+            let sendableProgress = UncheckedSendable(progress)
+            Task { @MainActor in
+                guard let self else { return reply.value(nil, false, MTPError.disconnected) }
+                do {
+                    let root = try self.freshDragDirectory().appendingPathComponent(name, isDirectory: true)
+                    for job in jobs {
+                        let folder = jobs.count == 1 ? root : root.appendingPathComponent(job.folder, isDirectory: true)
+                        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+                        for object in job.objects {
+                            let step = Progress(totalUnitCount: Int64(clamping: max(object.size, 1)))
+                            sendableProgress.value.addChild(step, withPendingUnitCount: Int64(clamping: object.size))
+                            _ = try await self.transfers.downloadAndWait(object, to: folder, progress: step)
+                        }
+                    }
+                    reply.value(root, false, nil)
+                } catch {
+                    reply.value(nil, false, error)
+                }
+            }
+            return progress
+        }
+        return provider
+    }
+
     private func report(_ title: String, _ error: Error) {
         if case MTPError.disconnected = error { isDisconnected = true }
         onError?(title, error)
     }
+}
+
+/// Carries a value into a `Task` across a `@Sendable` boundary when access is serialized by design.
+struct UncheckedSendable<Value>: @unchecked Sendable {
+    let value: Value
+    init(_ value: Value) { self.value = value }
 }

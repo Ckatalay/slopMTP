@@ -66,5 +66,15 @@ import Testing
         let offset = try #require(PTPDate.parse("20240102T030405.0+0200"))
         #expect(utc.timeIntervalSince(offset) == 7200)
         #expect(PTPDate.parse("garbage") == nil)
+        #expect(PTPDate.parse("19700101T000000") == nil)
+    }
+}
+
+@Suite struct USBTransportTests {
+    @Test func parsesExclusiveOwner() throws {
+        let owner = try #require(USBTransport.parseExclusiveOwner("pid 24197, ptpcamerad"))
+        #expect(owner.pid == 24197)
+        #expect(owner.name == "ptpcamerad")
+        #expect(USBTransport.parseExclusiveOwner("garbage") == nil)
     }
 }

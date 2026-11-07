@@ -15,6 +15,7 @@ let package = Package(
                 .linkedFramework("IOUSBHost"),
             ]
         ),
+        .executableTarget(name: "mtp-probe", dependencies: ["MTPKit"]),
         .testTarget(name: "MTPKitTests", dependencies: ["MTPKit"]),
     ]
 )

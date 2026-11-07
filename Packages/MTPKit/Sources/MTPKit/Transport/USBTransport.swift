@@ -17,8 +17,8 @@ public final class USBTransport: MTPTransport, @unchecked Sendable {
 
     /// Opens the IOUSBHostInterface with the given registry entry ID.
     ///
-    /// If another client (typically `ptpcamerad`) has the interface open, the open is
-    /// retried with `.deviceSeize`, which asks the current owner to let go.
+    /// macOS's camera daemon `ptpcamerad` claims every PTP/MTP interface as soon as it appears.
+    /// See `openInterface(_:interestHandler:)` for how the interface is taken over.
     public convenience init(registryEntryID: UInt64) throws {
         guard let matching = IORegistryEntryIDMatching(registryEntryID) else {
             throw MTPError.deviceNotFound
@@ -37,18 +37,7 @@ public final class USBTransport: MTPTransport, @unchecked Sendable {
             }
         }
 
-        let opened: IOUSBHostInterface
-        do {
-            opened = try IOUSBHostInterface(__ioService: service, options: [], queue: nil, interestHandler: handler)
-        } catch let error as NSError where USBTransport.ioReturn(of: error) == kIOReturnExclusiveAccessValue {
-            do {
-                opened = try IOUSBHostInterface(__ioService: service, options: [.deviceSeize], queue: nil, interestHandler: handler)
-            } catch let error as NSError where USBTransport.ioReturn(of: error) == kIOReturnExclusiveAccessValue {
-                throw MTPError.interfaceBusy
-            }
-        } catch let error as NSError {
-            throw USBTransport.translate(error)
-        }
+        let opened = try USBTransport.openInterface(service, interestHandler: handler)
 
         var foundIn: UInt8?
         var foundOut: UInt8?
@@ -224,13 +213,65 @@ public final class USBTransport: MTPTransport, @unchecked Sendable {
         return isTerminated ? .disconnected : translated
     }
 
+    /// Opens the interface, taking it over from `ptpcamerad` if necessary:
+    /// 1. a plain open;
+    /// 2. an open with `.deviceSeize`, which asks the current owner to close;
+    /// 3. if the owner is `ptpcamerad` (a per-user launch agent that launchd restarts on demand),
+    ///    terminate it and open the interface in the window before it respawns and re-claims it.
+    private static func openInterface(_ service: io_service_t, interestHandler: @escaping IOUSBHostInterestHandler) throws -> IOUSBHostInterface {
+        func attempt(_ options: IOUSBHostObjectInitOptions) throws -> IOUSBHostInterface {
+            try IOUSBHostInterface(__ioService: service, options: options, queue: nil, interestHandler: interestHandler)
+        }
+
+        let firstError: NSError
+        do {
+            return try attempt([])
+        } catch let error as NSError {
+            firstError = error
+        }
+        if let interface = try? attempt([.deviceSeize]) {
+            return interface
+        }
+
+        guard let owner = exclusiveOwner(of: service) else {
+            throw translate(firstError)
+        }
+        guard owner.name == "ptpcamerad", owner.pid > 0 else {
+            throw MTPError.interfaceBusy(owner: owner.name)
+        }
+
+        kill(owner.pid, SIGKILL)
+        let deadline = Date().addingTimeInterval(3)
+        while Date() < deadline {
+            if let interface = try? attempt([]) {
+                return interface
+            }
+            usleep(20_000)
+        }
+        throw MTPError.interfaceBusy(owner: owner.name)
+    }
+
+    /// Parses the registry's `UsbExclusiveOwner` property, e.g. `"pid 24197, ptpcamerad"`.
+    static func exclusiveOwner(of service: io_service_t) -> (pid: pid_t, name: String)? {
+        guard let value = IORegistryEntryCreateCFProperty(service, "UsbExclusiveOwner" as CFString, kCFAllocatorDefault, 0)?
+            .takeRetainedValue() as? String
+        else { return nil }
+        return parseExclusiveOwner(value)
+    }
+
+    static func parseExclusiveOwner(_ value: String) -> (pid: pid_t, name: String)? {
+        let parts = value.split(separator: ",", maxSplits: 1).map { $0.trimmingCharacters(in: .whitespaces) }
+        guard parts.count == 2, parts[0].hasPrefix("pid "), let pid = pid_t(parts[0].dropFirst(4)) else { return nil }
+        return (pid, parts[1])
+    }
+
     static func ioReturn(of error: NSError) -> Int32 {
         Int32(truncatingIfNeeded: error.code)
     }
 
     static func translate(_ error: NSError) -> MTPError {
         switch ioReturn(of: error) {
-        case kIOReturnExclusiveAccessValue: return .interfaceBusy
+        case kIOReturnExclusiveAccessValue: return .interfaceBusy(owner: nil)
         case kIOReturnTimeoutValue: return .timeout
         case kIOReturnNoDeviceValue, kIOReturnNotAttachedValue, kIOReturnNotRespondingValue: return .disconnected
         case kIOReturnAbortedValue: return .cancelled

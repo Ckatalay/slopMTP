@@ -133,7 +133,8 @@ public enum PTPDate {
         func int(_ range: Range<Int>) -> Int? { Int(String(chars[range])) }
         guard chars[8] == "T",
               let year = int(0..<4), let month = int(4..<6), let day = int(6..<8),
-              let hour = int(9..<11), let minute = int(11..<13), let second = int(13..<15)
+              let hour = int(9..<11), let minute = int(11..<13), let second = int(13..<15),
+              year >= 1980 // Responders such as DBI send the Unix epoch when they have no date.
         else { return nil }
 
         var components = DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: second)

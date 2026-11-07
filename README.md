@@ -39,6 +39,13 @@ Protocol tests run without hardware:
 cd Packages/MTPKit && swift test
 ```
 
+To check a real device from the terminal (prints device info, storages and root listings):
+
+```sh
+cd Packages/MTPKit && swift run mtp-probe
+swift run mtp-probe --download <handle> <local path>
+```
+
 ## Usage
 
 1. Start the MTP responder on the Switch.
@@ -47,7 +54,7 @@ cd Packages/MTPKit && swift test
 
 ### Troubleshooting
 
-**"The device's MTP interface is in use by another process."** macOS's camera daemon (`ptpcamerad`) claims every PTP/MTP device it sees. SlopMTP asks it to let go automatically. If that fails, quit Image Capture, Photos, Android File Transfer and OpenMTP, then reconnect. As a last resort, run `killall ptpcamerad` right before clicking Connect.
+**"The device's MTP interface is in use."** macOS's camera daemon (`ptpcamerad`) claims every PTP/MTP device the moment it's plugged in. SlopMTP takes the interface over automatically: it asks the owner to let go and, if the owner is `ptpcamerad`, stops it (it's a per-user launch agent that macOS restarts on demand) and opens the device before it comes back. If another app such as OpenMTP or Android File Transfer holds the device, the error names it; quit that app and reconnect.
 
 **The device doesn't show up.** Make sure the responder is running on the Switch *before* or right after plugging in, and try a different cable or port. USB hubs sometimes cause trouble.
 

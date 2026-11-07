@@ -109,7 +109,7 @@ public final class USBDeviceWatcher {
     // MARK: - Registry inspection
 
     /// Returns a device description if the interface looks like an MTP responder.
-    nonisolated static func describe(_ service: io_service_t) -> USBMTPDevice? {
+    public nonisolated static func describe(_ service: io_service_t) -> USBMTPDevice? {
         let interfaceClass = intProperty(service, "bInterfaceClass") ?? 0
         let interfaceSubClass = intProperty(service, "bInterfaceSubClass") ?? 0
         let interfaceProtocol = intProperty(service, "bInterfaceProtocol") ?? 0

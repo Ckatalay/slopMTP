@@ -2,8 +2,8 @@ import Foundation
 
 public enum MTPError: Error, LocalizedError, Equatable, Sendable {
     case deviceNotFound
-    /// Another process (usually macOS's `ptpcamerad`) holds the USB interface.
-    case interfaceBusy
+    /// Another process holds the USB interface. `owner` is its name when known.
+    case interfaceBusy(owner: String?)
     case usb(String)
     case timeout
     case disconnected
@@ -20,7 +20,9 @@ public enum MTPError: Error, LocalizedError, Equatable, Sendable {
         switch self {
         case .deviceNotFound:
             return "The MTP device could not be found. Is it still connected?"
-        case .interfaceBusy:
+        case .interfaceBusy(let owner?):
+            return "The device's MTP interface is in use by “\(owner)”. Quit it and try again."
+        case .interfaceBusy(nil):
             return "The device's MTP interface is in use by another process. Quit Image Capture, Photos, Android File Transfer or OpenMTP and try again."
         case .usb(let message):
             return "USB error: \(message)"

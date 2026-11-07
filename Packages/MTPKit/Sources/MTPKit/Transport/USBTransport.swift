@@ -1,0 +1,255 @@
+import Foundation
+import IOKit
+import IOUSBHost
+
+/// MTP transport over a USB interface (PTP "Still Image" class or vendor-specific MTP),
+/// built on the IOUSBHost user-space framework.
+public final class USBTransport: MTPTransport, @unchecked Sendable {
+    public let maxPacketSize: Int
+    public let interfaceNumber: UInt8
+
+    private let lock = NSLock()
+    private var interface: IOUSBHostInterface?
+    private var bulkIn: IOUSBHostPipe?
+    private var bulkOut: IOUSBHostPipe?
+    private var interruptIn: IOUSBHostPipe?
+    private var terminated = false
+
+    /// Opens the IOUSBHostInterface with the given registry entry ID.
+    ///
+    /// If another client (typically `ptpcamerad`) has the interface open, the open is
+    /// retried with `.deviceSeize`, which asks the current owner to let go.
+    public convenience init(registryEntryID: UInt64) throws {
+        guard let matching = IORegistryEntryIDMatching(registryEntryID) else {
+            throw MTPError.deviceNotFound
+        }
+        let service = IOServiceGetMatchingService(kIOMainPortDefault, matching)
+        guard service != IO_OBJECT_NULL else { throw MTPError.deviceNotFound }
+        defer { IOObjectRelease(service) }
+        try self.init(service: service)
+    }
+
+    public init(service: io_service_t) throws {
+        let box = TerminationBox()
+        let handler: IOUSBHostInterestHandler = { _, messageType, _ in
+            if messageType == kIOMessageServiceIsTerminated {
+                box.transport?.markTerminated()
+            }
+        }
+
+        let opened: IOUSBHostInterface
+        do {
+            opened = try IOUSBHostInterface(__ioService: service, options: [], queue: nil, interestHandler: handler)
+        } catch let error as NSError where USBTransport.ioReturn(of: error) == kIOReturnExclusiveAccessValue {
+            do {
+                opened = try IOUSBHostInterface(__ioService: service, options: [.deviceSeize], queue: nil, interestHandler: handler)
+            } catch let error as NSError where USBTransport.ioReturn(of: error) == kIOReturnExclusiveAccessValue {
+                throw MTPError.interfaceBusy
+            }
+        } catch let error as NSError {
+            throw USBTransport.translate(error)
+        }
+
+        var foundIn: UInt8?
+        var foundOut: UInt8?
+        var foundInterrupt: UInt8?
+        var packetSize = 512
+
+        let configuration = opened.configurationDescriptor
+        let interfaceDescriptor = opened.interfaceDescriptor
+        var endpoint: UnsafePointer<IOUSBEndpointDescriptor>?
+        repeat {
+            endpoint = IOUSBGetNextEndpointDescriptor(
+                configuration, interfaceDescriptor,
+                UnsafePointer<IOUSBDescriptorHeader>(OpaquePointer(endpoint))
+            )
+            guard let ep = endpoint?.pointee else { continue }
+            let address = ep.bEndpointAddress
+            let isIn = address & 0x80 != 0
+            switch ep.bmAttributes & 0x03 {
+            case 0x02 where isIn && foundIn == nil:
+                foundIn = address
+                packetSize = Int(UInt16(littleEndian: ep.wMaxPacketSize) & 0x07FF)
+            case 0x02 where !isIn && foundOut == nil:
+                foundOut = address
+            case 0x03 where isIn && foundInterrupt == nil:
+                foundInterrupt = address
+            default:
+                break
+            }
+        } while endpoint != nil
+
+        guard let inAddress = foundIn, let outAddress = foundOut else {
+            opened.destroy()
+            throw MTPError.usb("The interface has no bulk IN/OUT endpoint pair.")
+        }
+
+        do {
+            bulkIn = try opened.copyPipe(withAddress: Int(inAddress))
+            bulkOut = try opened.copyPipe(withAddress: Int(outAddress))
+            if let interruptAddress = foundInterrupt {
+                interruptIn = try? opened.copyPipe(withAddress: Int(interruptAddress))
+            }
+        } catch let error as NSError {
+            opened.destroy()
+            throw USBTransport.translate(error)
+        }
+
+        interface = opened
+        interfaceNumber = interfaceDescriptor.pointee.bInterfaceNumber
+        maxPacketSize = max(packetSize, 64)
+        box.transport = self
+    }
+
+    deinit {
+        close()
+    }
+
+    // MARK: - MTPTransport
+
+    public func write(_ data: Data, timeout: TimeInterval) throws {
+        let pipe = try pipe(\.bulkOut)
+        let buffer: NSMutableData? = data.isEmpty ? nil : NSMutableData(data: data)
+        var transferred = 0
+        do {
+            try pipe.__sendIORequest(with: buffer, bytesTransferred: &transferred, completionTimeout: timeout)
+        } catch let error as NSError {
+            throw recover(from: error, pipe: pipe)
+        }
+        guard transferred == data.count else {
+            throw MTPError.usb("Short write: \(transferred) of \(data.count) bytes")
+        }
+    }
+
+    public func read(maxLength: Int, timeout: TimeInterval) throws -> Data {
+        let pipe = try pipe(\.bulkIn)
+        guard let buffer = NSMutableData(length: maxLength) else {
+            throw MTPError.usb("Could not allocate a \(maxLength)-byte buffer")
+        }
+        var transferred = 0
+        do {
+            try pipe.__sendIORequest(with: buffer, bytesTransferred: &transferred, completionTimeout: timeout)
+        } catch let error as NSError {
+            throw recover(from: error, pipe: pipe)
+        }
+        return Data(bytes: buffer.bytes, count: transferred)
+    }
+
+    public func cancelTransaction(_ transactionID: UInt32) throws {
+        lock.lock()
+        let interface = self.interface
+        let pipes = [bulkIn, bulkOut].compactMap { $0 }
+        lock.unlock()
+        guard let interface else { throw MTPError.disconnected }
+
+        // PIMA 15740 USB still image class "Cancel Request" (bRequest 0x64):
+        // 6 bytes of data — cancellation code 0x4001 followed by the transaction ID.
+        var payload = PTPDataWriter()
+        payload.write(UInt16(0x4001))
+        payload.write(transactionID)
+        let request = IOUSBDeviceRequest(
+            bmRequestType: 0x21, // host-to-device | class | interface
+            bRequest: 0x64,
+            wValue: 0,
+            wIndex: UInt16(interfaceNumber),
+            wLength: UInt16(payload.data.count)
+        )
+        var transferred = 0
+        try? interface.__send(request, data: NSMutableData(data: payload.data), bytesTransferred: &transferred, completionTimeout: 5)
+
+        for pipe in pipes {
+            try? pipe.__abort(with: .synchronous)
+            try? pipe.clearStall()
+        }
+
+        // Poll "Get Device Status" (bRequest 0x67) until the device reports OK (0x2001).
+        let statusRequest = IOUSBDeviceRequest(
+            bmRequestType: 0xA1, // device-to-host | class | interface
+            bRequest: 0x67,
+            wValue: 0,
+            wIndex: UInt16(interfaceNumber),
+            wLength: 20
+        )
+        for _ in 0..<20 {
+            guard let buffer = NSMutableData(length: 20) else { break }
+            var count = 0
+            guard (try? interface.__send(statusRequest, data: buffer, bytesTransferred: &count, completionTimeout: 2)) != nil,
+                  count >= 4
+            else { break }
+            var reader = PTPDataReader(Data(bytes: buffer.bytes, count: count))
+            _ = try? reader.read(UInt16.self)
+            let code: UInt16 = (try? reader.read()) ?? 0
+            if code == ResponseCode.ok.rawValue { return }
+            Thread.sleep(forTimeInterval: 0.1)
+        }
+    }
+
+    public func close() {
+        lock.lock()
+        let interface = self.interface
+        let pipes = [bulkIn, bulkOut, interruptIn].compactMap { $0 }
+        self.interface = nil
+        bulkIn = nil
+        bulkOut = nil
+        interruptIn = nil
+        lock.unlock()
+
+        for pipe in pipes { try? pipe.__abort(with: .synchronous) }
+        interface?.destroy()
+    }
+
+    // MARK: - Helpers
+
+    private func markTerminated() {
+        lock.lock()
+        terminated = true
+        lock.unlock()
+    }
+
+    private func pipe(_ keyPath: KeyPath<USBTransport, IOUSBHostPipe?>) throws -> IOUSBHostPipe {
+        lock.lock()
+        defer { lock.unlock() }
+        guard !terminated, let pipe = self[keyPath: keyPath] else { throw MTPError.disconnected }
+        return pipe
+    }
+
+    private func recover(from error: NSError, pipe: IOUSBHostPipe) -> MTPError {
+        let translated = USBTransport.translate(error)
+        if USBTransport.ioReturn(of: error) == kIOUSBPipeStalledValue {
+            try? pipe.clearStall()
+        }
+        lock.lock()
+        let isTerminated = terminated
+        lock.unlock()
+        return isTerminated ? .disconnected : translated
+    }
+
+    static func ioReturn(of error: NSError) -> Int32 {
+        Int32(truncatingIfNeeded: error.code)
+    }
+
+    static func translate(_ error: NSError) -> MTPError {
+        switch ioReturn(of: error) {
+        case kIOReturnExclusiveAccessValue: return .interfaceBusy
+        case kIOReturnTimeoutValue: return .timeout
+        case kIOReturnNoDeviceValue, kIOReturnNotAttachedValue, kIOReturnNotRespondingValue: return .disconnected
+        case kIOReturnAbortedValue: return .cancelled
+        default:
+            return .usb(String(format: "%@ (0x%08X)", error.localizedDescription, UInt32(bitPattern: ioReturn(of: error))))
+        }
+    }
+}
+
+private final class TerminationBox: @unchecked Sendable {
+    weak var transport: USBTransport?
+}
+
+// IOReturn values (the C macros are not imported into Swift).
+let kIOReturnExclusiveAccessValue = Int32(bitPattern: 0xE000_02C5)
+let kIOReturnTimeoutValue = Int32(bitPattern: 0xE000_02D6)
+let kIOReturnNoDeviceValue = Int32(bitPattern: 0xE000_02C0)
+let kIOReturnNotAttachedValue = Int32(bitPattern: 0xE000_02DD)
+let kIOReturnNotRespondingValue = Int32(bitPattern: 0xE000_02ED)
+let kIOReturnAbortedValue = Int32(bitPattern: 0xE000_02EB)
+let kIOUSBPipeStalledValue = Int32(bitPattern: 0xE000_404F)
+let kIOMessageServiceIsTerminated: UInt32 = 0xE000_0010

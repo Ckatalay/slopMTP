@@ -1,0 +1,400 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0023A33371A4C0DB162D941F /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7F0ECFF8E070F3B69E5EF4 /* SidebarView.swift */; };
+		299DF9C4DCFD49770EF16B96 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198603BABEFDE82145A7B9F1 /* AppModel.swift */; };
+		3F08F5B2B38A2A8EFCD6C16A /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0933B207250738E967A982 /* Format.swift */; };
+		8A115C575A343CD1E59E9C6B /* TransfersPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D00E0A1605B07A14BAF66A2 /* TransfersPanel.swift */; };
+		9F03141C5FD633D758C6FAC3 /* TransferQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B8BAAFAF9E35696A28826E /* TransferQueue.swift */; };
+		BCD7B72A6C897DF647481B95 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91BD04A2E000414E911DF9B /* ContentView.swift */; };
+		D00532F7D48F59559403C582 /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D157655520948EA499BE15 /* BrowserView.swift */; };
+		D4487344048D71AAA7E4185B /* MTPKit in Frameworks */ = {isa = PBXBuildFile; productRef = A05D8E8DA9139B1618904CF7 /* MTPKit */; };
+		EA3E1056B54FF0E46DE9A903 /* DeviceConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A696E1950C15E1196F6F9E88 /* DeviceConnection.swift */; };
+		FD37CFA5F3C2C202EAB5E6C0 /* SlopMTPApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3334979DFA01B68915CF477E /* SlopMTPApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		075078FABCF67C1EB60F62AF /* SlopMTP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SlopMTP.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		12B8BAAFAF9E35696A28826E /* TransferQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferQueue.swift; sourceTree = "<group>"; };
+		198603BABEFDE82145A7B9F1 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		2426B3C37A5D2269739A02D4 /* MTPKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MTPKit; path = Packages/MTPKit; sourceTree = SOURCE_ROOT; };
+		29D157655520948EA499BE15 /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
+		3334979DFA01B68915CF477E /* SlopMTPApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlopMTPApp.swift; sourceTree = "<group>"; };
+		3F0933B207250738E967A982 /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
+		3F7F0ECFF8E070F3B69E5EF4 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		9D00E0A1605B07A14BAF66A2 /* TransfersPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransfersPanel.swift; sourceTree = "<group>"; };
+		A696E1950C15E1196F6F9E88 /* DeviceConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceConnection.swift; sourceTree = "<group>"; };
+		F91BD04A2E000414E911DF9B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A3B3436569765A405F751710 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4487344048D71AAA7E4185B /* MTPKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		30BA558C8C9B95958D7A7B51 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				29D157655520948EA499BE15 /* BrowserView.swift */,
+				F91BD04A2E000414E911DF9B /* ContentView.swift */,
+				3F0933B207250738E967A982 /* Format.swift */,
+				3F7F0ECFF8E070F3B69E5EF4 /* SidebarView.swift */,
+				9D00E0A1605B07A14BAF66A2 /* TransfersPanel.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3DEEB061DDB64512A6E7DD75 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				198603BABEFDE82145A7B9F1 /* AppModel.swift */,
+				A696E1950C15E1196F6F9E88 /* DeviceConnection.swift */,
+				12B8BAAFAF9E35696A28826E /* TransferQueue.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4E24C8FAEAA70F87C2FDA510 = {
+			isa = PBXGroup;
+			children = (
+				61D131E80EC8649B25E48A38 /* App */,
+				E62CB96558A10A0F55EFDDFB /* Packages */,
+				F999027C57AAE0E649B07187 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		61D131E80EC8649B25E48A38 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				94331E4F11041F1B476261AC /* SlopMTP */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		94331E4F11041F1B476261AC /* SlopMTP */ = {
+			isa = PBXGroup;
+			children = (
+				3334979DFA01B68915CF477E /* SlopMTPApp.swift */,
+				3DEEB061DDB64512A6E7DD75 /* Models */,
+				30BA558C8C9B95958D7A7B51 /* Views */,
+			);
+			path = SlopMTP;
+			sourceTree = "<group>";
+		};
+		E62CB96558A10A0F55EFDDFB /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				2426B3C37A5D2269739A02D4 /* MTPKit */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		F999027C57AAE0E649B07187 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				075078FABCF67C1EB60F62AF /* SlopMTP.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A53B02217CB53A85F6AF1426 /* SlopMTP */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F5F3342C078E014E093954D6 /* Build configuration list for PBXNativeTarget "SlopMTP" */;
+			buildPhases = (
+				0EB4A9DFF7C971F53984DA6E /* Sources */,
+				A3B3436569765A405F751710 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SlopMTP;
+			packageProductDependencies = (
+				A05D8E8DA9139B1618904CF7 /* MTPKit */,
+			);
+			productName = SlopMTP;
+			productReference = 075078FABCF67C1EB60F62AF /* SlopMTP.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		01DF3DBC8EB2E3FDD73DDCA5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					A53B02217CB53A85F6AF1426 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 9A6ADA814ED5823E376EDD2B /* Build configuration list for PBXProject "SlopMTP" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 4E24C8FAEAA70F87C2FDA510;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A7118B4C2ECF506932F5DB08 /* XCLocalSwiftPackageReference "Packages/MTPKit" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F999027C57AAE0E649B07187 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A53B02217CB53A85F6AF1426 /* SlopMTP */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0EB4A9DFF7C971F53984DA6E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				299DF9C4DCFD49770EF16B96 /* AppModel.swift in Sources */,
+				D00532F7D48F59559403C582 /* BrowserView.swift in Sources */,
+				BCD7B72A6C897DF647481B95 /* ContentView.swift in Sources */,
+				EA3E1056B54FF0E46DE9A903 /* DeviceConnection.swift in Sources */,
+				3F08F5B2B38A2A8EFCD6C16A /* Format.swift in Sources */,
+				0023A33371A4C0DB162D941F /* SidebarView.swift in Sources */,
+				FD37CFA5F3C2C202EAB5E6C0 /* SlopMTPApp.swift in Sources */,
+				9F03141C5FD633D758C6FAC3 /* TransferQueue.swift in Sources */,
+				8A115C575A343CD1E59E9C6B /* TransfersPanel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		15FCA3D778C32648D49BFA24 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		861B9B4DA57C1BC45ABCC323 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		EE8544E47C8920CE7F757B6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SlopMTP;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "MIT License";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.ckatalay.SlopMTP;
+				PRODUCT_NAME = SlopMTP;
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = complete;
+			};
+			name = Debug;
+		};
+		F4304A7BE4A0E7098C2C8783 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SlopMTP;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "MIT License";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.ckatalay.SlopMTP;
+				PRODUCT_NAME = SlopMTP;
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = complete;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9A6ADA814ED5823E376EDD2B /* Build configuration list for PBXProject "SlopMTP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				15FCA3D778C32648D49BFA24 /* Debug */,
+				861B9B4DA57C1BC45ABCC323 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F5F3342C078E014E093954D6 /* Build configuration list for PBXNativeTarget "SlopMTP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE8544E47C8920CE7F757B6C /* Debug */,
+				F4304A7BE4A0E7098C2C8783 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A7118B4C2ECF506932F5DB08 /* XCLocalSwiftPackageReference "Packages/MTPKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/MTPKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A05D8E8DA9139B1618904CF7 /* MTPKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MTPKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 01DF3DBC8EB2E3FDD73DDCA5 /* Project object */;
+}

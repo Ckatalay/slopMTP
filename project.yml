@@ -1,0 +1,54 @@
+name: SlopMTP
+options:
+  bundleIdPrefix: io.github.ckatalay
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+
+packages:
+  MTPKit:
+    path: Packages/MTPKit
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+
+targets:
+  SlopMTP:
+    type: application
+    platform: macOS
+    sources:
+      - App/SlopMTP
+    dependencies:
+      - package: MTPKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.ckatalay.SlopMTP
+        PRODUCT_NAME: SlopMTP
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: SlopMTP
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.utilities
+        INFOPLIST_KEY_NSHumanReadableCopyright: "MIT License"
+        # Not sandboxed: talks to USB devices directly through IOUSBHost.
+        ENABLE_APP_SANDBOX: NO
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_IDENTITY: "-"
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+        SWIFT_STRICT_CONCURRENCY: complete
+
+schemes:
+  SlopMTP:
+    build:
+      targets:
+        SlopMTP: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - package: MTPKit/MTPKitTests

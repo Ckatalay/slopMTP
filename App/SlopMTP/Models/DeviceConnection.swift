@@ -2,6 +2,7 @@ import AppKit
 import Foundation
 import MTPKit
 import Observation
+import CoreTransferable
 import UniformTypeIdentifiers
 
 /// An open MTP session plus browsing and transfer state for one device.
@@ -577,65 +578,34 @@ final class DeviceConnection {
         return directory
     }
 
-    /// A promise for a device file or folder: it's downloaded (through the transfer queue, with
-    /// progress) only when dropped, then handed to the drop destination.
-    func dragProvider(for object: MTPObject) -> NSItemProvider {
-        let provider = NSItemProvider()
-        provider.suggestedName = object.name
-        let type = object.isFolder ? UTType.folder : UTType(filenameExtension: (object.name as NSString).pathExtension) ?? .data
-        provider.registerFileRepresentation(forTypeIdentifier: type.identifier, fileOptions: [], visibility: .all) { [weak self] completion in
-            let progress = Progress(totalUnitCount: Int64(clamping: max(object.size, 1)))
-            let reply = UncheckedSendable(completion)
-            let sendableProgress = UncheckedSendable(progress)
-            Task { @MainActor in
-                guard let self else { return reply.value(nil, false, MTPError.disconnected) }
-                do {
-                    let url = try await self.transfers.downloadAndWait(object, to: self.freshDragDirectory(), progress: sendableProgress.value)
-                    reply.value(url, false, nil)
-                } catch {
-                    reply.value(nil, false, error)
-                }
-            }
-            return progress
+    /// A drag item for a device file or folder. Nothing is downloaded until it's dropped; then it
+    /// goes through the transfer queue (so it shows in Transfers) and is handed to the destination.
+    func dragItem(for object: MTPObject) -> DeviceDragItem {
+        DeviceDragItem(isFolder: object.isFolder) { @MainActor [weak self] in
+            guard let self else { throw MTPError.disconnected }
+            return try await self.transfers.downloadAndWait(object, to: self.freshDragDirectory())
         }
-        return provider
     }
 
-    /// A promise for one or more installed games: a folder per game (or a folder of game folders).
-    func dragProvider(for games: [InstalledGame], displayName: @escaping (InstalledGame) -> String) -> NSItemProvider {
-        let provider = NSItemProvider()
+    /// A drag item for one or more installed games: a folder per game (or a folder of game folders).
+    func dragItem(for games: [InstalledGame], displayName: (InstalledGame) -> String) -> DeviceDragItem {
         let name = games.count == 1 ? Self.sanitize(displayName(games[0])) : "\(games.count) Switch Games"
-        provider.suggestedName = name
         let jobs = games.map { game in
             let real = game.contents.map(\.object).filter { $0.storageID != 0 }
             return (folder: Self.sanitize(displayName(game)), objects: real.isEmpty ? [game.mergedDump].compactMap { $0 } : real)
         }
-        let total = jobs.flatMap(\.objects).reduce(UInt64(0)) { $0 + $1.size }
-        provider.registerFileRepresentation(forTypeIdentifier: UTType.folder.identifier, fileOptions: [], visibility: .all) { [weak self] completion in
-            let progress = Progress(totalUnitCount: Int64(clamping: max(total, 1)))
-            let reply = UncheckedSendable(completion)
-            let sendableProgress = UncheckedSendable(progress)
-            Task { @MainActor in
-                guard let self else { return reply.value(nil, false, MTPError.disconnected) }
-                do {
-                    let root = try self.freshDragDirectory().appendingPathComponent(name, isDirectory: true)
-                    for job in jobs {
-                        let folder = jobs.count == 1 ? root : root.appendingPathComponent(job.folder, isDirectory: true)
-                        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-                        for object in job.objects {
-                            let step = Progress(totalUnitCount: Int64(clamping: max(object.size, 1)))
-                            sendableProgress.value.addChild(step, withPendingUnitCount: Int64(clamping: object.size))
-                            _ = try await self.transfers.downloadAndWait(object, to: folder, progress: step)
-                        }
-                    }
-                    reply.value(root, false, nil)
-                } catch {
-                    reply.value(nil, false, error)
+        return DeviceDragItem(isFolder: true) { @MainActor [weak self] in
+            guard let self else { throw MTPError.disconnected }
+            let root = try self.freshDragDirectory().appendingPathComponent(name, isDirectory: true)
+            for job in jobs {
+                let folder = jobs.count == 1 ? root : root.appendingPathComponent(job.folder, isDirectory: true)
+                try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+                for object in job.objects {
+                    _ = try await self.transfers.downloadAndWait(object, to: folder)
                 }
             }
-            return progress
+            return root
         }
-        return provider
     }
 
     private func report(_ title: String, _ error: Error) {
@@ -644,8 +614,19 @@ final class DeviceConnection {
     }
 }
 
-/// Carries a value into a `Task` across a `@Sendable` boundary when access is serialized by design.
-struct UncheckedSendable<Value>: @unchecked Sendable {
-    let value: Value
-    init(_ value: Value) { self.value = value }
+/// Something on the device that can be dragged out to Finder. The file is produced on drop.
+struct DeviceDragItem: Transferable, Sendable {
+    let isFolder: Bool
+    let export: @Sendable () async throws -> URL
+
+    static var transferRepresentation: some TransferRepresentation {
+        FileRepresentation(exportedContentType: .folder) { item in
+            SentTransferredFile(try await item.export())
+        }
+        .exportingCondition { $0.isFolder }
+        FileRepresentation(exportedContentType: .data) { item in
+            SentTransferredFile(try await item.export())
+        }
+        .exportingCondition { !$0.isFolder }
+    }
 }

@@ -85,7 +85,7 @@ struct BrowserView: View {
             ForEach(sortedItems) { item in
                 // Dragging rows to Finder downloads them on drop.
                 TableRow(item)
-                    .itemProvider { connection.dragProvider(for: item) }
+                    .draggable(connection.dragItem(for: item))
             }
         }
         .contextMenu(forSelectionType: UInt32.self) { handles in

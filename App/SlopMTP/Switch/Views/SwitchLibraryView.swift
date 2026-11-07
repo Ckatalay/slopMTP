@@ -1,8 +1,5 @@
 import MTPKit
-import OSLog
 import SwiftUI
-
-private let dragLog = Logger(subsystem: "io.github.ckatalay.SlopMTP", category: "drag")
 
 struct SwitchLibraryView: View {
     @Bindable var connection: DeviceConnection
@@ -216,12 +213,11 @@ struct SwitchLibraryView: View {
                     .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(Self.gridSpace)) } action: { frame in
                         cardFrames[game.id] = frame
                     }
-                    .onTapGesture { click(game) }
-                    .onDrag {
-                        dragLog.debug("drag card \(displayName(game), privacy: .public)")
-                        // Dragging a selected game takes the whole selection, like Finder.
-                        let games = selection.contains(game.id) ? selectedGames : [game]
-                        return connection.dragProvider(for: games, displayName: displayName)
+                    .simultaneousGesture(TapGesture().onEnded { click(game) })
+                    // Dragging a selected game takes the whole selection, like Finder.
+                    .draggable(connection.dragItem(for: selection.contains(game.id) ? selectedGames : [game], displayName: displayName)) {
+                        CoverArtView(titleID: game.applicationID, name: displayName(game), cornerRadius: 12)
+                            .frame(width: 96, height: 96)
                     }
                     .contextMenu { contextMenu(for: game) }
             }
@@ -231,11 +227,13 @@ struct SwitchLibraryView: View {
         .background {
             // Extends into the margins around the grid, so a rubber band can start beside,
             // above or below the cards, not only in the gaps between them.
+            // The hit shape goes on the expanded view, before the negative padding shrinks the
+            // reported frame back to the grid's size.
             Color.clear
+                .contentShape(Rectangle())
                 .padding(.horizontal, -24)
                 .padding(.top, -12)
                 .padding(.bottom, -24)
-                .contentShape(Rectangle())
                 .onTapGesture {
                     isGridFocused = true
                     selection = []

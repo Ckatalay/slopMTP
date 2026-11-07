@@ -200,7 +200,6 @@ private struct CapacityPill: View {
 
 private struct DropZone: View {
     static let cornerRadius: CGFloat = 24
-    static let borderInset: CGFloat = 6
 
     let isTargeted: Bool
     let targetLabel: String
@@ -226,13 +225,6 @@ private struct DropZone: View {
         }
         .padding(22)
         .glassPanel(cornerRadius: Self.cornerRadius, tint: isTargeted ? .accentColor.opacity(0.35) : nil, interactive: true)
-        .overlay {
-            // Inset border: its radius shrinks by the inset so the corners stay concentric.
-            RoundedRectangle(cornerRadius: Self.cornerRadius - Self.borderInset, style: .continuous)
-                .strokeBorder(style: StrokeStyle(lineWidth: 1.5, dash: [8, 6]))
-                .foregroundStyle(isTargeted ? Color.accentColor : Color.secondary.opacity(0.35))
-                .padding(Self.borderInset)
-        }
         .scaleEffect(isTargeted ? 1.01 : 1)
         .animation(.easeOut(duration: 0.15), value: isTargeted)
     }

@@ -222,13 +222,18 @@ struct SwitchLibraryView: View {
                     .contextMenu { contextMenu(for: game) }
             }
         }
-        .coordinateSpace(.named(Self.gridSpace))
-        .contentShape(Rectangle())
-        .onTapGesture {
-            isGridFocused = true
-            selection = []
+        // The rubber band and click-to-deselect live on the empty background behind the cards,
+        // so a drag that starts on a card is always a drag to Finder.
+        .background {
+            Color.clear
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    isGridFocused = true
+                    selection = []
+                }
+                .gesture(marqueeGesture)
         }
-        .gesture(marqueeGesture)
+        .coordinateSpace(.named(Self.gridSpace))
         .overlay(alignment: .topLeading) {
             if let marquee {
                 RoundedRectangle(cornerRadius: 4)

@@ -8,7 +8,15 @@ struct SwitchLibraryView: View {
     @State private var search = ""
     @State private var sort: Sort = .name
     @State private var isDropTargeted = false
-    @State private var selectedGame: InstalledGame?
+    @State private var detailGame: InstalledGame?
+    @State private var selection: Set<String> = []
+    @State private var selectionAnchor: String?
+    @State private var cardFrames: [String: CGRect] = [:]
+    @State private var marquee: CGRect?
+    @State private var marqueeBase: Set<String> = []
+    @FocusState private var isGridFocused: Bool
+
+    private static let gridSpace = "libraryGrid"
 
     enum Sort: String, CaseIterable, Identifiable {
         case name = "Name"
@@ -46,7 +54,32 @@ struct SwitchLibraryView: View {
             }
             .padding(24)
         }
-        .softTopEdge()
+        .softVerticalEdges()
+        .focusable()
+        .focusEffectDisabled()
+        .focused($isGridFocused)
+        .onCommand(#selector(NSResponder.selectAll(_:))) {
+            selection = Set(visibleGames.map(\.id))
+        }
+        .onExitCommand { selection = [] }
+        .onKeyPress(.return) {
+            guard selection.count == 1, let game = selectedGames.first else { return .ignored }
+            detailGame = game
+            return .handled
+        }
+        .edgeBar(.bottom) {
+            if !selection.isEmpty {
+                SelectionBar(
+                    count: selectedGames.count,
+                    size: selectedGames.reduce(0) { $0 + $1.totalSize },
+                    backUp: { connection.backUp(selectedGames, displayName: displayName) },
+                    clear: { selection = [] }
+                )
+                .padding(12)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+        }
+        .animation(.spring(duration: 0.3), value: selection.isEmpty)
         .dropDestination(for: URL.self) { urls, _ in
             let files = urls.filter(\.isFileURL)
             guard !files.isEmpty else { return false }
@@ -61,7 +94,7 @@ struct SwitchLibraryView: View {
                     .allowsHitTesting(false)
             }
         }
-        .sheet(item: $selectedGame) { game in
+        .sheet(item: $detailGame) { game in
             GameDetailView(game: game, connection: connection)
         }
         .sheet(isPresented: installSheetBinding) {
@@ -77,6 +110,22 @@ struct SwitchLibraryView: View {
                     Label("Install Games", systemImage: "plus")
                 }
                 .help("Install games, updates or DLC")
+                Menu {
+                    Button(selection.isEmpty ? "Back Up Selected Games…" : "Back Up \(selection.count) Selected Games…") {
+                        connection.backUp(selectedGames, displayName: displayName)
+                    }
+                    .disabled(selection.isEmpty)
+                    Button("Back Up All Games…") {
+                        connection.backUp(library.games, displayName: displayName)
+                    }
+                    .disabled(library.games.isEmpty)
+                    Divider()
+                    Button("Back Up All Saves…") { connection.backUpAllSaves(layout: layout) }
+                        .disabled(layout.saves == nil)
+                } label: {
+                    Label("Back Up", systemImage: "externaldrive.badge.timemachine")
+                }
+                .help("Back up games or saves to your Mac")
                 Button {
                     Task { await connection.reloadLibrary(refreshSession: true) }
                 } label: {
@@ -146,26 +195,106 @@ struct SwitchLibraryView: View {
                 }
                 .frame(maxWidth: .infinity, minHeight: 200)
             } else {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 150, maximum: 200), spacing: 20, alignment: .top)], alignment: .leading, spacing: 24) {
-                    ForEach(visibleGames) { game in
-                        Button {
-                            selectedGame = game
-                        } label: {
-                            GameCard(game: game, displayName: displayName(game))
-                        }
-                        .buttonStyle(.plain)
-                        .contextMenu {
-                            Button("Details…") { selectedGame = game }
-                            if game.mergedDump != nil || !game.contents.isEmpty {
-                                Button("Back Up to Mac…") { connection.backUp(game) }
-                            }
-                            if game.folder != nil {
-                                Button("Show in Files") { connection.showInFiles(game, layout: layout) }
-                            }
-                        }
-                    }
-                }
+                grid
             }
+        }
+    }
+
+    // MARK: - Selection
+
+    private var selectedGames: [InstalledGame] {
+        visibleGames.filter { selection.contains($0.id) }
+    }
+
+    private var grid: some View {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 150, maximum: 200), spacing: 20, alignment: .top)], alignment: .leading, spacing: 24) {
+            ForEach(visibleGames) { game in
+                GameCard(game: game, displayName: displayName(game), isSelected: selection.contains(game.id))
+                    .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(Self.gridSpace)) } action: { frame in
+                        cardFrames[game.id] = frame
+                    }
+                    .onTapGesture { click(game) }
+                    .contextMenu { contextMenu(for: game) }
+            }
+        }
+        .coordinateSpace(.named(Self.gridSpace))
+        .contentShape(Rectangle())
+        .onTapGesture {
+            isGridFocused = true
+            selection = []
+        }
+        .gesture(marqueeGesture)
+        .overlay(alignment: .topLeading) {
+            if let marquee {
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(Color.accentColor.opacity(0.15))
+                    .overlay(RoundedRectangle(cornerRadius: 4).strokeBorder(Color.accentColor.opacity(0.8)))
+                    .frame(width: marquee.width, height: marquee.height)
+                    .offset(x: marquee.minX, y: marquee.minY)
+                    .allowsHitTesting(false)
+            }
+        }
+    }
+
+    /// Finder-style rubber-band selection; ⌘ or ⇧ extends the existing selection.
+    private var marqueeGesture: some Gesture {
+        DragGesture(minimumDistance: 4, coordinateSpace: .named(Self.gridSpace))
+            .onChanged { value in
+                if marquee == nil {
+                    isGridFocused = true
+                    let modifiers = NSEvent.modifierFlags
+                    marqueeBase = modifiers.contains(.command) || modifiers.contains(.shift) ? selection : []
+                }
+                let rect = CGRect(
+                    x: min(value.startLocation.x, value.location.x),
+                    y: min(value.startLocation.y, value.location.y),
+                    width: abs(value.location.x - value.startLocation.x),
+                    height: abs(value.location.y - value.startLocation.y)
+                )
+                marquee = rect
+                let visibleIDs = Set(visibleGames.map(\.id))
+                let hit = cardFrames.filter { visibleIDs.contains($0.key) && $0.value.intersects(rect) }.keys
+                selection = marqueeBase.union(hit)
+            }
+            .onEnded { _ in
+                marquee = nil
+                selectionAnchor = selection.count == 1 ? selection.first : selectionAnchor
+            }
+    }
+
+    private func click(_ game: InstalledGame) {
+        isGridFocused = true
+        let modifiers = NSEvent.modifierFlags
+        // Read the click count from the event so single clicks select without waiting for a possible double click.
+        if NSApp.currentEvent?.clickCount == 2, !modifiers.contains(.command), !modifiers.contains(.shift) {
+            selection = [game.id]
+            selectionAnchor = game.id
+            detailGame = game
+        } else if modifiers.contains(.command) {
+            if selection.contains(game.id) { selection.remove(game.id) } else { selection.insert(game.id) }
+            selectionAnchor = game.id
+        } else if modifiers.contains(.shift), let anchor = selectionAnchor,
+                  let from = visibleGames.firstIndex(where: { $0.id == anchor }),
+                  let to = visibleGames.firstIndex(where: { $0.id == game.id }) {
+            selection.formUnion(visibleGames[min(from, to)...max(from, to)].map(\.id))
+        } else {
+            selection = [game.id]
+            selectionAnchor = game.id
+        }
+    }
+
+    @ViewBuilder
+    private func contextMenu(for game: InstalledGame) -> some View {
+        // Right-clicking outside the selection acts on just that game, like Finder.
+        let targets = selection.contains(game.id) ? selectedGames : [game]
+        if targets.count == 1 {
+            Button("Details…") { detailGame = game }
+        }
+        Button(targets.count == 1 ? "Back Up to Mac…" : "Back Up \(targets.count) Games to Mac…") {
+            connection.backUp(targets, displayName: displayName)
+        }
+        if targets.count == 1, game.folder != nil {
+            Button("Show in Files") { connection.showInFiles(game, layout: layout) }
         }
     }
 
@@ -237,15 +366,23 @@ private struct DropZone: View {
 struct GameCard: View {
     let game: InstalledGame
     let displayName: String
+    var isSelected = false
     @State private var isHovered = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             CoverArtView(titleID: game.applicationID, name: displayName, cornerRadius: 14)
                 .shadow(color: .black.opacity(isHovered ? 0.35 : 0.15), radius: isHovered ? 10 : 4, y: isHovered ? 6 : 2)
+                .padding(3)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 17, style: .continuous)
+                        .strokeBorder(Color.accentColor, lineWidth: 3)
+                        .opacity(isSelected ? 1 : 0)
+                }
             Text(displayName)
                 .font(.headline)
                 .lineLimit(2, reservesSpace: true)
+                .foregroundStyle(isSelected ? Color.accentColor : .primary)
             HStack(spacing: 4) {
                 if !game.hasBase, game.contentsLoaded || game.summary != nil {
                     Badge(text: "No base", color: .orange)
@@ -268,7 +405,8 @@ struct GameCard: View {
         .onHover { isHovered = $0 }
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
-        .accessibilityHint("Shows details")
+        .accessibilityAddTraits(isSelected ? [.isSelected, .isButton] : .isButton)
+        .accessibilityHint("Double-click for details")
     }
 }
 
@@ -283,5 +421,37 @@ struct Badge: View {
             .padding(.vertical, 3)
             .foregroundStyle(color)
             .glassCapsule(tint: color.opacity(0.25))
+    }
+}
+
+/// Floating glass bar summarizing the selection.
+private struct SelectionBar: View {
+    let count: Int
+    let size: UInt64
+    let backUp: () -> Void
+    let clear: () -> Void
+
+    var body: some View {
+        HStack(spacing: 14) {
+            VStack(alignment: .leading, spacing: 1) {
+                Text(count == 1 ? "1 game selected" : "\(count) games selected")
+                    .font(.headline)
+                if size > 0 {
+                    Text(Format.bytes(size))
+                        .font(.caption)
+                        .monospacedDigit()
+                        .foregroundStyle(.secondary)
+                }
+            }
+            Spacer()
+            Button("Deselect", action: clear)
+                .glassButtonStyle()
+            Button("Back Up…", action: backUp)
+                .glassButtonStyle(prominent: true)
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 12)
+        .glassPanel(cornerRadius: 22)
+        .frame(maxWidth: 560)
     }
 }

@@ -249,9 +249,115 @@ final class DeviceConnection {
 
     /// Saves a game's installed contents (or DBI's merged dump) to a folder on the Mac.
     func backUp(_ game: InstalledGame) {
-        let real = game.contents.map(\.object).filter { $0.storageID != 0 }
-        let objects = real.isEmpty ? [game.mergedDump].compactMap { $0 } : real
-        chooseDownloadDestination(for: objects)
+        backUp([game]) { game in
+            game.applicationID.flatMap { TitleDatabase.shared.entry(for: $0)?.name } ?? game.name
+        }
+    }
+
+    /// Backs up each game into its own folder, optionally with its save data.
+    func backUp(_ games: [InstalledGame], displayName: (InstalledGame) -> String) {
+        guard !games.isEmpty else { return }
+        let title = games.count == 1 ? "Back Up “\(displayName(games[0]))”" : "Back Up \(games.count) Games"
+        guard let (directory, includeSaves) = chooseBackupFolder(title: title, offerSaves: dbiLayout?.saves != nil) else { return }
+
+        var destinations: [(game: InstalledGame, names: [String], folder: URL)] = []
+        for game in games {
+            let folder = Self.uniqueURL(in: directory, name: Self.sanitize(displayName(game)))
+            do {
+                try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+            } catch {
+                report("Couldn't create a folder for “\(displayName(game))”", error)
+                return
+            }
+            let real = game.contents.map(\.object).filter { $0.storageID != 0 }
+            for object in real.isEmpty ? [game.mergedDump].compactMap({ $0 }) : real {
+                transfers.enqueueDownload(object, to: folder)
+            }
+            destinations.append((game, [game.name, displayName(game)], folder))
+        }
+
+        guard includeSaves, let saves = dbiLayout?.saves else { return }
+        Task {
+            let saveFolders = await self.saveFolders(in: saves)
+            for destination in destinations {
+                let keys = Set(destination.names.map(SwitchFileInfo.normalize))
+                let appID = destination.game.applicationID?.description
+                let matches = saveFolders.filter { folder in
+                    keys.contains(SwitchFileInfo.normalize(SwitchFileInfo.cleanTitle(folder.name)))
+                        || (appID.map { folder.name.uppercased().contains($0) } ?? false)
+                }
+                for save in matches {
+                    transfers.enqueueDownload(save, to: destination.folder)
+                }
+            }
+        }
+    }
+
+    /// Copies DBI's whole Saves storage into a dated folder.
+    func backUpAllSaves(layout: DBILayout) {
+        guard let saves = layout.saves,
+              let (directory, _) = chooseBackupFolder(title: "Back Up All Saves", offerSaves: false)
+        else { return }
+        let stamp = Date().formatted(.iso8601.year().month().day().dateSeparator(.dash))
+        let folder = Self.uniqueURL(in: directory, name: "Switch Saves \(stamp)")
+        Task {
+            do {
+                try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+                for object in try await session.contents(storageID: saves.id) {
+                    transfers.enqueueDownload(object, to: folder)
+                }
+            } catch {
+                report("Couldn't back up saves", error)
+            }
+        }
+    }
+
+    /// Per-game save folders, from DBI's "Saves/Installed games" and "Saves/Uninstalled games".
+    private func saveFolders(in saves: MTPStorage) async -> [MTPObject] {
+        guard let groups = try? await session.contents(storageID: saves.id) else { return [] }
+        var folders: [MTPObject] = []
+        for group in groups where group.isFolder {
+            folders += (try? await session.contents(storageID: saves.id, parent: group.handle))?.filter(\.isFolder) ?? []
+        }
+        return folders
+    }
+
+    private func chooseBackupFolder(title: String, offerSaves: Bool) -> (URL, Bool)? {
+        let panel = NSOpenPanel()
+        panel.title = title
+        panel.prompt = "Back Up Here"
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.canCreateDirectories = true
+        panel.directoryURL = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first
+
+        var checkbox: NSButton?
+        if offerSaves {
+            let box = NSButton(checkboxWithTitle: "Include save data", target: nil, action: nil)
+            box.state = (UserDefaults.standard.object(forKey: "backupIncludesSaves") as? Bool ?? true) ? .on : .off
+            panel.accessoryView = box
+            panel.isAccessoryViewDisclosed = true
+            checkbox = box
+        }
+        guard panel.runModal() == .OK, let url = panel.url else { return nil }
+        let includeSaves = checkbox?.state == .on
+        if checkbox != nil { UserDefaults.standard.set(includeSaves, forKey: "backupIncludesSaves") }
+        return (url, includeSaves)
+    }
+
+    private static func sanitize(_ name: String) -> String {
+        let cleaned = name.replacingOccurrences(of: "/", with: "-").replacingOccurrences(of: ":", with: " -")
+        return cleaned.isEmpty ? "Untitled" : cleaned
+    }
+
+    private static func uniqueURL(in directory: URL, name: String) -> URL {
+        var candidate = directory.appendingPathComponent(name)
+        var counter = 2
+        while FileManager.default.fileExists(atPath: candidate.path) {
+            candidate = directory.appendingPathComponent("\(name) \(counter)")
+            counter += 1
+        }
+        return candidate
     }
 
     func showInFiles(_ game: InstalledGame, layout: DBILayout) {

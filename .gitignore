@@ -10,3 +10,4 @@ xcuserdata/
 .swiftpm/
 Packages/MTPKit/.build/
 Packages/MTPKit/.swiftpm/
+dist/

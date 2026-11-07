@@ -36,10 +36,17 @@ targets:
         # Not sandboxed: talks to USB devices directly through IOUSBHost.
         ENABLE_APP_SANDBOX: NO
         ENABLE_HARDENED_RUNTIME: YES
-        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_STYLE: Manual
         CODE_SIGN_IDENTITY: "-"
         ASSETCATALOG_COMPILER_APPICON_NAME: ""
         SWIFT_STRICT_CONCURRENCY: complete
+      configs:
+        # Release builds are signed for distribution outside the App Store and notarized
+        # by scripts/release.sh. Debug builds stay ad-hoc signed.
+        Release:
+          CODE_SIGN_IDENTITY: "Developer ID Application"
+          DEVELOPMENT_TEAM: G2743AT3J4
+          OTHER_CODE_SIGN_FLAGS: "--timestamp"
 
 schemes:
   SlopMTP:

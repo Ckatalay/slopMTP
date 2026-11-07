@@ -71,9 +71,6 @@ struct SwitchLibraryView: View {
         .navigationSubtitle(connection.displayName)
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
-                if library.isLoading || database.state == .downloading {
-                    ProgressView().controlSize(.small)
-                }
                 Button {
                     connection.chooseFilesToInstall()
                 } label: {
@@ -96,8 +93,15 @@ struct SwitchLibraryView: View {
     private var header: some View {
         HStack(alignment: .top, spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("\(library.games.count) Games Installed")
-                    .font(.largeTitle.bold())
+                HStack(spacing: 10) {
+                    Text("\(library.games.count) Games Installed")
+                        .font(.largeTitle.bold())
+                    if library.isLoading || database.state == .downloading {
+                        ProgressView()
+                            .controlSize(.small)
+                            .accessibilityLabel("Loading")
+                    }
+                }
                 Group {
                     switch database.state {
                     case .downloading:

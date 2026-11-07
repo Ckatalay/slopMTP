@@ -94,7 +94,8 @@ struct BrowserView: View {
         }
         .overlay {
             if connection.isLoading && connection.items.isEmpty {
-                ProgressView()
+                // MTP runs one operation at a time, so listings queue behind transfers.
+                ProgressView(connection.transfers.hasActiveTransfers ? "Waiting for the current transfer to finish…" : "Loading…")
             } else if connection.isDisconnected {
                 ContentUnavailableView("Device Disconnected", systemImage: "cable.connector.slash")
             } else if connection.items.isEmpty && !connection.isLoading {
@@ -170,9 +171,6 @@ struct BrowserView: View {
             .help("Go to the enclosing folder")
         }
         ToolbarItemGroup(placement: .primaryAction) {
-            if connection.isLoading {
-                ProgressView().controlSize(.small)
-            }
             Button {
                 connection.requestNewFolder()
             } label: {
@@ -249,20 +247,27 @@ private struct PathBar: View {
     let connection: DeviceConnection
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 2) {
-                crumb(connection.selectedStorage?.info.displayName ?? "Storage", systemImage: "sdcard", entry: nil)
-                ForEach(connection.path, id: \.self) { entry in
-                    Image(systemName: "chevron.right")
-                        .font(.caption2)
-                        .foregroundStyle(.tertiary)
-                        .accessibilityHidden(true)
-                    crumb(entry.name, systemImage: "folder", entry: entry)
+        HStack(spacing: 8) {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 2) {
+                    crumb(connection.selectedStorage?.info.displayName ?? "Storage", systemImage: "sdcard", entry: nil)
+                    ForEach(connection.path, id: \.self) { entry in
+                        Image(systemName: "chevron.right")
+                            .font(.caption2)
+                            .foregroundStyle(.tertiary)
+                            .accessibilityHidden(true)
+                        crumb(entry.name, systemImage: "folder", entry: entry)
+                    }
                 }
+                .padding(.vertical, 7)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 7)
+            if connection.isLoading {
+                ProgressView()
+                    .controlSize(.small)
+                    .accessibilityLabel("Loading")
+            }
         }
+        .padding(.horizontal, 12)
         .glassPanel(cornerRadius: 20)
         .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, 10)

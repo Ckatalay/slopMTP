@@ -96,7 +96,7 @@ actor ThumbnailLoader {
 
     private let directory: URL = {
         let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        let dir = base.appendingPathComponent("SlopMTP/Thumbnails", isDirectory: true)
+        let dir = base.appendingPathComponent("slopMTP/Thumbnails", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         return dir
     }()

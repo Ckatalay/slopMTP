@@ -485,7 +485,7 @@ final class DeviceConnection {
         Task {
             do {
                 let directory = FileManager.default.temporaryDirectory
-                    .appendingPathComponent("SlopMTP Previews", isDirectory: true)
+                    .appendingPathComponent("slopMTP Previews", isDirectory: true)
                     .appendingPathComponent(UUID().uuidString, isDirectory: true)
                 try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
                 let url = try await transfers.downloadAndWait(object, to: directory)

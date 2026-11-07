@@ -10,15 +10,15 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 VERSION=$(sed -n 's/^ *MARKETING_VERSION: "\(.*\)"/\1/p' project.yml | head -1)
 BUILD=.build/Release
-APP="$BUILD/Build/Products/Release/SlopMTP.app"
+APP="$BUILD/Build/Products/Release/slopMTP.app"
 DIST=dist
-ZIP="$DIST/SlopMTP-$VERSION.zip"
+ZIP="$DIST/slopMTP-$VERSION.zip"
 
 echo "==> Building slopMTP $VERSION"
 rm -rf "$BUILD" "$DIST"
 mkdir -p "$DIST"
 xcodegen generate --quiet
-xcodebuild -project SlopMTP.xcodeproj -scheme SlopMTP -configuration Release \
+xcodebuild -project slopMTP.xcodeproj -scheme slopMTP -configuration Release \
   -derivedDataPath "$BUILD" build | grep -E "error:|BUILD" || true
 [[ -d "$APP" ]] || { echo "Build failed"; exit 1; }
 

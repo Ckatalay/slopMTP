@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A53B02217CB53A85F6AF1426"
-               BuildableName = "SlopMTP.app"
-               BlueprintName = "SlopMTP"
-               ReferencedContainer = "container:SlopMTP.xcodeproj">
+               BlueprintIdentifier = "E4F4C410D228D67D01B91B67"
+               BuildableName = "slopMTP.app"
+               BlueprintName = "slopMTP"
+               ReferencedContainer = "container:slopMTP.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A53B02217CB53A85F6AF1426"
-            BuildableName = "SlopMTP.app"
-            BlueprintName = "SlopMTP"
-            ReferencedContainer = "container:SlopMTP.xcodeproj">
+            BlueprintIdentifier = "E4F4C410D228D67D01B91B67"
+            BuildableName = "slopMTP.app"
+            BlueprintName = "slopMTP"
+            ReferencedContainer = "container:slopMTP.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -68,10 +68,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A53B02217CB53A85F6AF1426"
-            BuildableName = "SlopMTP.app"
-            BlueprintName = "SlopMTP"
-            ReferencedContainer = "container:SlopMTP.xcodeproj">
+            BlueprintIdentifier = "E4F4C410D228D67D01B91B67"
+            BuildableName = "slopMTP.app"
+            BlueprintName = "slopMTP"
+            ReferencedContainer = "container:slopMTP.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -87,10 +87,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A53B02217CB53A85F6AF1426"
-            BuildableName = "SlopMTP.app"
-            BlueprintName = "SlopMTP"
-            ReferencedContainer = "container:SlopMTP.xcodeproj">
+            BlueprintIdentifier = "E4F4C410D228D67D01B91B67"
+            BuildableName = "slopMTP.app"
+            BlueprintName = "slopMTP"
+            ReferencedContainer = "container:slopMTP.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

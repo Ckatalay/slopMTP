@@ -16,7 +16,7 @@ final class FinderDragController: NSObject, NSDraggingSource, NSFilePromiseProvi
     private(set) var isDragging = false
     nonisolated private let writeQueue: OperationQueue = {
         let queue = OperationQueue()
-        queue.name = "SlopMTP file promises"
+        queue.name = "slopMTP file promises"
         return queue
     }()
 

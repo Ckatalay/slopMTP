@@ -20,5 +20,5 @@ jobs:
 
       - name: Build app
         run: |
-          xcodebuild -project SlopMTP.xcodeproj -scheme SlopMTP -configuration Release \
+          xcodebuild -project slopMTP.xcodeproj -scheme slopMTP -configuration Release \
             -derivedDataPath .build/DerivedData CODE_SIGNING_ALLOWED=NO build

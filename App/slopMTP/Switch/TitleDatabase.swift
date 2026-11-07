@@ -37,7 +37,7 @@ final class TitleDatabase {
 
     private static var cacheURL: URL {
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-        return base.appendingPathComponent("SlopMTP", isDirectory: true).appendingPathComponent("titles.json")
+        return base.appendingPathComponent("slopMTP", isDirectory: true).appendingPathComponent("titles.json")
     }
 
     func entry(for id: TitleID) -> Entry? {
@@ -129,7 +129,7 @@ actor CoverArtCache {
     private var inFlight: [URL: Task<NSImage?, Never>] = [:]
     private let directory: URL = {
         let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        let dir = base.appendingPathComponent("SlopMTP/CoverArt", isDirectory: true)
+        let dir = base.appendingPathComponent("slopMTP/CoverArt", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         return dir
     }()

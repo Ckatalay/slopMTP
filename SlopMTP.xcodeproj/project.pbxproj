@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0023A33371A4C0DB162D941F /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7F0ECFF8E070F3B69E5EF4 /* SidebarView.swift */; };
+		02BB211F0CACCCB125A86B01 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = A67441B63B0615E993F7AE81 /* AppIcon.icon */; };
 		0428E6844AB73BA56B5DDA8E /* CoverArtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A4054CDDE4C7614FD23780 /* CoverArtView.swift */; };
 		1B5C5C6E72E56E5AD691CDD6 /* AlbumLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7B29E0C0262596095930D5 /* AlbumLibrary.swift */; };
 		299DF9C4DCFD49770EF16B96 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198603BABEFDE82145A7B9F1 /* AppModel.swift */; };
@@ -50,6 +51,7 @@
 		8E7D2E224603DCA641FBD583 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		92A4054CDDE4C7614FD23780 /* CoverArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverArtView.swift; sourceTree = "<group>"; };
 		9D00E0A1605B07A14BAF66A2 /* TransfersPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransfersPanel.swift; sourceTree = "<group>"; };
+		A67441B63B0615E993F7AE81 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		A696E1950C15E1196F6F9E88 /* DeviceConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceConnection.swift; sourceTree = "<group>"; };
 		C9D7855F0FDE24640CFC12CC /* Glass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glass.swift; sourceTree = "<group>"; };
 		D701EF44DF5C5893ADD97F6D /* SwitchFileInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchFileInfo.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 		94331E4F11041F1B476261AC /* SlopMTP */ = {
 			isa = PBXGroup;
 			children = (
+				A67441B63B0615E993F7AE81 /* AppIcon.icon */,
 				3334979DFA01B68915CF477E /* SlopMTPApp.swift */,
 				3DEEB061DDB64512A6E7DD75 /* Models */,
 				F194F4F459D109186408F8FC /* Switch */,
@@ -173,6 +176,7 @@
 			buildConfigurationList = F5F3342C078E014E093954D6 /* Build configuration list for PBXNativeTarget "SlopMTP" */;
 			buildPhases = (
 				0EB4A9DFF7C971F53984DA6E /* Sources */,
+				CEA456C029F079406FB438B1 /* Resources */,
 				A3B3436569765A405F751710 /* Frameworks */,
 			);
 			buildRules = (
@@ -222,6 +226,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CEA456C029F079406FB438B1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02BB211F0CACCCB125A86B01 /* AppIcon.icon in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0EB4A9DFF7C971F53984DA6E /* Sources */ = {
@@ -382,7 +397,7 @@
 		EE8544E47C8920CE7F757B6C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -406,7 +421,7 @@
 		F4304A7BE4A0E7098C2C8783 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Manual;

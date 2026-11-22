@@ -11,6 +11,7 @@
 		1AA5488055BA4F6FDCC69D21 /* AlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD222288CA57A7AFBB39DE22 /* AlbumView.swift */; };
 		1B0D96E2C44DB5922BDACD56 /* DeviceConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD457B84A246AF43A727AD3 /* DeviceConnection.swift */; };
 		235EEFF89C4EB5BC000FBDF8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAEC75B3304369B011B5393 /* SettingsView.swift */; };
+		25A57DBC554C5483DF41B1D4 /* KeepAwake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F14E9E622169C2CC6458E8B /* KeepAwake.swift */; };
 		27BB3E7919DB6322971F7A35 /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C2C274CA6F485888080047 /* BrowserView.swift */; };
 		3428A3B21D688205498E1F55 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 37E946C9777B9BC11AB25BE6 /* Localizable.xcstrings */; };
 		37654EB442883FC2FF6CB51D /* SlopMTPApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB624726C056EBA3C2EE56D6 /* SlopMTPApp.swift */; };
@@ -50,6 +51,7 @@
 		87979CF887421AA743B6841B /* SwitchLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchLibraryView.swift; sourceTree = "<group>"; };
 		89EBC8FB03901F13ED122BE6 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		8D6D26AAB7FD3A77D43F7EB1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9F14E9E622169C2CC6458E8B /* KeepAwake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAwake.swift; sourceTree = "<group>"; };
 		A7903F829D87F2D558029735 /* SwitchLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchLibrary.swift; sourceTree = "<group>"; };
 		AD222288CA57A7AFBB39DE22 /* AlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumView.swift; sourceTree = "<group>"; };
 		B74305868D59CF1EA46990D6 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				B74305868D59CF1EA46990D6 /* AppModel.swift */,
 				FDD457B84A246AF43A727AD3 /* DeviceConnection.swift */,
 				C7A65D00878E5597DF7330A0 /* FinderDragController.swift */,
+				9F14E9E622169C2CC6458E8B /* KeepAwake.swift */,
 				515BCBF8BF45DCE3BAB0975F /* TransferQueue.swift */,
 			);
 			path = Models;
@@ -275,6 +278,7 @@
 				086072D5D6B418959AD91D17 /* Glass.swift in Sources */,
 				D5E62140256914E5DB81B6B5 /* InstallPlanner.swift in Sources */,
 				D2E441EE09A10C8579EE5BBA /* InstallViews.swift in Sources */,
+				25A57DBC554C5483DF41B1D4 /* KeepAwake.swift in Sources */,
 				235EEFF89C4EB5BC000FBDF8 /* SettingsView.swift in Sources */,
 				E3E6DFEDBAC37260D6396E17 /* SidebarView.swift in Sources */,
 				37654EB442883FC2FF6CB51D /* SlopMTPApp.swift in Sources */,

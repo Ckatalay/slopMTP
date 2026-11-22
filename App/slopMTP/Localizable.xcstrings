@@ -14509,6 +14509,106 @@
         }
       }
     },
+    "Keep Mac awake during transfers": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "إبقاء Mac مستيقظًا أثناء النقل"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Mac während Übertragungen wach halten"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Mantener el Mac activo durante las transferencias"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Garder le Mac éveillé pendant les transferts"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ट्रांसफ़र के दौरान Mac को जगाए रखें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Mantieni il Mac attivo durante i trasferimenti"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "転送中はMacをスリープさせない"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "전송 중 Mac 잠자기 방지"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Mac wakker houden tijdens overdrachten"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Nie usypiaj Maca podczas przesyłania"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Manter o Mac ativo durante transferências"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Не переводить Mac в режим сна во время передачи"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Aktarımlar sırasında Mac'i uyanık tut"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Не переводити Mac у режим сну під час передавання"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "传输期间让 Mac 保持唤醒"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "傳輸期間讓 Mac 保持喚醒"
+          }
+        }
+      }
+    },
     "Large uploads": {
       "localizations": {
         "ar": {
@@ -20572,6 +20672,106 @@
         }
       }
     },
+    "Stops your Mac from going to sleep while games install or files copy, so long transfers aren't cut off. The display can still turn off.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "يمنع Mac من الدخول في وضع السكون أثناء تثبيت الألعاب أو نسخ الملفات، حتى لا تنقطع عمليات النقل الطويلة. لا يزال بإمكان الشاشة أن تنطفئ."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Verhindert, dass dein Mac in den Ruhezustand wechselt, während Spiele installiert oder Dateien kopiert werden, damit lange Übertragungen nicht abbrechen. Der Bildschirm kann sich trotzdem ausschalten."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Evita que el Mac entre en reposo mientras se instalan juegos o se copian archivos, para que las transferencias largas no se interrumpan. La pantalla puede apagarse igualmente."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Empêche votre Mac de se mettre en veille pendant l’installation de jeux ou la copie de fichiers, pour que les longs transferts ne soient pas interrompus. L’écran peut tout de même s’éteindre."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "गेम इंस्टॉल होने या फ़ाइलें कॉपी होने के दौरान आपके Mac को स्लीप में जाने से रोकता है, ताकि लंबे ट्रांसफ़र बीच में न रुकें। डिस्प्ले फिर भी बंद हो सकता है।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Impedisce al Mac di andare in stop mentre installi giochi o copi file, così i trasferimenti lunghi non si interrompono. Lo schermo può comunque spegnersi."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "ゲームのインストールやファイルのコピー中にMacがスリープしないようにして、長い転送が途中で止まらないようにします。ディスプレイはオフになることがあります。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "게임을 설치하거나 파일을 복사하는 동안 Mac이 잠자기 상태로 전환되지 않도록 하여 긴 전송이 중단되지 않게 합니다. 디스플레이는 꺼질 수 있습니다."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Voorkomt dat je Mac in sluimerstand gaat terwijl games worden geïnstalleerd of bestanden worden gekopieerd, zodat lange overdrachten niet worden onderbroken. Het scherm kan nog steeds uitgaan."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Zapobiega usypianiu Maca podczas instalowania gier lub kopiowania plików, aby długie przesyłanie nie zostało przerwane. Ekran nadal może się wyłączyć."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Impede que o Mac entre em repouso enquanto jogos são instalados ou arquivos são copiados, para que transferências longas não sejam interrompidas. A tela ainda pode desligar."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Не дает Mac переходить в режим сна, пока устанавливаются игры или копируются файлы, чтобы долгая передача не прервалась. Дисплей при этом может выключаться."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Oyunlar yüklenirken veya dosyalar kopyalanırken Mac'inizin uyku moduna geçmesini engeller, böylece uzun aktarımlar yarıda kesilmez. Ekran yine de kapanabilir."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Не дає Mac переходити в режим сну, поки встановлюються ігри або копіюються файли, щоб довге передавання не перервалося. Дисплей при цьому може вимикатися."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "在安装游戏或拷贝文件时防止 Mac 进入睡眠，以免长时间传输中断。显示器仍可关闭。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "在安裝遊戲或拷貝檔案時防止 Mac 進入睡眠，以免長時間傳輸中斷。顯示器仍可關閉。"
+          }
+        }
+      }
+    },
     "Storage": {
       "comment": "Generic name for a storage on the device\nSidebar section listing the device's storages",
       "localizations": {
@@ -21574,6 +21774,107 @@
           "stringUnit": {
             "state": "machine_translated",
             "value": "「%@」傳輸失敗"
+          }
+        }
+      }
+    },
+    "Transferring files to or from the Switch": {
+      "comment": "Reason shown by macOS power tools (pmset, Activity Monitor) for why slopMTP keeps the Mac awake",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "جارٍ نقل الملفات من Switch أو إليه"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Dateien werden zur oder von der Switch übertragen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Transfiriendo archivos a o desde la Switch"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Transfert de fichiers vers ou depuis la Switch"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Switch पर या उससे फ़ाइलें ट्रांसफ़र हो रही हैं"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Trasferimento di file da o verso Switch"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Switchとのファイル転送中"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Switch와 파일 전송 중"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Bestanden overzetten naar of van de Switch"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Przesyłanie plików do lub z konsoli Switch"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Transferindo arquivos para ou do Switch"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Передача файлов на Switch или с нее"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Switch'e veya Switch'ten dosya aktarılıyor"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "Передавання файлів на Switch або з неї"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "正在与 Switch 传输文件"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "machine_translated",
+            "value": "正在與 Switch 傳輸檔案"
           }
         }
       }

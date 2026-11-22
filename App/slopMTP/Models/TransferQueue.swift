@@ -196,8 +196,12 @@ final class TransferQueue {
     }
 
     private func runNext() {
-        guard !isRunning, let session, let next = transfers.first(where: { $0.state == .queued }) else { return }
+        guard !isRunning, let session, let next = transfers.first(where: { $0.state == .queued }) else {
+            if !isRunning { KeepAwake.shared.setTransfersRunning(false) }
+            return
+        }
         isRunning = true
+        KeepAwake.shared.setTransfersRunning(true)
         next.startedAt = Date()
         let relay = ProgressRelay(transfer: next)
         next.task = Task {

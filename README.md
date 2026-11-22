@@ -20,9 +20,15 @@ A native macOS MTP client, written in Swift and SwiftUI, for browsing and transf
 
 ## Screenshots
 
-| Install review | Installing |
-| --- | --- |
-| ![The install review sheet ordering base games, updates and DLC](docs/images/install-review.png) | ![Games installing with progress, speed and time remaining](docs/images/installing.png) |
+**Install review.** Drop games, updates and DLC anywhere in the window. slopMTP orders them base game → update → DLC and unchecks anything already on the console.
+
+![The install review sheet ordering base games, updates and DLC](docs/images/install-review.png)
+
+**Installing.** A queue with progress, speed and time remaining.
+
+![Games installing with progress, speed and time remaining](docs/images/installing.png)
+
+**Album.** Screenshots and video captures, grouped by game.
 
 ![The Album view with screenshot and video thumbnails grouped by game](docs/images/album.png)
 

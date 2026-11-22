@@ -2,7 +2,7 @@
 
 A native macOS MTP client, written in Swift and SwiftUI, for browsing and transferring files to and from a homebrew-enabled Nintendo Switch running an MTP responder such as **DBI** or **Sphaira**.
 
-![slopMTP showing a Switch game library with cover art](docs/images/library.jpg)
+![slopMTP showing a Switch game library with cover art](docs/images/library.png)
 
 > **Legal use only.** slopMTP is a general-purpose file transfer tool meant for backing up your own saves, screenshots and game dumps, homebrew development and game preservation. It does not include, download or circumvent anything. Don't use it for piracy.
 
@@ -22,9 +22,9 @@ A native macOS MTP client, written in Swift and SwiftUI, for browsing and transf
 
 | Install review | Installing |
 | --- | --- |
-| ![The install review sheet ordering base games, updates and DLC](docs/images/install-review.jpg) | ![Games installing with progress, speed and time remaining](docs/images/installing.jpg) |
+| ![The install review sheet ordering base games, updates and DLC](docs/images/install-review.png) | ![Games installing with progress, speed and time remaining](docs/images/installing.png) |
 
-![The Album view with screenshot and video thumbnails grouped by game](docs/images/album.jpg)
+![The Album view with screenshot and video thumbnails grouped by game](docs/images/album.png)
 
 ## Requirements
 

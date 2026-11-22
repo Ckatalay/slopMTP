@@ -195,7 +195,7 @@ private struct AlbumTile: View {
         }
         .contentShape(Rectangle())
         .task(id: item.handle) {
-            guard image == nil, !isVideo else { return }
+            guard image == nil else { return }
             if let data = await ThumbnailLoader.shared.thumbnail(for: item, session: session), let loaded = NSImage(data: data) {
                 withAnimation(.easeOut(duration: 0.15)) { image = loaded }
             }
